@@ -27,8 +27,8 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 | Register Name | Description | Memory Position |
 | ------------- | ------------- | ------------- |
-| Program Counter | The position in the program of the next command to be processed relative to the start of the program. | 0x01,0x02,0x03,0x04 (4 Bytes)
-| Return Pointer | Points to the next return position in the program of the next return. | 0x05,0x06,0x07,0x08 (4 Bytes)
+| Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x01-0x04 (4 Bytes)
+| Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x05-0x08 (4 Bytes)
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x09 (1 Byte) |
 
 
@@ -42,7 +42,7 @@ Mnemonic: STR
 
 Description: Stores content in memory at the location specified no matter if it is already occupied.
 
-Parameters: length (2B, in B) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4B, in memory position)
+Parameters: length 32int (4 Bytes) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4 Bytes, in memory position)
 
 ## Dynamic Store
 Bytecode:0x02
@@ -51,7 +51,7 @@ Mnemonic: DST
 
 Description: Stores content in memory at the next free destination of that length and places 4 bytes with the position it was stored in at the location specified. If no free memory is available an exception will be thrown.
 
-Parameters: length (2B, in B) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4B, in memory position)
+Parameters: length 32int (4 Bytes) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4 Bytes, in memory position)
 
 ## Read
 Bytecode: 0xFF
@@ -60,7 +60,7 @@ Mnemonic: [p1,p2,p3,p4] converts into a read command
 
 Description: Reads content in memory (can only be used in place of an absolute value)
 
-Parameters: location (4B, in memory position)
+Parameters: location (4 Bytes, in memory position)
 
 ## Read Length
 Bytecode: 0xFE
@@ -69,7 +69,7 @@ Mnemonic: (p1,p2,p3,p4) converts into a read length
 
 Description: Reads the length of the memory content as a two byte value using the protocol above
 
-Parameters: location (4B, in memory position)
+Parameters: location (4 Bytes, in memory position)
 
 ## Read Into
 Bytecode: 0x12
@@ -78,16 +78,16 @@ Mnemonic: RDI
 
 Description: Reads the content of the memory at location 1 into location 2. Even if location 2 is already occupied.
 
-Parameters: location 1 (4B, in memory position) location 2 (4B, in memory position)
+Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position)
 
 ## Dynamic Read Into
 Bytecode: 0x13
 
 Mnemonic: DRI
 
-Description: Reads the content of the memory at location 1 into the next avaliable memory of that length, the position of the new memory is stored as 4 bytes at position 2.
+Description: Reads the content of the memory at location 1 into the next available memory of that length, the position of the new memory is stored as 4 bytes at position 2.
 
-Parameters: location 1 (4B, in memory position) location 2 (4B, in memory position)
+Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position)
 
 ## Fill
 Bytecode:0x30
@@ -96,7 +96,7 @@ Mnemonic: FLL
 
 Description: Fills the memory from location 1 to location 2 with the byte specified.
 
-Parameters: location 1 (4B, in memory position) location 2 (4B, in memory position) byte (1B)
+Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position) byte (1 Bytes)
 
 ## Clear
 Bytecode: 0x31
@@ -105,10 +105,10 @@ Mnemonic: CLR
 
 Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
 
-Parameters: location (4B, in memory position)
+Parameters: location (4 Bytes, in memory position)
 
 # Conditional Tests
-For all conditional commands the �Conditional Result� byte in Reserved Memory is set according to the result of the conditional test.
+For all conditional commands the Conditional Result byte in Reserved Memory is set according to the result of the conditional test.
 
 ## Test Equal
 Bytecode: 0x40
@@ -117,7 +117,7 @@ Mnemonic: TEQ
 
 Description: Tests if the two parameters are equal and if they are the result is true.
 
-Parameters: byte1 (1B) byte 2 (1B)
+Parameters: byte1 (1 Bytes) byte 2 (1 Bytes)
 
 ## Test Greater Than
 Bytecode: 0x41
@@ -126,7 +126,7 @@ Mnemonic: TGT
 
 Description: Tests if byte1 is greater than byte 2.
 
-Parameters: byte1 (1B) byte 2 (1B)
+Parameters: byte1 (1 Bytes) byte 2 (1 Bytes)
 
 ## Jump If True
 Bytecode: 0x42
@@ -135,7 +135,7 @@ Mnemonic: JIT
 
 Description: If the previous conditional test result was true jump to the position specified.
 
-Parameters: position (4B, in position of execution)
+Parameters: position (4 Bytes, in position of execution)
 
 ## Jump If False
 Bytecode: 0x43
@@ -144,7 +144,7 @@ Mnemonic: JIF
 
 Description: If the previous conditional test result was false jump to the position specified.
 
-Parameters: position (4B, in position of execution)
+Parameters: position (4 Bytes, in position of execution)
 
 ## Jump
 Bytecode: 0x44
@@ -153,7 +153,7 @@ Mnemonic: JMP
 
 Description: Jump to the position specified.
 
-Parameters: position (4B, in position of execution)
+Parameters: position (4 Bytes, in position of execution)
 
 
 ## Return
