@@ -1,9 +1,10 @@
 # Execution Information
 ## Basic Execution Information
 Instructions are separated by 0x00 0xFF 0x00
+Parameters MUST BE AS LONG AS SPECIFIED Below
 
 ##  Multiple Byte Parameters; how do they work?
-Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255. This provides a useful way to obfuscate code in many different ways whilst keeping filesize down.
+Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255.
 
 ## Handling commands (Read (0xFF) & Read Length (0xFE)) that are used instead of absolute values
 When reading parameters, if 0xFF or 0xFE is read as the first byte in any parameter, that command is executed from the current point with the value that is returned being used instead of the command bytecode value.
@@ -22,15 +23,19 @@ Variables stored in memory are each preceded with 4 Bytes telling us the length 
 In order to access the stored content in memory the command Read (0xFF) is used which has the parameters: location (4 bytes) so to move the string we created at location 0x06 in memory to location 0x10 the bytecode would be [0x01 0xFE 0x06 0x00 0xFF 0x06 0x0A]
 
 ## Reserved Memory
-The first 12 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes will result in an operation exception which will cause the program to crash.
+The first 12 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
 
 
 | Register Name | Description | Memory Position |
 | ------------- | ------------- | ------------- |
-| Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x00-0x03 (4 Bytes)
-| Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x04-0x07 (4 Bytes)
-| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x08 (1 Byte) |
-| Stop | If true the program will end. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x09 (1 Byte) |
+| Memory Mode | Sets the program Memory Mode(not used yet). 0x00 (16bit) 0x01 (32 bit) 0x02 (64 bit) | 0x00 (1 Byte) |
+| Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
+| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02 (1 Byte) |
+| Unused | this is un used | 0x01 (1 Byte) |
+| Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x04-0x08 (4 Bytes)
+| Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x09-0x0C (4 Bytes)
+
+
 
 
 # Commands
@@ -206,3 +211,5 @@ Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION 
 Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 # IO
+
+## Coming Soon

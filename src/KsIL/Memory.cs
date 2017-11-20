@@ -39,7 +39,7 @@ namespace KsIL
             for (int i = 0; i < Length; i++)
             {
 
-                temp[i] = Buffer[i];
+                temp[i] = Buffer[Addr + i];
 
             }
 
