@@ -1,6 +1,6 @@
 # Execution Information
 ## Basic Execution Information
-The executable data is executed from 0x45 until the code ends.
+Instructions are separated by 0x00 0xFF 0x00
 
 ##  Multiple Byte Parameters; how do they work?
 Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255. This provides a useful way to obfuscate code in many different ways whilst keeping filesize down.
@@ -72,7 +72,7 @@ Description: Reads the length of the memory content as a two byte value using th
 Parameters: location (4 Bytes, in memory position)
 
 ## Read Into
-Bytecode: 0x12
+Bytecode: 0x03
 
 Mnemonic: RDI
 
@@ -81,7 +81,7 @@ Description: Reads the content of the memory at location 1 into location 2. Even
 Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Dynamic Read Into
-Bytecode: 0x13
+Bytecode: 0x04
 
 Mnemonic: DRI
 
@@ -90,7 +90,7 @@ Description: Reads the content of the memory at location 1 into the next availab
 Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Fill
-Bytecode:0x30
+Bytecode:0x05
 
 Mnemonic: FLL
 
@@ -99,7 +99,7 @@ Description: Fills the memory from location 1 to location 2 with the byte specif
 Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position), byte (1 Bytes)
 
 ## Clear
-Bytecode: 0x31
+Bytecode: 0x06
 
 Mnemonic: CLR
 
@@ -111,7 +111,7 @@ Parameters: location (4 Bytes, in memory position)
 For all conditional commands the Conditional Result byte in Reserved Memory is set according to the result of the conditional test.
 
 ## Test Equal
-Bytecode: 0x40
+Bytecode: 0x10
 
 Mnemonic: TEQ
 
@@ -120,7 +120,7 @@ Description: Tests if the two parameters are equal and if they are the result is
 Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
 
 ## Test Greater Than
-Bytecode: 0x41
+Bytecode: 0x11
 
 Mnemonic: TGT
 
@@ -129,7 +129,7 @@ Description: Tests if byte1 is greater than byte 2.
 Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
 
 ## Jump If True
-Bytecode: 0x42
+Bytecode: 0x12
 
 Mnemonic: JIT
 
@@ -138,7 +138,7 @@ Description: If the previous conditional test result was true jump to the positi
 Parameters: position (4 Bytes, in position of execution)
 
 ## Jump If False
-Bytecode: 0x43
+Bytecode: 0x13
 
 Mnemonic: JIF
 
@@ -147,7 +147,7 @@ Description: If the previous conditional test result was false jump to the posit
 Parameters: position (4 Bytes, in position of execution)
 
 ## Jump
-Bytecode: 0x44
+Bytecode: 0x20
 
 Mnemonic: JMP
 
@@ -157,7 +157,7 @@ Parameters: add return position (1 Bytes, 0x01 for true, 0x00 for false), positi
 
 
 ## Return
-Bytecode: 0x45
+Bytecode: 0x21
 
 Mnemonic: RTN
 
@@ -168,7 +168,7 @@ Parameters: none
 
 # Arithmetic Operations
 ## Add
-Bytecode: 0x50
+Bytecode: 0x30
 
 Mnemonic: ADD
 
@@ -177,7 +177,7 @@ Description: Adds SOURCE to DESTINATION and puts the result in DESTINATION (DEST
 Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 ## Subtract
-Bytecode: 0x51
+Bytecode: 0x31
 
 Mnemonic: SUB
 
@@ -187,7 +187,7 @@ Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), 
 
 
 ## Multiply
-Bytecode: 0x52
+Bytecode: 0x32
 
 Mnemonic: MUL
 
@@ -196,10 +196,12 @@ Description: Multiplys SOURCE from DESTINATION and puts the result in DESTINATIO
 Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 ## Divide
-Bytecode: 0x53
+Bytecode: 0x33
 
 Mnemonic: DIV
 
 Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION / SOURCE)
 
 Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
+
+# IO
