@@ -15,9 +15,9 @@ When reading a parameter and the first byte is 0xF1 the next byte is an absolute
 
 
 # Memory Use
-Each program should be given virtual memory of at least 5120 bytes or more, this should be available to this program only and no others. Each variable is declared using the command store (0x01), which stores the bytes into memory. The command uses the following parameters: length (2 bytes, in bytes),0, content (in bytes),0, location (4 bytes, bytes up from 0, min 9) so to store the ASCII string hello world the compiler could spit out: [0x01 0x0B 0x00 0x48 0x65 0x6C 0x6C 0x6F 0x20 0x57 0x6F 0x72 0x6C 0x64 0x06 0x00 0x00 0x00]
+Each program should be given virtual memory of at least 512 bytes or more, this should be available to this program only and no others. Each variable is declared using the command store (0x01), which stores the bytes into memory. The command uses the following parameters: length (2 bytes, in bytes),0, content (in bytes),0, location (4 bytes, bytes up from 0, min 9) so to store the ASCII string hello world the compiler could spit out: [0x01 0x0B 0x00 0x48 0x65 0x6C 0x6C 0x6F 0x20 0x57 0x6F 0x72 0x6C 0x64 0x06 0x00 0x00 0x00]
 
-Variables stored in memory are each preceded with 2 Bytes telling us the length of the data at the position. So storing 0x02 at position 0x09 would result in the memory at position 0x09 onwards being [0x01 0x00 0x09]
+Variables stored in memory are each preceded with 4 Bytes telling us the length of the data at the position. So storing 0x02 at position 0x0F would result in the memory at position 0x0F onwards being [0x01 0x00 0x00 0x00 0x02]
 
 In order to access the stored content in memory the command Read (0xFF) is used which has the parameters: location (4 bytes) so to move the string we created at location 0x06 in memory to location 0x10 the bytecode would be [0x01 0xFE 0x06 0x00 0xFF 0x06 0x0A]
 
@@ -27,9 +27,9 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 | Register Name | Description | Memory Position |
 | ------------- | ------------- | ------------- |
-| Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x01-0x04 (4 Bytes)
-| Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x05-0x08 (4 Bytes)
-| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x09 (1 Byte) |
+| Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x00-0x03 (4 Bytes)
+| Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x04-0x07 (4 Bytes)
+| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x08 (1 Byte) |
 
 
 # Commands
