@@ -7,9 +7,9 @@ namespace KsIL
     public class InstructionBase
     {
 
-        Memory mMemory;
+        internal Memory mMemory;
 
-        public  InstructionBase(Memory memory, byte[] Parameters)
+        public InstructionBase(Memory memory)
         {
             mMemory = memory;
         }
