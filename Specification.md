@@ -42,7 +42,7 @@ Mnemonic: STR
 
 Description: Stores content in memory at the location specified no matter if it is already occupied.
 
-Parameters: length 32int (4 Bytes) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4 Bytes, in memory position)
+Parameters: length 32int (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
 
 ## Dynamic Store
 Bytecode:0x02
@@ -51,7 +51,7 @@ Mnemonic: DST
 
 Description: Stores content in memory at the next free destination of that length and places 4 bytes with the position it was stored in at the location specified. If no free memory is available an exception will be thrown.
 
-Parameters: length 32int (4 Bytes) 0x00 content (MUST BE AS LONG AS SPECIFIED IN length) 0x00 location (4 Bytes, in memory position)
+Parameters: length 32int (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
 
 ## Read
 Bytecode: 0xFF
@@ -78,7 +78,7 @@ Mnemonic: RDI
 
 Description: Reads the content of the memory at location 1 into location 2. Even if location 2 is already occupied.
 
-Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position)
+Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Dynamic Read Into
 Bytecode: 0x13
@@ -87,7 +87,7 @@ Mnemonic: DRI
 
 Description: Reads the content of the memory at location 1 into the next available memory of that length, the position of the new memory is stored as 4 bytes at position 2.
 
-Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position)
+Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Fill
 Bytecode:0x30
@@ -96,7 +96,7 @@ Mnemonic: FLL
 
 Description: Fills the memory from location 1 to location 2 with the byte specified.
 
-Parameters: location 1 (4 Bytes, in memory position) location 2 (4 Bytes, in memory position) byte (1 Bytes)
+Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position), byte (1 Bytes)
 
 ## Clear
 Bytecode: 0x31
@@ -117,7 +117,7 @@ Mnemonic: TEQ
 
 Description: Tests if the two parameters are equal and if they are the result is true.
 
-Parameters: byte1 (1 Bytes) byte 2 (1 Bytes)
+Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
 
 ## Test Greater Than
 Bytecode: 0x41
@@ -126,7 +126,7 @@ Mnemonic: TGT
 
 Description: Tests if byte1 is greater than byte 2.
 
-Parameters: byte1 (1 Bytes) byte 2 (1 Bytes)
+Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
 
 ## Jump If True
 Bytecode: 0x42
@@ -153,7 +153,7 @@ Mnemonic: JMP
 
 Description: Jump to the position specified.
 
-Parameters: position (4 Bytes, in position of execution)
+Parameters: add return position (1 Bytes, 0x01 for true, 0x00 for false), position (4 Bytes, in position of execution)
 
 
 ## Return
@@ -174,7 +174,7 @@ Mnemonic: ADD
 
 Description: Adds SOURCE to DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION + SOURCE)
 
-Parameters: source_is_memory_position (1B, 0x01 for true, 0x00 for false), source (4B, in memory location), destination_is_memory_position, (1B, 0x01 for true, 0x00 for false), destination (4B, memloc or absolute value)
+Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 ## Subtract
 Bytecode: 0x51
@@ -183,7 +183,7 @@ Mnemonic: SUB
 
 Description: Subtracts SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION - SOURCE)
 
-Parameters: source_is_memory_position (1B, 0x01 for true, 0x00 for false), source (4B, in memory location), destination_is_memory_position, (1B, 0x01 for true, 0x00 for false), destination (4B, memloc or absolute value)
+Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 
 ## Multiply
@@ -193,7 +193,7 @@ Mnemonic: MUL
 
 Description: Multiplys SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION * SOURCE)
 
-Parameters: source_is_memory_position (1B, 0x01 for true, 0x00 for false), source (4B, in memory location), destination_is_memory_position, (1B, 0x01 for true, 0x00 for false), destination (4B, memloc or absolute value)
+Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
 
 ## Divide
 Bytecode: 0x53
@@ -202,4 +202,4 @@ Mnemonic: DIV
 
 Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION / SOURCE)
 
-Parameters: source_is_memory_position (1B, 0x01 for true, 0x00 for false), source (4B, in memory location), destination_is_memory_position, (1B, 0x01 for true, 0x00 for false), destination (4B, memloc or absolute value)
+Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
