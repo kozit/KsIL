@@ -16,7 +16,7 @@ When reading a parameter and the first byte is 0xF1 the next byte is an absolute
 
 
 # Memory Use
-Each program should be given virtual memory of at least 512 bytes or more, this should be available to this program only and no others. Each variable is declared using the command store (0x01), which stores the bytes into memory. The command uses the following parameters: length (2 bytes, in bytes),0, content (in bytes),0, location (4 bytes, bytes up from 0, min 9) so to store the ASCII string hello world the compiler could spit out: [0x01 0x0B 0x00 0x48 0x65 0x6C 0x6C 0x6F 0x20 0x57 0x6F 0x72 0x6C 0x64 0x06 0x00 0x00 0x00]
+Each program should be given virtual memory of at least 512 bytes or more, this should be available to this program only and no others. Each variable is declared using the command store (0x01), which stores the bytes into memory. The command uses the following parameters: length (4 Bytes), content (in Bytes), location (4 Bytes) so to store the ASCII string hello at memory position 13 (0x0D 0x00 0x00 0x00) world the compiler could spit out: [0x01 0x0B 0x00 0x00 0x00 | 0x48 0x65 0x6C 0x6C 0x6F 0x20 0x57 0x6F 0x72 0x6C 0x64 | 0x0D 0x00 0x00 0x00 | 0x00 0xFF 0x00]
 
 Variables stored in memory are each preceded with 4 Bytes telling us the length of the data at the position. So storing 0x02 at position 0x0F would result in the memory at position 0x0F onwards being [0x01 0x00 0x00 0x00 0x02]
 
