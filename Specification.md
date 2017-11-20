@@ -1,6 +1,6 @@
 # Execution Information
 ## Basic Execution Information
-Instructions are separated by 0x00 0xFF 0x00
+Instructions are separated by 0x00 0xFF 0x00 0xFF
 Parameters MUST BE AS LONG AS SPECIFIED Below
 
 ##  Multiple Byte Parameters; how do they work?
@@ -28,7 +28,7 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 | Register Name | Description | Memory Position |
 | ------------- | ------------- | ------------- |
-| Memory Mode | Sets the program Memory Mode(not used yet). 0x00 (16bit) 0x01 (32 bit) 0x02 (64 bit) | 0x00 (1 Byte) |
+| Memory Mode | Sets the program Memory Mode(not used yet).  0x00 (8bit) 0x01 (16bit) 0x02 (32 bit) 0x03 (64 bit) | 0x00 (1 Byte) |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02 (1 Byte) |
 | Unused | this is un used | 0x01 (1 Byte) |

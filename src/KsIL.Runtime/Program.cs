@@ -12,7 +12,7 @@ namespace KsIL.Runtime
         {
 
 
-            KsIL = new KsIL(100, System.IO.File.ReadAllBytes("test.KsIL"));
+            KsIL = new KsIL(1024 * 1024 * 10, System.IO.File.ReadAllBytes("test.KsIL"));
 
             
 

@@ -66,8 +66,8 @@ namespace KsIL
 
             Int32 qwe = 0;
 
-            // Memory Mode 0x00 (16bit), 0x01 (32 bit), 0x02 (64 bit)
-            memory.Set(0, 0x01);
+            // Memory Mode 0x00 (8Bbit), 0x01 (16bit), 0x02 (32 bit), 0x03 (64 bit)
+            memory.Set(0, 0x02);
             // Is program running
             memory.Set(1, 0x01);
             // Conditional Result
