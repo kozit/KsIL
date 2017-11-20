@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace KsIL.Runtime
 {
@@ -10,7 +11,8 @@ namespace KsIL.Runtime
         static void Main(string[] args)
         {
 
-            KsIL = new KsIL(50, new byte[] { 0x00});
+
+            KsIL = new KsIL(100, System.IO.File.ReadAllBytes("test.KsIL"));
 
             
 

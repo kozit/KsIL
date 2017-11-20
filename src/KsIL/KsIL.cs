@@ -12,7 +12,9 @@ namespace KsIL
 
         public KsIL(int _memory, byte[] mCode)
         {
-            if(true == false)
+
+            memory = new Memory(_memory);
+
             for (int i = 0; i < mCode.Length; )
             {
 
@@ -20,15 +22,28 @@ namespace KsIL
                 
                 int ii = 0;
                 List<byte> Parameters = new List<byte>();
-                while (new byte[] { mCode[ii + i], mCode[ii + i + 1] , mCode[ii + i + 2] } != new byte[] { 0x00, 0xFF, 0x00})
+
+                for (ii = 1; ii + i  + 3< mCode.Length; ii++)
                 {
-                    Parameters.Add(mCode[ii + i]);
-                    ii++;    
+
+                    if (mCode[ii + i] == 0x00 && mCode[ii + i + 1] == 0xFF && mCode[ii + i + 2] == 0x00 && mCode[ii + i + 3] == 0xFF)
+                    {
+                        break;
+                    }
+
+                    Parameters.Add(mCode[i + ii]);
+
                 }
 
                 InstructionBase instructionBase;
 
-                if (bytecode == 0x01)
+
+
+                if (bytecode == 0x00)
+                {
+                    break;
+                }
+                else if (bytecode == 0x01)
                 {
 
                     instructionBase = new Instructions.Store(memory, Parameters.ToArray());
@@ -40,21 +55,13 @@ namespace KsIL
                     instructionBase = null;
 
                 }
+                i = i + ii + 4;
                 Code.Add(instructionBase);
             }
 
+            
             mCode = null;
 
-            memory = new Memory(_memory);
-
-            string test = "this is a test";
-            List<byte> Test = new List<byte>();
-
-            Test.AddRange(BitConverter.GetBytes(System.Text.Encoding.UTF8.GetBytes(test).Length));
-            Test.AddRange(System.Text.Encoding.UTF8.GetBytes(test));
-            Test.AddRange(BitConverter.GetBytes(15));
-
-            Code.Add(new Instructions.Store(memory, Test.ToArray()));
 
 
             Int32 qwe = 0;
