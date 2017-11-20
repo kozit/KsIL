@@ -30,6 +30,7 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 | Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x00-0x03 (4 Bytes)
 | Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x04-0x07 (4 Bytes)
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x08 (1 Byte) |
+| Stop | If true the program will end. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x09 (1 Byte) |
 
 
 # Commands

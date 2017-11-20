@@ -9,6 +9,7 @@ namespace KsIL.Runtime
         
         static void Main(string[] args)
         {
+
             KsIL = new KsIL(20, new byte[] { 0x00});
 
             

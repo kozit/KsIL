@@ -26,7 +26,12 @@ namespace KsIL
                 Buffer[i] = 0;
         }
 
-        public byte[] Get(int Addr, int Length = 1)
+        public byte Get(int Addr)
+        {
+            return Get(Addr, 1)[0];            
+        }
+
+        public byte[] Get(int Addr, int Length)
         {
 
             byte[] temp = new byte[Length];
