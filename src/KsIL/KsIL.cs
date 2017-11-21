@@ -15,7 +15,7 @@ namespace KsIL
 
             memory = new Memory(_memory);
 
-            for (int i = 0; i < mCode.Length; )
+            for (int i = 1; i < mCode.Length; )
             {
 
                 byte bytecode = mCode[i];
@@ -60,14 +60,14 @@ namespace KsIL
             }
 
             
-            mCode = null;
+            
 
 
 
             Int32 qwe = 0;
 
             // Memory Mode 0x00 (8Bbit), 0x01 (16bit), 0x02 (32 bit), 0x03 (64 bit)
-            memory.Set(0, 0x02);
+            memory.Set(0, mCode[0]);
             // Is program running
             memory.Set(1, 0x01);
             // Conditional Result
@@ -76,8 +76,9 @@ namespace KsIL
             memory.Set(4, BitConverter.GetBytes(qwe));
             //Return Pointer
             memory.Set(9, BitConverter.GetBytes(qwe));
-            
-            
+
+            mCode = null;
+
             while (memory.Get(1) == 0x01)
             {
 

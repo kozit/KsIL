@@ -63,6 +63,21 @@ namespace KsIL
             Buffer[Addr] = Value;
         }
 
+        public void SetData(int Addr, byte[] Value)
+        {
+
+            Set(Addr, BitConverter.GetBytes(Value.Length));
+            Set(Addr + 4, Value);
+
+        }
+
+        public byte[] GetData(int Addr)
+        {
+
+            return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
+            
+        }
+
         internal void Destroy()
         {
             Buffer = null;

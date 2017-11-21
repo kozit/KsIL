@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace KsIL.Instructions
 {
@@ -20,8 +18,7 @@ namespace KsIL.Instructions
 
         public override void Run()
         {
-
-
+            
             int i;
             for (i = 13; i < mMemory.GetSize(); i++)
             {
@@ -33,10 +30,12 @@ namespace KsIL.Instructions
                     continue;
 
                 }
+
                 if (mMemory.Get(i, mContent.Length) == new byte[mContent.Length])
                 {
                     break;
                 }
+
             }
 
             mMemory.Set(Location, BitConverter.GetBytes(i));

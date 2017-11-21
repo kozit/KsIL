@@ -41,6 +41,11 @@ namespace KsIL.Instructions
                 mMemory.Set(i, r.ToArray());
             }
 
+            if (Location.Length == 5)
+            {
+                Location = Utill.Read(Location, mMemory);
+            }
+
             mMemory.Set(4, Location);
 
         }
