@@ -11,6 +11,7 @@ namespace KsIL.Instructions
         byte[] mContent;
         public Store(Memory memory, byte[] Parameters) : base(memory)
         {
+
             mContent = new byte[Parameters.Length - 4];
             Array.Copy(Parameters, mContent, Parameters.Length - 4);
             Location = BitConverter.ToInt32(Parameters, Parameters.Length - 4);
