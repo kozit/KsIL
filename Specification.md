@@ -1,5 +1,6 @@
 # Execution Information
 ## Basic Execution Information
+The first byte is used to pick the memory mode
 Instructions are separated by 0x00 0xFF 0x00 0xFF
 Parameters MUST BE AS LONG AS SPECIFIED Below
 
@@ -28,7 +29,7 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 | Register Name | Description | Memory Position |
 | ------------- | ------------- | ------------- |
-| Memory Mode | Sets the program Memory Mode wich will change the size of headers lower it is set smailler the headers but it will limit the memory and lines of code you can use(not used yet).  0x00 (8bit, limit 255 bytes) 0x01 (16bit, limit 65536 bytes) 0x02 (32 bit, limit 4294967296 bytes) 0x03 (64 bit, limit 18446744073709551616 bytes) | 0x00 (1 Byte) |
+| Memory Mode | Sets the program Memory Mode wich will change the size of headers lower it is set smaller the headers but it will limit the memory and lines of code you can use.  0x00 (8bit, limit 255 bytes) 0x01 (16bit, limit 65536 bytes) 0x02 (32 bit, limit 4294967296 bytes) 0x03 (64 bit, limit 18446744073709551616 bytes) | 0x00 (1 Byte) |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02 (1 Byte) |
 | Unused | this is un used | 0x01 (1 Byte) |
