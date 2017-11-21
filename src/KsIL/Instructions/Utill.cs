@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace KsIL.Instructions
 {
@@ -13,9 +12,11 @@ namespace KsIL.Instructions
             List<byte> r = new List<byte>();
             if (input[0] == 0xF1)
             {
+
                 byte[] temp = new byte[input.Length - 2];
                 input.CopyTo(temp, 1);
                 r.AddRange(temp);
+
             }
             else if(input[0] == 0xFF)
             {
@@ -33,9 +34,9 @@ namespace KsIL.Instructions
                 r.AddRange(mMemory.Get(Addr, 4));
 
             }
-
-
+            
             return r.ToArray();
+
         }
 
     }

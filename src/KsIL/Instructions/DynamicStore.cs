@@ -41,7 +41,7 @@ namespace KsIL.Instructions
 
             mMemory.Set(Location, BitConverter.GetBytes(i));
             mMemory.Set(i, mContent);
-
+            
         }
 
     }

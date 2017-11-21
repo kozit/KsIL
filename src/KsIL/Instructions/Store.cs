@@ -20,6 +20,7 @@ namespace KsIL.Instructions
 
         public override void Run()
         {
+            //mMemory.Set(Location, BitConverter.GetBytes( mContent.Length));
             mMemory.Set(Location, mContent);
         }
 
