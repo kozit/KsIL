@@ -49,6 +49,42 @@ namespace KsIL
                     instructionBase = new Instructions.Store(memory, Parameters.ToArray());
 
                 }
+                else if (bytecode == 0x02)
+                {
+
+                    instructionBase = new Instructions.DynamicStore(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x03)
+                {
+
+                    instructionBase = new Instructions.ReadInto(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x04)
+                {
+
+                    instructionBase = new Instructions.Store(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x05)
+                {
+
+                    instructionBase = new Instructions.Fill(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x06)
+                {
+
+                    instructionBase = new Instructions.Clear(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x10)
+                {
+
+                    instructionBase = new Instructions.TestEqual(memory, Parameters.ToArray());
+
+                }
                 else
                 {
 

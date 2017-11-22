@@ -7,6 +7,7 @@ namespace KsIL.Instructions
 
         int Location;
         byte[] mContent;
+
         public DynamicStore(Memory memory, byte[] Parameters) : base(memory)
         {
 

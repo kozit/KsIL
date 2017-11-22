@@ -4,11 +4,13 @@ using System.Text;
 
 namespace KsIL.Instructions
 {
-    public class ReadInto : InstructionBase
+    public class TestEqual : InstructionBase
     {
+
         int Location0;
         int Location1;
-        public ReadInto(Memory memory, byte[] Parameters) : base(memory)
+
+        public TestEqual(Memory memory, byte[] Parameters) : base(memory)
         {
 
             Location0 = BitConverter.ToInt32(Parameters, 0);
@@ -19,10 +21,15 @@ namespace KsIL.Instructions
         public override void Run()
         {
 
-            int l = BitConverter.ToInt32( mMemory.Get(Location0, 4), 0);
+            if (mMemory.GetData(Location0) == mMemory.GetData(Location1))
+            {
+                mMemory.Set(2, 0x01);
+            }
+            else
+            {
+                mMemory.Set(2, 0x00);
+            }
 
-            mMemory.Set(Location1, mMemory.Get(Location0, l + 4));
-            
         }
 
     }
