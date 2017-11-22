@@ -11,8 +11,10 @@ namespace KsIL.Runtime
         static void Main(string[] args)
         {
 
-
-            KsIL = new KsIL(1024 * 1024 * 10, System.IO.File.ReadAllBytes("test.KsIL"));
+            if (args.Length > 0)
+            {
+            }
+            KsIL = new KsIL(1024 * 1024, System.IO.File.ReadAllBytes("test.KsIL"));
 
             
 

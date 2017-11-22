@@ -23,15 +23,12 @@ namespace KsIL.Instructions
             int dif = Location1 - Location0;
 
 
-            byte[] tofill = new byte[dif - 1];
-            if (fill != 0x00)
-            {
                 for (int i = 0; i < dif; i++)
                 {
-                    tofill[i] = fill;
-                }
+                mMemory.Set(Location0 + i, fill);
             }
-            mMemory.Set(Location0, tofill);
+            
+            
         }
 
     }

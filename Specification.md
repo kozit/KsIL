@@ -1,8 +1,8 @@
 # Execution Information
 ## Basic Execution Information
-The first byte is used to pick the memory mode
-Instructions are separated by 0x00 0xFF 0x00 0xFF
-Parameters MUST BE AS LONG AS SPECIFIED Below
+The first byte is used to pick the memory mode,
+Instructions are separated by 0x00 0xFF 0x00 0xFF,
+Parameters MUST BE AS LONG AS SPECIFIED Below, If a parameter ends in 0x00 0xFF add any byte from 0x01 to 0xFF to the end
 
 ##  Multiple Byte Parameters; how do they work?
 Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255.

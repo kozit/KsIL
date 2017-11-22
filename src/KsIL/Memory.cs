@@ -46,7 +46,76 @@ namespace KsIL
             return temp;
         }
 
+        public byte[] GetDataPionter(int Addr)
+        {
 
+
+            if (Get(0) == 0x00)
+            {
+
+                byte point = Get(Addr);
+                return GetData(point);
+
+            }
+            else if (Get(0) == 0x01)
+            {
+
+                Int16 point = BitConverter.ToInt16(Get(Addr, 2),0);
+                return GetData(point);
+
+            }
+            else if (Get(0) == 0x02)
+            {
+
+                Int32 point = BitConverter.ToInt32(Get(Addr, 4), 0);
+                return GetData(point);
+
+            }
+            else if (Get(0) == 0x03)
+            {
+
+                Int64 point = BitConverter.ToInt64(Get(Addr, 8), 0);
+                return GetData((int) point);
+
+            }
+
+            return null;
+
+        }
+
+        public byte[] GetData(int Addr)
+        {
+
+
+            if (Get(0) == 0x00)
+            {
+
+                return Get(Addr + 1, Get(Addr));
+
+            }
+            else if (Get(0) == 0x01)
+            {
+
+                return Get(Addr + 2, BitConverter.ToInt16(Get(Addr, 2), 0));
+
+            }
+            else if (Get(0) == 0x02)
+            {
+
+                return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
+
+            }
+            else if (Get(0) == 0x03)
+            {
+
+                return Get(Addr + 8, (int) BitConverter.ToInt64(Get(Addr, 8), 0));
+
+            }
+
+            return null;
+
+        }
+        
 
         public void Set(int Addr, byte[] Value)
         {
@@ -95,39 +164,6 @@ namespace KsIL
 
             }
 
-        }
-
-        public byte[] GetData(int Addr)
-        {
-
-
-            if (Get(0) == 0x00)
-            {
-
-                return Get(Addr + 1, Get(Addr));
-
-            }
-            else if (Get(0) == 0x01)
-            {
-
-                return Get(Addr + 2, BitConverter.ToInt16(Get(Addr, 2), 0));
-
-            }
-            else if (Get(0) == 0x02)
-            {
-
-                return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
-
-            }
-            else if (Get(0) == 0x03)
-            {
-
-                return Get(Addr + 8, (int) BitConverter.ToInt64(Get(Addr, 8), 0));
-
-            }
-                        
-                return null;                       
-            
         }
 
         internal void Destroy()

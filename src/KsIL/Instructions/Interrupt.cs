@@ -27,7 +27,7 @@ namespace KsIL.Instructions
                 {
                     byte[] Parameters = new byte[mParameters.Length - 3];
 
-                    mParameters.Clone(Parameters, 2);
+                    mParameters.Clone();
 
                     Int.Run(Parameters);
                 }
