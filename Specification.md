@@ -32,7 +32,7 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 | Memory Mode | Sets the program Memory Mode wich will change the size of headers lower it is set smaller the headers.  0x00 (8bit) 0x01 (16bit) 0x02 (32 bit) 0x03 (64 bit) | 0x00 (1 Byte) |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02 (1 Byte) |
-| Unused | this is un used | 0x01 (1 Byte) |
+| Unused | this is un used | 0x03 (1 Byte) |
 | Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x04-0x08 (4 Bytes)
 | Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x09-0x0C (4 Bytes)
 
