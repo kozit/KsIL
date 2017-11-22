@@ -23,13 +23,19 @@ namespace KsIL.Instructions
 
             if (mMemory.GetData(Location0) == mMemory.GetData(Location1))
             {
+                Console.WriteLine("1");
                 mMemory.Set(2, 0x01);
             }
             else
             {
+                Console.WriteLine("2");
                 mMemory.Set(2, 0x00);
             }
 
+            Console.WriteLine(Location0 + ":" + Location1);
+            System.IO.File.WriteAllBytes("1.txt", mMemory.GetData(Location0));
+
+            System.IO.File.WriteAllBytes("2.txt", mMemory.GetData(Location1));
         }
 
     }

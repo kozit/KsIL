@@ -21,15 +21,14 @@ namespace KsIL.Instructions
             else if(input[0] == 0xFF)
             {
 
-                int Addr = BitConverter.ToInt32(input, 1);
-                int i = BitConverter.ToInt32(mMemory.Get(Addr, 4),0);
-                r.AddRange(mMemory.Get(Addr + 4, i));
+                int Addr = BitConverter.ToInt32(input, 0);
+                r.AddRange(mMemory.GetData(Addr));
 
             }
             else if (input[0] == 0xFE)
             {
 
-                int Addr = BitConverter.ToInt32(input, 1);
+                int Addr = BitConverter.ToInt32(input, 0);
                 
                 r.AddRange(mMemory.Get(Addr, 4));
 
