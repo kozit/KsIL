@@ -66,15 +66,67 @@ namespace KsIL
         public void SetData(int Addr, byte[] Value)
         {
 
-            Set(Addr, BitConverter.GetBytes(Value.Length));
-            Set(Addr + 4, Value);
+            if (Get(0) == 0x00)
+            {
+                             
+                Set(Addr, (byte) Value.Length);
+                Set(Addr + 1, Value);
+
+            }
+            else if (Get(0) == 0x01)
+            {
+                
+                Set(Addr, BitConverter.GetBytes((short) Value.Length));
+                Set(Addr + 2, Value);
+
+            }
+            else if (Get(0) == 0x02)
+            {
+                                
+                Set(Addr, BitConverter.GetBytes(Value.Length));
+                Set(Addr + 4, Value);
+
+            }
+            else if (Get(0) == 0x03)
+            {
+
+                Set(Addr, BitConverter.GetBytes((long) Value.Length));
+                Set(Addr + 8, Value);
+
+            }
 
         }
 
         public byte[] GetData(int Addr)
         {
 
-            return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
+
+            if (Get(0) == 0x00)
+            {
+
+                return Get(Addr + 1, Get(Addr));
+
+            }
+            else if (Get(0) == 0x01)
+            {
+
+                return Get(Addr + 2, BitConverter.ToInt16(Get(Addr, 2), 0));
+
+            }
+            else if (Get(0) == 0x02)
+            {
+
+                return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
+
+            }
+            else if (Get(0) == 0x03)
+            {
+
+                return Get(Addr + 8, (int) BitConverter.ToInt64(Get(Addr, 8), 0));
+
+            }
+                        
+                return null;                       
             
         }
 

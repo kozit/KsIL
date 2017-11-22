@@ -15,6 +15,20 @@ namespace KsIL
 
             memory = new Memory(_memory);
 
+            Int32 qwe = 0;
+
+            // Memory Mode 0x00 (8 Bit), 0x01 (16 Bit), 0x02 (32 Bit), 0x03 (64 Bit)
+            memory.Set(0, mCode[0]);
+            // Is program running
+            memory.Set(1, 0x01);
+            // Conditional Result
+            memory.Set(2, 0x00);
+            // Program Counter
+            memory.Set(4, BitConverter.GetBytes(qwe));
+            //Return Pointer
+            memory.Set(9, BitConverter.GetBytes(qwe));
+
+
             for (int i = 1; i < mCode.Length; )
             {
 
@@ -36,8 +50,7 @@ namespace KsIL
                 }
 
                 InstructionBase instructionBase;
-
-
+                
 
                 if (bytecode == 0x00)
                 {
@@ -100,18 +113,6 @@ namespace KsIL
 
 
 
-            Int32 qwe = 0;
-
-            // Memory Mode 0x00 (8Bbit), 0x01 (16bit), 0x02 (32 bit), 0x03 (64 bit)
-            memory.Set(0, mCode[0]);
-            // Is program running
-            memory.Set(1, 0x01);
-            // Conditional Result
-            memory.Set(2, 0x00);
-            // Program Counter
-            memory.Set(4, BitConverter.GetBytes(qwe));
-            //Return Pointer
-            memory.Set(9, BitConverter.GetBytes(qwe));
 
             mCode = null;
 
