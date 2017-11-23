@@ -98,6 +98,30 @@ namespace KsIL
                     instructionBase = new Instructions.TestEqual(memory, Parameters.ToArray());
 
                 }
+                else if (bytecode == 0x11)
+                {
+                    // Test Greater Than
+                    instructionBase = null;
+
+                }
+                else if (bytecode == 0x12)
+                {
+
+                    instructionBase = new Instructions.JumpIf(memory, Parameters.ToArray(), true);
+
+                }
+                else if (bytecode == 0x13)
+                {
+
+                    instructionBase = new Instructions.JumpIf(memory, Parameters.ToArray(), false);
+
+                }
+                else if (bytecode == 0x20)
+                {
+
+                    instructionBase = new Instructions.Jump(memory, Parameters.ToArray());
+
+                }
                 else
                 {
 
@@ -105,6 +129,7 @@ namespace KsIL
 
                 }
                 i = i + ii + 4;
+                if(instructionBase != null)
                 Code.Add(instructionBase);
             }
 

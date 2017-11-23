@@ -4,13 +4,13 @@ using System.Text;
 
 namespace KsIL.Instructions
 {
-    public class TestEqual : InstructionBase
+    public class TestGreaterThan : InstructionBase
     {
 
         int Location0;
         int Location1;
 
-        public TestEqual(Memory memory, byte[] Parameters) : base(memory)
+        public TestGreaterThan(Memory memory, byte[] Parameters) : base(memory)
         {
 
             Location0 = BitConverter.ToInt32(Parameters, 0);

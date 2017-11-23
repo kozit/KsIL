@@ -124,7 +124,7 @@ Mnemonic: TEQ
 
 Description: Tests if the two parameters are equal and if they are the result is true.
 
-Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
+Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Test Greater Than
 Bytecode: 0x11
@@ -133,7 +133,7 @@ Mnemonic: TGT
 
 Description: Tests if byte1 is greater than byte 2.
 
-Parameters: byte1 (1 Bytes), byte 2 (1 Bytes)
+Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
 ## Jump If True
 Bytecode: 0x12
