@@ -54,7 +54,9 @@ namespace KsIL
 
                 if (bytecode == 0x00)
                 {
-                    break;
+
+                    instructionBase = new Instructions.InterruptInstruction(memory, Parameters.ToArray());
+
                 }
                 else if (bytecode == 0x01)
                 {
@@ -101,7 +103,7 @@ namespace KsIL
                 else if (bytecode == 0x11)
                 {
                     // Test Greater Than
-                    instructionBase = null;
+                    instructionBase = new Instructions.TestGreaterThan(memory, Parameters.ToArray());
 
                 }
                 else if (bytecode == 0x12)
@@ -132,13 +134,7 @@ namespace KsIL
                 if(instructionBase != null)
                 Code.Add(instructionBase);
             }
-
-            
-            
-
-
-
-
+                 
             mCode = null;
 
             while (memory.Get(1) == 0x01)

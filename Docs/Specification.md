@@ -41,6 +41,17 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 # Commands
 
+# Interrupts
+
+Bytecode: 0x00
+
+Mnemonic: INT
+
+Description: Calls an Interrupt.
+
+Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Parameters.md for Info) 
+
+
 # Memory Management
 ## Store
 Bytecode: 0x01

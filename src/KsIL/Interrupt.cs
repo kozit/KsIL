@@ -4,14 +4,14 @@ using System.Text;
 
 namespace KsIL
 {
-    public class Interrupts
+    public class Interrupt
     {
 
         public Int16 Code;
 
         Memory mMemory;
 
-        public Interrupts(Memory memory)
+        public Interrupt(Memory memory)
         {
             mMemory = memory;
         }

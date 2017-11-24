@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL.Runtime", "src\KsIL.Ru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL", "src\KsIL\KsIL.csproj", "{F6C0F344-A5FD-4698-A906-508CCEC3F043}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KsIL.BASIC", "src\KsIL.BASIC\KsIL.BASIC.csproj", "{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
