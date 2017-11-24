@@ -49,7 +49,7 @@ Mnemonic: INT
 
 Description: Calls an Interrupt.
 
-Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Interrupt.md for Info) 
+Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Interrupts.md for Info) 
 
 
 # Memory Management
