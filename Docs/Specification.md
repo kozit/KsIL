@@ -41,7 +41,7 @@ The first 12 bytes of memory are positions that are used by the executor to stor
 
 # Commands
 
-# Interrupts
+## Interrupts
 
 Bytecode: 0x00
 
