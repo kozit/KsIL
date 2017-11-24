@@ -8,18 +8,58 @@ namespace KsIL.Interrupts
     public class Invoke : Interrupt
     {
 
-        public Invoke(Memory memory) : base(memory)
+        public Invoke()
         {
             Code = 0;
         }
 
-        public override void Run(byte[] Parameters)
+        public override void Run(byte[] Parameters, Memory mMemory)
         {
+
+            int offset = 1;
+
+            int ClassLength = BitConverter.ToInt32(Parameters, offset);
+            string ClassPath = Encoding.UTF8.GetString(Utill.GetData(offset, Parameters));
+
+            offset += 4;
+
+            string[] ConstructorArgs = Utill.GetStringArray(Utill.GetData(offset, Parameters), mMemory);
+
+            offset += BitConverter.ToInt32(Parameters, offset) + 4;
+
+            string Method = Encoding.UTF8.GetString(Utill.GetData(offset, Parameters));
+            
+            offset += BitConverter.ToInt32(Parameters, offset) + 4;
+
+            string[] MethodArgs = Utill.GetStringArray(Utill.GetData(offset, Parameters), mMemory);
+
+            offset += BitConverter.ToInt32(Parameters, offset) + 4;
+
+            int Output = 13;
+
+            if (Parameters.Length > offset)
+            {
+
+                Output = BitConverter.ToInt32(Parameters, offset);
+
+            }
 
             if (Parameters[0] == 0x00)
             {
 
+                CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs);
 
+            }
+            else if (Parameters[0] == 0x01)
+            {
+
+               mMemory.SetData(Output, (byte[]) CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs));
+
+            }
+            else if (Parameters[0] == 0x02)
+            {
+
+                mMemory.SetData(Output, Encoding.UTF8.GetBytes((string) CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs)));
 
             }
 

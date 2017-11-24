@@ -10,8 +10,17 @@ namespace KsIL
 
         List<InstructionBase> Code = new List<InstructionBase>();
 
-        public KsIL(int _memory, byte[] mCode)
+        public KsIL(int _memory, byte[] mCode, List<Interrupt> Interrupts = null)
         {
+
+            if (Interrupts == null)
+            {
+
+                Interrupts = Interrupt.Default();
+
+            }
+
+            Instructions.InterruptInstruction.Interrupts = Interrupts;
 
             memory = new Memory(_memory);
 

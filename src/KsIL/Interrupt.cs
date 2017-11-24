@@ -7,16 +7,28 @@ namespace KsIL
     public class Interrupt
     {
 
-        public Int16 Code;
-
-        Memory mMemory;
-
-        public Interrupt(Memory memory)
+        public static List<Interrupt> Default ()
         {
-            mMemory = memory;
+
+            List<Interrupt> r = new List<Interrupt>() { new Interrupts.Invoke() };
+
+            r.AddRange(DefaultCosmos());
+
+            return r;  
         }
 
-        public virtual void Run(byte[] Parameters)
+        public static List<Interrupt> DefaultCosmos()
+        {
+            return new List<Interrupt>() { new Interrupts.Console() };
+        }
+
+        public Int16 Code;
+                
+        public Interrupt()
+        {
+        }
+
+        public virtual void Run(byte[] Parameters, Memory mMemory)
         {
         }
 

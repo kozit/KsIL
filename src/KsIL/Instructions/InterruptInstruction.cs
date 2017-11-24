@@ -33,7 +33,7 @@ namespace KsIL.Instructions
 
                     Array.Copy(Utill.Read(mParameters, mMemory), Parameters, 4);
                     
-                    Int.Run(Parameters);
+                    Int.Run(Parameters, mMemory);
 
                 }
 
