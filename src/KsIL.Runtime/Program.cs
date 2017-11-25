@@ -6,16 +6,16 @@ namespace KsIL.Runtime
     class Program
     {
 
-        static KsIL KsIL;
+        static KsILVM KsIL;
         
         static void Main(string[] args)
         {
 
-            int Memory = 1024;
+            int Memory = 1024 * 4;
 
             string File = "test.KsIL";
 
-            bool MemBump = false;
+            bool MemBump = true;
 
             if (args.Length > 1)
             {
@@ -52,10 +52,10 @@ namespace KsIL.Runtime
             }
 
 
-            KsIL = new KsIL(Memory, System.IO.File.ReadAllBytes(File));
+            KsIL = new KsILVM(Memory, System.IO.File.ReadAllBytes(File));
 
             if(MemBump)
-            System.IO.File.WriteAllBytes("mem.txt" ,KsIL.memory.Get(0, KsIL.memory.GetSize() - 1));
+            System.IO.File.WriteAllBytes("mem.bin" ,KsIL.memory.Get(0, KsIL.memory.GetSize() - 1));
 
             while (true)
             {

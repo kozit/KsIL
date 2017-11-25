@@ -11,7 +11,7 @@ namespace KsIL.Instructions
         {
 
             Location = new byte[Parameters.Length - 2];
-            Parameters.CopyTo(Location, 1);
+            Array.Copy(Parameters, Location, 1);
             Return = Parameters[0];
 
         }

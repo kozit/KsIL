@@ -66,7 +66,7 @@ namespace KsIL.Interrupts
         }
 
 
-        public static object CreateAndInvoke(string typeName, object[] constructorArgs, string methodName, object[] methodArgs)
+        public static object CreateAndInvoke(string typeName, string[] constructorArgs, string methodName, string[] methodArgs)
         {
 
             Type type = Type.GetType(typeName);

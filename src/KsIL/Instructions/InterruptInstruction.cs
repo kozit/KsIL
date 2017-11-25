@@ -21,17 +21,18 @@ namespace KsIL.Instructions
         public override void Run()
         {
 
-            int INT = BitConverter.ToInt16(Utill.Read(mParameters, mMemory), 0);
+            Int16 INT = BitConverter.ToInt16(mParameters, 0);
+
 
             foreach (Interrupt Int in Interrupts)
             {
 
                 if (INT == Int.Code)
                 {
-                    
-                    byte[] Parameters = new byte[mParameters.Length - 3];
 
-                    Array.Copy(Utill.Read(mParameters, mMemory), Parameters, 4);
+                    byte[] Parameters = new byte[mParameters.Length];
+
+                    Array.Copy(mParameters, Parameters, 4);
                     
                     Int.Run(Parameters, mMemory);
 

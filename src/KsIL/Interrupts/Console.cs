@@ -16,22 +16,23 @@ namespace KsIL.Interrupts
         public override void Run(byte[] Parameters, Memory mMemory)
         {
 
+
             if (Parameters[0] == 0x00)
             {
 
-                System.Console.Write(Encoding.UTF8.GetString(mMemory.GetData(BitConverter.ToInt32(Parameters, 1))));
+                System.Console.Write(Encoding.UTF8.GetString(mMemory.GetData(BitConverter.ToInt32(Parameters, 2))));
 
             }
             else if (Parameters[0] == 0x01)
             {
 
-                System.Console.WriteLine(Encoding.UTF8.GetString(mMemory.GetData(BitConverter.ToInt32(Parameters, 1))));
-
+                System.Console.WriteLine(Encoding.UTF8.GetString(mMemory.GetData(BitConverter.ToInt32(Parameters, 2))));
+                
             }
             else if (Parameters[0] == 0x02)
             {
 
-                mMemory.SetData(BitConverter.ToInt32(Parameters, 1), Encoding.UTF8.GetBytes(System.Console.ReadLine()));
+                mMemory.SetData(BitConverter.ToInt32(Parameters, 2), Encoding.UTF8.GetBytes(System.Console.ReadLine()));
 
             }
             else if (Parameters[0] == 0x03)

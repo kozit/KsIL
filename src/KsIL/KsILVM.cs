@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace KsIL
 {
-    public class KsIL
+    public class KsILVM
     {
 
         public Memory memory;
 
         List<InstructionBase> Code = new List<InstructionBase>();
 
-        public KsIL(int _memory, byte[] mCode, List<Interrupt> Interrupts = null)
+        public KsILVM(int _memory, byte[] mCode, List<Interrupt> Interrupts = null)
         {
 
             if (Interrupts == null)
@@ -145,6 +145,8 @@ namespace KsIL
             }
                  
             mCode = null;
+
+            //Console.ReadLine();
 
             while (memory.Get(1) == 0x01)
             {
