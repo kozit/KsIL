@@ -9,6 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL", "src\KsIL\KsIL.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL.BASIC", "src\KsIL.BASIC\KsIL.BASIC.csproj", "{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{FF6576AA-4D4E-44AB-B18E-DE42EC100977}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Interrupts.md = Docs\Interrupts.md
+		Docs\Parameters.md = Docs\Parameters.md
+		Docs\Specification.md = Docs\Specification.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

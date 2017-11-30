@@ -1,17 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace KsIL.BASIC
 {
     class Program
     {
+
+        static int i = 1; 
+
         static void Main(string[] args)
         {
 
+            string File = "";
+            string Output = "";
+
+            if (args.Length > 1)
+            {
+
+                for (int i = 0; i < args.Length; i++)
+                {
+
+                    if (args[i] == "-o")
+                    {
+
+                        Output = args[i + 1];
+                        i++;
+
+                    }
+                    else if (args[i] == "-file")
+                    {
+
+                        File = args[i + 1];
+                        i++;
+
+                    }
+
+                }
+
+            }
+            else if (args.Length == 1)
+            {
+
+                File = args[0];
+
+            }
+            else
+            {
+
+                throw new ArgumentException("need to set a file");
+
+            }
+
+            if (Output == "")
+            {
+                Output = File.Split('.')[0];
+            }
+
+
             List<byte> output = new List<byte>();
 
-            string[] Lines = System.IO.File.ReadAllLines(args[0]);
+            string[] Lines = Pre(System.IO.File.ReadAllLines(args[0]));
 
             Console.WriteLine(Lines[0]);
 
@@ -63,23 +111,27 @@ namespace KsIL.BASIC
                     if (Int16.Parse(Tokens[1]) == (Int16) 1)
                     {
 
-
                         if (byte.Parse(Tokens[2]) != 0x03)
-                        {
+                        {                           
 
-                            output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[3])));
+                            output.AddRange(IsPointer(Tokens[3]));
 
                         }
 
                     }
+
                 }
                 else if (Tokens[0] == "STR")
                 {
 
                     output.Add(0x01);
 
-                    output.AddRange(BitConverter.GetBytes(System.Text.Encoding.UTF8.GetBytes(Tokens[1]).Length));
-                    output.AddRange(System.Text.Encoding.UTF8.GetBytes(Tokens[1]));
+                    
+
+                    byte[] content = IsPointer(Tokens[1]);
+
+                    output.AddRange(BitConverter.GetBytes(content.Length));
+                    output.AddRange(content);
                  
                     
                     output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
@@ -234,35 +286,125 @@ namespace KsIL.BASIC
 
             }
 
-            System.IO.File.Delete("out.KsIL");
-            System.IO.File.WriteAllBytes("out.KsIL", output.ToArray());
+            System.IO.File.WriteAllBytes(Output + ".KsIL", output.ToArray());
 
         }
 
-
-        static string[] getTokens(string s)
+        static string[] Pre(string[] input)
         {
-            const char split = ' ';
-            const char quote = '"';
-            bool isinquotes = false;
+            List<string> output = new List<string>();
 
 
-            List<string> tokens = new List<string> { "" };
+            return output.ToArray();
 
-            foreach (char c in s)
+        }
+
+        static byte[] IsPointer(string input)
+        {
+
+            List<byte> output = new List<byte>();
+
+            if (input[0] == '^')
             {
 
-                if (c == quote)
+                output.Add(0xFF);
+
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(input.Remove(0, 1))));
+
+            }
+            else if (input[0] == '%')
+            {
+
+                output.Add(0xFE);
+
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(input.Remove(0, 1))));
+
+            }
+            else if (input[0] == '#')
+            {
+
+                if (input[1] == '+')
                 {
-                    isinquotes = !isinquotes;
+
+                    string temp = input.Remove(1);
+                    int t = int.Parse(temp) - 2;
+
+                    t += i;
+
+                    output.AddRange(BitConverter.GetBytes(t));
+
                 }
-                else if (c == split && isinquotes == false)
+                else if (input[1] == '-')
                 {
-                    tokens.Add("");
+
+                    string temp = input.Remove(1);
+                    int t = int.Parse(temp) - 2;
+
+                    t -= i;
+
+                    output.AddRange(BitConverter.GetBytes(t));
+
+
                 }
                 else
                 {
-                    tokens[tokens.Count - 1] += c;
+
+                    output.AddRange(BitConverter.GetBytes(i));
+
+                }
+
+            }
+            else
+            {
+
+                if ((byte) input[0] == 0xFF)
+                {
+
+                    output.Add(0xF1);
+
+                }
+                else if ((byte) input[0] == 0xFE)
+                {
+
+                    output.Add(0xF1);
+
+                }
+
+                output.AddRange(System.Text.Encoding.UTF8.GetBytes(input));
+
+            }
+
+            return output.ToArray();
+
+        }
+
+        static string[] getTokens(string s, char split = ' ', char quote = '"')
+        {
+            
+            bool isinquotes = false;
+            
+            List<string> tokens = new List<string> { "" };
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                
+                if (s[i] == quote && s[i - 1] != '\\')
+                {
+
+                    isinquotes = !isinquotes;
+
+                }
+                else if (s[i] == split && isinquotes == false)
+                {
+
+                    tokens.Add("");
+
+                }
+                else
+                {
+
+                    tokens[tokens.Count - 1] += s[i];
+
                 }
 
             }
@@ -270,7 +412,6 @@ namespace KsIL.BASIC
             return tokens.ToArray();
 
         }
-
-
+        
     }
 }

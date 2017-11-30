@@ -1,7 +1,7 @@
 ﻿32bit
-STR "This is a KsIL BASIC Test" 15
-STR "This was codded in KsIL BASIC" 45
-STR "KsIL By Zarlo Github http://github.com/kozit/KsIL" 80
-INT 1 1 15
-INT 1 1 45
-INT 1 1 80
+STR "This is a KsIL BASIC Test" 20
+STR "This was codded in KsIL BASIC" 50
+STR "KsIL By Zarlo Github http://github.com/kozit/KsIL" 100
+INT 1 1 20
+INT 1 1 50
+INT 1 1 100

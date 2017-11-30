@@ -19,7 +19,7 @@ namespace KsIL
 
         public static List<Interrupt> DefaultCosmos()
         {
-            return new List<Interrupt>() { new Interrupts.Console() };
+            return new List<Interrupt>() { new Interrupts.Console(), new Interrupts.File() };
         }
 
         public Int16 Code;

@@ -30,10 +30,8 @@ namespace KsIL.Instructions
                 if (INT == Int.Code)
                 {
 
-                    byte[] Parameters = new byte[mParameters.Length];
-
-                    Array.Copy(mParameters, Parameters, 4);
-                    
+                    byte[] Parameters = Utill.ArrayRemoveAt(mParameters, 1, mParameters.Length - 2);
+                                        
                     Int.Run(Parameters, mMemory);
 
                 }

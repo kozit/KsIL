@@ -10,7 +10,7 @@ namespace KsIL
 
         List<InstructionBase> Code = new List<InstructionBase>();
 
-        public KsILVM(int _memory, byte[] mCode, List<Interrupt> Interrupts = null)
+        public KsILVM(int _memory, List<Interrupt> Interrupts = null)
         {
 
             if (Interrupts == null)
@@ -23,7 +23,19 @@ namespace KsIL
             Instructions.InterruptInstruction.Interrupts = Interrupts;
 
             memory = new Memory(_memory);
+            
+        }
 
+        public void LoadFile(string File)
+        {
+
+            Load(System.IO.File.ReadAllBytes(File));
+
+        }
+
+        public void Load(byte[] mCode)
+        {
+            
             Int32 qwe = 0;
 
             // Memory Mode 0x00 (8 Bit), 0x01 (16 Bit), 0x02 (32 Bit), 0x03 (64 Bit)
@@ -36,17 +48,16 @@ namespace KsIL
             memory.Set(4, BitConverter.GetBytes(qwe));
             //Return Pointer
             memory.Set(9, BitConverter.GetBytes(qwe));
-
-
-            for (int i = 1; i < mCode.Length; )
+            
+            for (int i = 1; i < mCode.Length;)
             {
 
                 byte bytecode = mCode[i];
-                
+
                 int ii = 0;
                 List<byte> Parameters = new List<byte>();
 
-                for (ii = 1; ii + i  + 3< mCode.Length; ii++)
+                for (ii = 1; ii + i + 3 < mCode.Length; ii++)
                 {
 
                     if (mCode[ii + i] == 0x00 && mCode[ii + i + 1] == 0xFF && mCode[ii + i + 2] == 0x00 && mCode[ii + i + 3] == 0xFF)
@@ -60,7 +71,6 @@ namespace KsIL
 
                 InstructionBase instructionBase;
                 
-
                 if (bytecode == 0x00)
                 {
 
@@ -140,33 +150,46 @@ namespace KsIL
 
                 }
                 i = i + ii + 4;
-                if(instructionBase != null)
-                Code.Add(instructionBase);
+                if (instructionBase != null)
+                    Code.Add(instructionBase);
             }
-                 
-            mCode = null;
 
-            //Console.ReadLine();
+            mCode = null;
+            
+        }
+
+        public void AutoTick()
+        {
 
             while (memory.Get(1) == 0x01)
             {
 
-                int Line = BitConverter.ToInt32(memory.Get(4, 4), 0);
-
-                memory.Set(4, BitConverter.GetBytes(Line + 1));
-
-                
-                if (Line >= Code.Count)
-                {
-                    memory.Set(1, 0x00);
-                    continue;
-                }
-
-                Code[Line].Run();
+                Tick();
 
             }
 
         }
 
+        public void Tick()
+        {
+            
+            int Line = BitConverter.ToInt32(memory.Get(4, 4), 0);
+
+            memory.Set(4, BitConverter.GetBytes(Line + 1));
+
+            if (Line >= Code.Count)
+            {
+
+                memory.Set(1, 0x00);
+                return;
+
+            }
+
+            Code[Line].Run();
+            
+        }
+
     }
+
 }
+
