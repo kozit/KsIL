@@ -145,7 +145,7 @@ namespace KsIL
                 }
                 else
                 {
-
+                    
                     instructionBase = null;
 
                 }
