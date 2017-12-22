@@ -16,7 +16,7 @@ namespace KsIL
             if (Interrupts == null)
             {
 
-                Interrupts = Interrupt.Default();
+                Interrupts = Interrupt.Default;
 
             }
 
@@ -141,6 +141,12 @@ namespace KsIL
                 {
 
                     instructionBase = new Instructions.Jump(memory, Parameters.ToArray());
+
+                }
+                else if (bytecode == 0x21)
+                {
+
+                    instructionBase = new Instructions.Return(memory, Parameters.ToArray());
 
                 }
                 else

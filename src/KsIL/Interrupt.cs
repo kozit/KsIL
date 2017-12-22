@@ -7,19 +7,38 @@ namespace KsIL
     public class Interrupt
     {
 
-        public static List<Interrupt> Default ()
+        public static List<Interrupt> Default
         {
 
-            List<Interrupt> r = new List<Interrupt>() { new Interrupts.Invoke() };
+            get
+            {
 
-            r.AddRange(DefaultCosmos());
+                List<Interrupt> r = new List<Interrupt>
+                {
+                    new Interrupts.Invoke()
+                };
 
-            return r;  
+                r.AddRange(DefaultCosmos);
+
+                return r;
+
+            }
         }
 
-        public static List<Interrupt> DefaultCosmos()
+        public static List<Interrupt> DefaultCosmos
         {
-            return new List<Interrupt>() { new Interrupts.Console(), new Interrupts.File() };
+            get
+            {
+
+                List<Interrupt> r = new List<Interrupt>
+                {
+                    new Interrupts.Console(),
+                    new Interrupts.File()
+                };
+
+                return r;
+
+            }
         }
 
         public Int16 Code;

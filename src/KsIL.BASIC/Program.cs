@@ -6,6 +6,8 @@ namespace KsIL.BASIC
     class Program
     {
 
+        static Dictionary<string, int> Labels = new Dictionary<string, int>();
+
         static int i = 1; 
 
         static void Main(string[] args)
@@ -59,7 +61,7 @@ namespace KsIL.BASIC
 
             List<byte> output = new List<byte>();
 
-            string[] Lines = Pre(System.IO.File.ReadAllLines(args[0]));
+            string[] Lines = System.IO.File.ReadAllLines(args[0]);
 
             Console.WriteLine(Lines[0]);
 
@@ -112,13 +114,16 @@ namespace KsIL.BASIC
                     {
 
                         if (byte.Parse(Tokens[2]) != 0x03)
-                        {                           
+                        {
 
                             output.AddRange(IsPointer(Tokens[3]));
 
                         }
 
                     }
+                    else if (Int16.Parse(Tokens[1]) == (Int16) 2)
+                    {
+                    } 
 
                 }
                 else if (Tokens[0] == "STR")
@@ -146,7 +151,7 @@ namespace KsIL.BASIC
                     output.AddRange(System.Text.Encoding.UTF8.GetBytes(Tokens[1]));
 
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[3])));
+                    output.AddRange(IsPointer(Tokens[2]));
 
                 }
                 else if (Tokens[0] == "RDI")
@@ -213,17 +218,37 @@ namespace KsIL.BASIC
                 {
 
                     output.Add(0x12);
+                    if (Tokens[1].StartsWith(":"))
+                    {
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-                    
+                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[1].Remove(0, 1)]));
+
+                    }
+                    else
+                    {
+
+                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
+
+                    }
+
                 }
                 else if (Tokens[0] == "JIF")
                 {
 
                     output.Add(0x13);
+                    if (Tokens[1].StartsWith(":"))
+                    {
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-                    
+                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[1].Remove(0, 1)]));
+
+                    }
+                    else
+                    {
+
+                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
+
+                    }
+
                 }
                 else if (Tokens[0] == "JMP")
                 {
@@ -232,7 +257,18 @@ namespace KsIL.BASIC
 
                     output.Add(byte.Parse(Tokens[1]));
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
+                    if (Tokens[2].StartsWith(":"))
+                    {
+
+                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[2].Remove(0, 1)]));
+
+                    }
+                    else
+                    {
+
+                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
+
+                    }
 
                 }
                 else if (Tokens[0] == "RTN")
@@ -282,7 +318,7 @@ namespace KsIL.BASIC
 
                 }
 
-                output.AddRange(new byte[] { 0x00, 0xFF, 0x00, 0xFF});
+                output.AddRange(new byte[] { 0x00, 0x00, 0xFF, 0x00, 0xFF});
 
             }
 
@@ -294,8 +330,25 @@ namespace KsIL.BASIC
         {
             List<string> output = new List<string>();
 
+            for (int i = 1; i < input.Length; i++)
+            {
 
-            return output.ToArray();
+                if (input[i].StartsWith(':'))
+                {
+
+                    Labels.Add(input[i].Remove(0,1) , output.Count - 1);
+
+                }
+                else
+                {
+
+                    output.Add(input[i]);
+
+                }
+
+            }
+
+                return output.ToArray();
 
         }
 

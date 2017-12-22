@@ -7,6 +7,7 @@ namespace KsIL.Instructions
     public class Return : InstructionBase
     {
 
+
         public Return(Memory memory, byte[] Parameters) : base(memory)
         {
 

@@ -80,14 +80,14 @@ namespace KsIL
         }
 
 
-        public static T[] ArrayRemoveAt<T>(T[] array, int startIndex)
+        public static byte[] ArrayRemoveAt(byte[] array, int startIndex)
         {
 
             return ArrayRemoveAt(array, startIndex, array.Length - (startIndex + 1));
 
         }
 
-        public static T[] ArrayRemoveAt<T>(T[] array, int startIndex, int length)
+        public static byte[] ArrayRemoveAt(byte[] array, int startIndex, int length)
         {
 
             if (array == null)
@@ -106,7 +106,7 @@ namespace KsIL
             if (startIndex + length > array.Length)
                throw new ArgumentOutOfRangeException("length");
 
-            T[] newArray = new T[array.Length - length];
+            byte[] newArray = new byte[array.Length - length];
 
             Array.Copy(array, 0, newArray, 0, startIndex);
             Array.Copy(array, startIndex + length, newArray, startIndex, array.Length - startIndex - length);

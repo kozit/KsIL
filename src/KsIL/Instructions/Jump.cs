@@ -31,7 +31,7 @@ namespace KsIL.Instructions
                 for (i = 13; i < mMemory.GetSize(); i++)
                 {
 
-                    if (mMemory.Get(i, 12) == new byte[12])
+                    if (mMemory.Get(i, 8) == new byte[8])
                     {
                         break;
                     }
@@ -40,11 +40,12 @@ namespace KsIL.Instructions
 
                 List<byte> r = new List<byte>();
 
-                r.AddRange(BitConverter.GetBytes(8));
 
                 r.AddRange(mMemory.Get(4, 4));
                 r.AddRange(mMemory.Get(9, 4));
+
                 mMemory.Set(i, r.ToArray());
+
             }
 
             mMemory.Set(4, Location);

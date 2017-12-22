@@ -221,7 +221,3 @@ Mnemonic: DIV
 Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION / SOURCE)
 
 Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
-
-# IO
-
-## Coming Soon
