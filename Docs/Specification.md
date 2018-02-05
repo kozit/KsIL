@@ -89,6 +89,15 @@ Description: Reads the length of the memory content as a two byte value using th
 
 Parameters: location (4 Bytes, in memory position)
 
+## Bytecode 2 Bit
+Bytecode: 0xFD
+
+Mnemonic: (p1,p2) converts into a 2 Bit long Bytecode
+
+Description: Perfix for 2 bit Byte codes
+
+Parameters: Bytecode (2 Bytes)
+
 ## Read Into
 Bytecode: 0x03
 

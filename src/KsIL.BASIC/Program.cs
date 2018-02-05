@@ -8,7 +8,9 @@ namespace KsIL.BASIC
 
         static Dictionary<string, int> Labels = new Dictionary<string, int>();
 
-        static int i = 1; 
+        static int i = 1;
+
+        static int LineCount = 0;
 
         static void Main(string[] args)
         {
@@ -101,9 +103,16 @@ namespace KsIL.BASIC
                     continue;
                 }
 
+                if (Lines[i].Trim().StartsWith(":"))
+                {
+
+                    Labels.Add(Lines[i].Trim().Remove(0,1), LineCount);
+
+                }
+
                 string[] Tokens = getTokens(Lines[i]);
 
-                if (Tokens[0] == "INT")
+                if      (Tokens[0] == "INT")
                 {
 
                     output.Add(0x00);
@@ -317,12 +326,14 @@ namespace KsIL.BASIC
                     output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
 
                 }
-
-                output.AddRange(new byte[] { 0x00, 0x00, 0xFF, 0x00, 0xFF});
+                LineCount++;
+                output.AddRange(new byte[] { 0x00, 0xFF, 0x00, 0xFF});
 
             }
 
             System.IO.File.WriteAllBytes(Output + ".KsIL", output.ToArray());
+
+            Console.ReadKey(true);
 
         }
 
@@ -333,7 +344,7 @@ namespace KsIL.BASIC
             for (int i = 1; i < input.Length; i++)
             {
 
-                if (input[i].StartsWith(':'))
+                if (input[i].StartsWith(":"))
                 {
 
                     Labels.Add(input[i].Remove(0,1) , output.Count - 1);

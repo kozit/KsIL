@@ -66,6 +66,7 @@
 
             KsIL = new KsILVM(Memory);
 
+            
             KsIL.LoadFile(File);
 
             if (MemLoad)

@@ -13,12 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{FF6576AA-4
 	ProjectSection(SolutionItems) = preProject
 		Docs\Interrupts.md = Docs\Interrupts.md
 		Docs\Parameters.md = Docs\Parameters.md
+		README.md = README.md
 		Docs\Specification.md = Docs\Specification.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DCF42382-C7E5-4945-BE5B-BB5C6932BE6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosTest", "src\Tests\CosmosTest\CosmosTest.csproj", "{1AFF92DF-99A7-4615-9001-1F8262EAFC0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosTest", "src\Tests\CosmosTest\CosmosTest.csproj", "{1AFF92DF-99A7-4615-9001-1F8262EAFC0F}"
 EndProject
 Project("{471EC4BB-E47E-4229-A789-D1F5F83B52D4}") = "CosmosTestBoot", "src\Tests\CosmosTest\CosmosTestBoot.Cosmos", "{A04A7252-12C0-48AD-9E04-8A5286A4F6C2}"
 EndProject
