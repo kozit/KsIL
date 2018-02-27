@@ -18,16 +18,16 @@ namespace KsIL.Instructions
         public override void Run()
         {
 
-            if (mtesttrue == BitConverter.ToBoolean(mMemory.Get(2,1), 0))
+            if (mtesttrue == BitConverter.ToBoolean(mMemory.Get(Memory.CONDITIONAL_RESULT,1), 0))
             {
                 
-                if (Location.Length == 5)
+                if (Location.Length >= 5)
                 {
                     Location = Utill.Read(Location, mMemory);
                 }
 
 
-                mMemory.Set(4, Location);
+                mMemory.Set(Memory.PROGRAM_COUNT, Location);
 
             }
         }

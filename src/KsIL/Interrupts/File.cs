@@ -66,11 +66,11 @@ namespace KsIL.Interrupts
 
                 if (System.IO.Directory.Exists(Path))
                 {
-                    mMemory.Set(2, 0x01);
+                    mMemory.Set(Memory.CONDITIONAL_RESULT, 0x01);
                 }
                 else
                 {
-                    mMemory.Set(2, 0x00);
+                    mMemory.Set(Memory.CONDITIONAL_RESULT, 0x00);
                 }
 
             }
@@ -79,11 +79,11 @@ namespace KsIL.Interrupts
 
                 if (System.IO.File.Exists(Path))
                 {
-                    mMemory.Set(2, 0x01);
+                    mMemory.Set(Memory.CONDITIONAL_RESULT, 0x01);
                 }
                 else
                 {
-                    mMemory.Set(2, 0x00);
+                    mMemory.Set(Memory.CONDITIONAL_RESULT, 0x00);
                 }
 
             }

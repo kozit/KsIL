@@ -98,7 +98,7 @@ namespace KsIL
                 else if (bytecode == 0x04)
                 {
 
-                    instructionBase = new Instructions.Store(memory, Parameters.ToArray());
+                    instructionBase = new Instructions.DynamicReadInto(memory, Parameters.ToArray());
 
                 }
                 else if (bytecode == 0x05)

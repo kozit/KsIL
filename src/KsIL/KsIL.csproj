@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netstandard2.0;net47</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netstandard1.0;netstandard2.0;net47;net35</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.2.1</Version>
+    <PackageProjectUrl>https://github.com/kozit/KsIL</PackageProjectUrl>
+    <Authors>zarlo and Kozit Team</Authors>
+    <Company />
+    <PackageLicenseUrl>https://github.com/kozit/KsIL/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/kozit/KsIL</RepositoryUrl>
+    <PackageTags>VM IntermediateLanguage Language</PackageTags>
   </PropertyGroup>
 
   

@@ -9,7 +9,6 @@ namespace KsIL.BASIC
         static Dictionary<string, int> Labels = new Dictionary<string, int>();
 
         static int i = 1;
-
         static int LineCount = 0;
 
         static void Main(string[] args)
@@ -63,32 +62,12 @@ namespace KsIL.BASIC
 
             List<byte> output = new List<byte>();
 
-            string[] Lines = System.IO.File.ReadAllLines(args[0]);
+            string[] Lines = Pre(System.IO.File.ReadAllLines(args[0]));
+            
+            Console.WriteLine("32bit mode");
+            output.Add(0x02);
+            
 
-            Console.WriteLine(Lines[0]);
-
-            if (Lines[0].Trim() == "8bit")
-            {
-                Console.WriteLine("8bit mode");
-                output.Add(0x00);
-            }
-            else if (Lines[0].Trim() == "16bit")
-            {
-                Console.WriteLine("16bit mode");
-                output.Add(0x01);
-            }
-            else if (Lines[0].Trim() == "32bit")
-            {
-                Console.WriteLine("32bit mode");
-                output.Add(0x02);
-            }
-            else if (Lines[0].Trim() == "64bit")
-            {
-                Console.WriteLine("64bit mode");
-                output.Add(0x03);
-            }
-
-            Console.WriteLine(output[0]);
 
             for (int i = 1; i < Lines.Length; i++)
             {
@@ -103,12 +82,6 @@ namespace KsIL.BASIC
                     continue;
                 }
 
-                if (Lines[i].Trim().StartsWith(":"))
-                {
-
-                    Labels.Add(Lines[i].Trim().Remove(0,1), LineCount);
-
-                }
 
                 string[] Tokens = getTokens(Lines[i]);
 
@@ -117,38 +90,11 @@ namespace KsIL.BASIC
 
                     output.Add(0x00);
 
-                    output.AddRange(BitConverter.GetBytes(Int16.Parse(Tokens[1])));
-
-                    if (Int16.Parse(Tokens[1]) == (Int16) 1)
-                    {
-
-                        if (byte.Parse(Tokens[2]) != 0x03)
-                        {
-
-                            output.AddRange(IsPointer(Tokens[3]));
-
-                        }
-
-                    }
-                    else if (Int16.Parse(Tokens[1]) == (Int16) 2)
-                    {
-                    } 
-
                 }
                 else if (Tokens[0] == "STR")
                 {
 
                     output.Add(0x01);
-
-                    
-
-                    byte[] content = IsPointer(Tokens[1]);
-
-                    output.AddRange(BitConverter.GetBytes(content.Length));
-                    output.AddRange(content);
-                 
-                    
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
 
                 }
                 else if (Tokens[0] == "DST")
@@ -156,21 +102,11 @@ namespace KsIL.BASIC
 
                     output.Add(0x02);
 
-                    output.AddRange(BitConverter.GetBytes(System.Text.Encoding.UTF8.GetBytes(Tokens[1]).Length));
-                    output.AddRange(System.Text.Encoding.UTF8.GetBytes(Tokens[1]));
-
-
-                    output.AddRange(IsPointer(Tokens[2]));
-
                 }
                 else if (Tokens[0] == "RDI")
                 {
 
                     output.Add(0x03);
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-                    
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
 
                 }
                 else if (Tokens[0] == "DRI")
@@ -178,21 +114,11 @@ namespace KsIL.BASIC
 
                     output.Add(0x04);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
                 }
                 else if (Tokens[0] == "FLL")
                 {
 
                     output.Add(0x05);
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
-                    output.Add(byte.Parse(Tokens[3]));
 
                 }
                 else if (Tokens[0] == "CLR")
@@ -200,17 +126,11 @@ namespace KsIL.BASIC
 
                     output.Add(0x06);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-                    
                 }
                 else if (Tokens[0] == "TEQ")
                 {
 
                     output.Add(0x10);
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
 
                 }
                 else if (Tokens[0] == "TGT")
@@ -218,66 +138,23 @@ namespace KsIL.BASIC
 
                     output.Add(0x11);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
                 }
                 else if (Tokens[0] == "JIT")
                 {
 
                     output.Add(0x12);
-                    if (Tokens[1].StartsWith(":"))
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[1].Remove(0, 1)]));
-
-                    }
-                    else
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    }
 
                 }
                 else if (Tokens[0] == "JIF")
                 {
 
                     output.Add(0x13);
-                    if (Tokens[1].StartsWith(":"))
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[1].Remove(0, 1)]));
-
-                    }
-                    else
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    }
 
                 }
                 else if (Tokens[0] == "JMP")
                 {
 
                     output.Add(0x20);
-
-                    output.Add(byte.Parse(Tokens[1]));
-
-                    if (Tokens[2].StartsWith(":"))
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Labels[Tokens[2].Remove(0, 1)]));
-
-                    }
-                    else
-                    {
-
-                        output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
-                    }
 
                 }
                 else if (Tokens[0] == "RTN")
@@ -291,19 +168,11 @@ namespace KsIL.BASIC
 
                     output.Add(0x30);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
                 }
                 else if (Tokens[0] == "SUB")
                 {
 
                     output.Add(0x31);
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
 
                 }
                 else if (Tokens[0] == "MUL")
@@ -311,29 +180,97 @@ namespace KsIL.BASIC
 
                     output.Add(0x32);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
                 }
                 else if (Tokens[0] == "DIV")
                 {
 
                     output.Add(0x33);
 
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[1])));
-
-                    output.AddRange(BitConverter.GetBytes(Int32.Parse(Tokens[2])));
-
                 }
+
+                for (int t = 1; t < Tokens.Length; t++)
+                    output.AddRange(TokenDecode(Tokens[t]));
+
                 LineCount++;
                 output.AddRange(new byte[] { 0x00, 0xFF, 0x00, 0xFF});
 
             }
 
             System.IO.File.WriteAllBytes(Output + ".KsIL", output.ToArray());
-
+            Console.WriteLine("done");
             Console.ReadKey(true);
+
+        }
+        
+        
+
+        static byte[] TokenDecode(string Token)
+        {
+
+            List<byte> output = new List<byte>();
+
+            if (Token[0] == '^')
+            {
+
+                output.Add(0xFF);
+
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(Token.Remove(0, 1))));
+
+            }
+            else if (Token[0] == '%')
+            {
+
+                output.Add(0xFE);
+
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(Token.Remove(0, 1))));
+
+            }
+            else if (Token[0] == '#')
+            {
+
+                if (Token[1] == '+')
+                {
+
+                    string temp = Token.Remove(1);
+                    int t = int.Parse(temp) - 2;
+
+                    t += LineCount;
+
+                    output.AddRange(MakeSafe(BitConverter.GetBytes(t)));
+
+                }
+                else if (Token[1] == '-')
+                {
+
+                    string temp = Token.Remove(1);
+                    int t = int.Parse(temp) - 2;
+
+                    t -= LineCount;
+
+                    output.AddRange(MakeSafe(BitConverter.GetBytes(t)));
+
+
+                }
+                else
+                {
+
+                    output.AddRange(MakeSafe(BitConverter.GetBytes(LineCount)));
+
+                }
+
+            }
+            else if (Token.StartsWith("i:"))
+            {
+
+                output.AddRange(MakeSafe(MakeInt(Token.Remove(0, 2))));
+
+            }
+            else
+            {
+                output.AddRange(MakeSafe(System.Text.Encoding.UTF8.GetBytes(Token)));
+            }
+
+            return output.ToArray();
 
         }
 
@@ -363,80 +300,109 @@ namespace KsIL.BASIC
 
         }
 
-        static byte[] IsPointer(string input)
+        static byte[] MakeByteArray(string input)
         {
 
             List<byte> output = new List<byte>();
 
-            if (input[0] == '^')
+            for (int offset = 0; offset < input.Length; offset++)
             {
+                
+                output.Add(Convert.ToByte(input.Substring(offset, 2), 16));
 
-                output.Add(0xFF);
-
-                output.AddRange(BitConverter.GetBytes(Int32.Parse(input.Remove(0, 1))));
+                offset++;
 
             }
-            else if (input[0] == '%')
+
+            return output.ToArray();
+            
+        }
+
+        static byte[] MakeInt(string t, int BitMode = 2)
+        {
+
+            List<byte> output = new List<byte>();
+            if (BitMode == 0)
             {
 
-                output.Add(0xFE);
-
-                output.AddRange(BitConverter.GetBytes(Int32.Parse(input.Remove(0, 1))));
+                output.Add(byte.Parse(t));
 
             }
-            else if (input[0] == '#')
+            else if (BitMode == 1)
             {
 
-                if (input[1] == '+')
-                {
-
-                    string temp = input.Remove(1);
-                    int t = int.Parse(temp) - 2;
-
-                    t += i;
-
-                    output.AddRange(BitConverter.GetBytes(t));
-
-                }
-                else if (input[1] == '-')
-                {
-
-                    string temp = input.Remove(1);
-                    int t = int.Parse(temp) - 2;
-
-                    t -= i;
-
-                    output.AddRange(BitConverter.GetBytes(t));
-
-
-                }
-                else
-                {
-
-                    output.AddRange(BitConverter.GetBytes(i));
-
-                }
+                output.AddRange(BitConverter.GetBytes(Int16.Parse(t)));
 
             }
-            else
+            else if (BitMode == 2)
             {
 
-                if ((byte) input[0] == 0xFF)
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(t)));
+
+            }
+            else if (BitMode == 3)
+            {
+
+                output.AddRange(BitConverter.GetBytes(Int64.Parse(t)));
+
+            }
+
+            return output.ToArray();
+
+        }
+
+        static byte[] MakeUInt(string t, int BitMode = 2)
+        {
+
+            List<byte> output = new List<byte>();
+            if (BitMode == 0)
+            {
+
+                output.Add(byte.Parse(t));
+
+            }
+            else if (BitMode == 1)
+            {
+
+                output.AddRange(BitConverter.GetBytes(UInt16.Parse(t)));
+
+            }
+            else if (BitMode == 2)
+            {
+
+                output.AddRange(BitConverter.GetBytes(UInt32.Parse(t)));
+
+            }
+            else if (BitMode == 3)
+            {
+
+                output.AddRange(BitConverter.GetBytes(UInt64.Parse(t)));
+
+            }
+
+            return output.ToArray();
+
+        }
+
+        static byte[] MakeSafe(byte[] input)
+        {
+
+            List<byte> output = new List<byte>();
+
+                if (input[0] == 0xFF)
                 {
 
                     output.Add(0xF1);
 
                 }
-                else if ((byte) input[0] == 0xFE)
+                else if (input[0] == 0xFE)
                 {
 
                     output.Add(0xF1);
 
                 }
 
-                output.AddRange(System.Text.Encoding.UTF8.GetBytes(input));
-
-            }
+            output.AddRange(input);
 
             return output.ToArray();
 

@@ -6,6 +6,13 @@ namespace KsIL
 {
     public class Memory
     {
+
+        public static readonly int MEMORY_MODE = 0;
+        public static readonly int PROGRAM_RUNNING = 1;
+        public static readonly int CONDITIONAL_RESULT = 2;
+        public static readonly int PROGRAM_COUNT = 4;
+        public static readonly int RETURN_POINTER = 9;
+
         byte[] Buffer;
         int Size;
 

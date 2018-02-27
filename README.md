@@ -1,3 +1,13 @@
+Packages
+
+NuGet
+
+``` Install-Package KsIL ```
+
+.Net CLI
+
+``` dotnet add package KsIL ```
+
 # KsIL
 
 Is the VM

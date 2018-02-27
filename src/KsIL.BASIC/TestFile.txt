@@ -1,5 +1,5 @@
 ﻿32bit
-FLL 20 500 6
-STR "This is a KsIL BASIC Test" 20
-INT 1 1 20
+FLL i:20 i:500 b:06
+STR i:20 "This is a KsIL BASIC Test"
+INT i:1 i:1 i:20
 
