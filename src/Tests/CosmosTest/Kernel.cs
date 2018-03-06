@@ -9,7 +9,7 @@ namespace CosmosTest
     public class Kernel: Sys.Kernel
     {
 
-        KsILVM ksILVM = new KsILVM(1024 * 5, KsIL.Interrupt.DefaultCosmos);
+        KsILVM ksILVM = new KsILVM(1024 * 5, Interrupt.DefaultCosmos);
 
         protected override void BeforeRun()
         {

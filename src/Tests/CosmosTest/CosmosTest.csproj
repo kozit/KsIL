@@ -5,13 +5,29 @@
     <ProjectGuid>{1aff92df-99a7-4615-9001-1f8262eafc0f}</ProjectGuid>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="CosmosTestBoot.Cosmos" />
-  </ItemGroup>
+    <PropertyGroup>
+        <BinFormat>elf</BinFormat>
+        <DebugEnabled>False</DebugEnabled>
+        <DebugMode>Source</DebugMode>
+        <TraceMode>User</TraceMode>
+        <EnableGDB>False</EnableGDB>
+        <StartCosmosGDB>False</StartCosmosGDB>
+        <Deployment>ISO</Deployment>
+        <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
+        <StackCorruptionDetectionEnabled>True</StackCorruptionDetectionEnabled>
+        <StackCorruptionDetectionLevel>MethodFooters</StackCorruptionDetectionLevel>
+        <IgnoreDebugStubAttribute>False</IgnoreDebugStubAttribute>
+        <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
+        <Launch>VMware</Launch>
+        <Profile>VMware</Profile>
+        <Description>Use VMware Player or Workstation to deploy and debug.</Description>
+        <PxeInterface>192.168.0.8</PxeInterface>
+    </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Cosmos.Debug.Kernel" Version="*" />
-    <PackageReference Include="Cosmos.System2" Version="*" />
+    <PackageReference Include="Cosmos.Build" Version="2018.1.16" />
+    <PackageReference Include="Cosmos.Debug.Kernel" Version="2018.1.16" />
+    <PackageReference Include="Cosmos.System2" Version="2018.1.16" />
   </ItemGroup>
   
   <ItemGroup>

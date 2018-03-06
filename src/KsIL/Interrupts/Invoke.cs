@@ -16,6 +16,15 @@ namespace KsIL.Interrupts
         public override void Run(byte[] Parameters, Memory mMemory)
         {
 
+            if (Parameters[0] == 0x03)
+            {
+
+                Assembly.LoadFile(Encoding.UTF8.GetString(Utill.GetData(1, Parameters)));
+                return;
+
+            }
+
+
             int offset = 1;
 
             int ClassLength = BitConverter.ToInt32(Parameters, offset);
@@ -54,19 +63,18 @@ namespace KsIL.Interrupts
             else if (Parameters[0] == 0x01)
             {
 
-               mMemory.SetData(Output, (byte[]) CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs));
+                mMemory.SetData(Output, (byte[])CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs));
 
             }
             else if (Parameters[0] == 0x02)
             {
 
-                mMemory.SetData(Output, Encoding.UTF8.GetBytes((string) CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs)));
+                mMemory.SetData(Output, Encoding.UTF8.GetBytes((string)CreateAndInvoke(ClassPath, ConstructorArgs, Method, MethodArgs)));
 
             }
 
         }
-
-
+        
         public static object CreateAndInvoke(string typeName, string[] constructorArgs, string methodName, string[] methodArgs)
         {
 

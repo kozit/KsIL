@@ -265,6 +265,12 @@ namespace KsIL.BASIC
                 output.AddRange(MakeSafe(MakeInt(Token.Remove(0, 2))));
 
             }
+            else if (Token.StartsWith("i16:"))
+            {
+
+                output.AddRange(MakeSafe(MakeInt(Token.Remove(0, 4),1)));
+
+            }
             else
             {
                 output.AddRange(MakeSafe(System.Text.Encoding.UTF8.GetBytes(Token)));
@@ -277,26 +283,26 @@ namespace KsIL.BASIC
         static string[] Pre(string[] input)
         {
             List<string> output = new List<string>();
+            return input;
+            //for (int i = 1; i < input.Length; i++)
+            //{
 
-            for (int i = 1; i < input.Length; i++)
-            {
+            //    if (input[i].StartsWith(":"))
+            //    {
 
-                if (input[i].StartsWith(":"))
-                {
+            //        Labels.Add(input[i].Remove(0,1) , output.Count - 1);
 
-                    Labels.Add(input[i].Remove(0,1) , output.Count - 1);
+            //    }
+            //    else
+            //    {
 
-                }
-                else
-                {
+            //        output.Add(input[i]);
 
-                    output.Add(input[i]);
+            //    }
 
-                }
+            //}
 
-            }
-
-                return output.ToArray();
+            //    return output.ToArray();
 
         }
 
