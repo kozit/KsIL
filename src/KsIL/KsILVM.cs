@@ -36,10 +36,31 @@ namespace KsIL
         public void Load(byte[] mCode)
         {
             
+            int code_Offset = 0;
+
+            #IF CosmosBuild
+
+            if(mCode[0] == 0x05)
+            {
+
+                throw new Exception("this File type does not yet work on Cosmos");
+
+            }
+            #ELSE
+
+            if(mCode[0] == 0x05)
+            {
+
+                
+
+            }
+
+            #ENDIF
+
             Int32 qwe = 0;
 
             // Memory Mode 0x00 (8 Bit), 0x01 (16 Bit), 0x02 (32 Bit), 0x03 (64 Bit)
-            memory.Set(0, mCode[0]);
+            memory.Set(0, mCode[code_Offset]);
             // Is program running
             memory.Set(1, 0x01);
             // Conditional Result
@@ -49,7 +70,7 @@ namespace KsIL
             //Return Pointer
             memory.Set(9, BitConverter.GetBytes(qwe));
             
-            for (int i = 1; i < mCode.Length;)
+            for (int i = 1; i < mCode.Length - code_Offset;)
             {
 
                 byte bytecode = mCode[i];
