@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace KsIL
 {
@@ -8,8 +8,11 @@ namespace KsIL
         
         public static readonly Int64 PROGRAM_RUNNING = 1;
         public static readonly Int64 CONDITIONAL_RESULT = 2;
-        public static readonly Int64 PROGRAM_COUNT = 4;
-        public static readonly Int64 RETURN_POINTER = 9;
+        public static readonly Int64 PROGRAM_COUNT = 10;
+        public static readonly Int64 RETURN_POINTER = 19;
+        public static readonly Int64 GRAPHICS_POINTER = 28;
+        public static readonly Int64 THREAD_POINTER = 37;
+
 
         byte[] Buffer;
         int Size;
@@ -55,7 +58,7 @@ namespace KsIL
         public byte[] GetDataPionter(Int64 Addr)
         {
 
-             Int32 point = BitConverter.ToInt32(Get(Addr, 4), 0);
+             Int64 point = BitConverter.ToInt64(Get(Addr, 8), 0);
              return GetData(point);
             
         }
@@ -63,10 +66,29 @@ namespace KsIL
         public byte[] GetData(Int64 Addr)
         {
 
-            return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
+            return Get(Addr + 8, BitConverter.ToInt64(Get(Addr, 8), 0));
 
         }
-        
+
+        public byte[] GetArray(Int64 Addr, Int64 index)
+        {
+            Int64 pos;
+
+            byte[] data = GetDataPionter(Addr);
+            pos = BitConverter.ToInt64(data, data.Length - 9);
+
+            for (int i = 1; i < index - 1; i++)
+            {
+
+                data = GetDataPionter(pos);
+                pos = BitConverter.ToInt64(data, data.Length - 9);
+
+            }
+
+            return GetDataPionter(pos);
+
+        }
+
 
         public void Set(Int64 Addr, byte[] Value)
         {
@@ -83,11 +105,68 @@ namespace KsIL
             Buffer[Addr] = Value;
         }
 
+        public Int64 SetDataPionter(Int64 Addr, byte[] Value)
+        {
+
+            Int64 i;
+            for (i = 100; i < GetSize(); i++)
+            {
+
+                if (i + Value.Length >= Addr)
+                {
+
+                    i = Addr + 8;
+                    continue;
+
+                }
+
+                if (Get(i, Value.Length) == new byte[Value.Length])
+                {
+                    break;
+                }
+
+            }
+
+            Set(Addr, BitConverter.GetBytes(i));
+            SetData(i, Value);
+            return i;
+        }
+
         public void SetData(Int64 Addr, byte[] Value)
         {
 
                 Set(Addr, BitConverter.GetBytes(Value.Length));
-                Set(Addr + 4, Value);
+                Set(Addr + 8, Value);
+
+        }
+                
+        public void SetArray(Int64 Addr, byte[] Value, Int64 index)
+        {
+            Int64 prepos;
+            Int64 pos;
+            Int64 nextpos;
+            byte[] data = GetDataPionter(Addr);
+            pos = BitConverter.ToInt64(data, data.Length - 9);
+            prepos = -1;
+
+            for (int i = 1; i < index - 1; i++)
+            {
+
+                data = GetDataPionter(pos);
+                prepos = pos;
+                pos = BitConverter.ToInt64(data, data.Length - 9);
+
+            }
+
+            data = GetDataPionter(pos);
+            nextpos = BitConverter.ToInt64(data, data.Length - 9);
+
+            List<byte> mValue = new List<byte>();
+            mValue.AddRange(Value);
+            mValue.AddRange(BitConverter.GetBytes(nextpos));
+
+            pos = SetDataPionter(prepos + GetData(prepos).Length - 9, mValue.ToArray());
+                                 
 
         }
 

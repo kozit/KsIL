@@ -35,9 +35,9 @@ The first 100 bytes of memory are positions that are used by the executor to sto
 | Unused | this is un used | 0x04-0x09 |
 | Program Counter | The position in the program of the next command to be processed relative to the start of the program if not used if Thread Pointer is set. (64int) | 0x0A-0x12 (8 Bytes) |
 | Return Pointer | Points to the next return position in memory in the program of the next return. (64int) | 0x13-0x1A (8 Bytes) |
-| Graphics Pointer | Points to the Graphics interrupt memory (64int) | 0x1B-0x23 (8 Bytes) |
-| Thread Pointer | Like Program Counter but in a array format only use if there is more then one Thread (64Bit) | 0x24-2C (8Bytes) |
-| Unused | this is un used | 0x24-0x64 |
+| Graphics Pointer | Points to the Graphics interrupt memory (64int) | 0x1B-0x22 (8 Bytes) |
+| Thread Pointer | Like Program Counter but in a array format only use if there is more then one Thread (64Bit) | 0x23-2A (8Bytes) |
+| Unused | this is un used | 0x2B-0x64 |
 
 
 # Commands
