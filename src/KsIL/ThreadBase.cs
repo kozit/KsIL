@@ -9,15 +9,27 @@ namespace KsIL
 
         public Int64 ID;
 
-        Memory Memory;
+        protected Memory Memory;
 
-        List<InstructionBase> Code;
+        protected List<InstructionBase> mCode;
 
         public ThreadBase(Int64 id, List<InstructionBase> code, Memory memory)
         {
-            Code = code;
+            mCode = code;
             ID = id;
             Memory = memory;
+        }
+
+        public void SetProgramCount(Int64 count)
+        {
+
+            Memory.SetArray(Memory.THREAD_POINTER, BitConverter.GetBytes(count), ID);
+
+        }
+
+        public Int64 GetProgramCount()
+        {
+            return BitConverter.ToInt64(Memory.GetArray(Memory.THREAD_POINTER,ID),0);
         }
 
         public virtual void Tick() { }

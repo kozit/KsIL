@@ -30,7 +30,7 @@ namespace KsIL
 
         public void Clear()
         {
-            for (int i = 11; i < Size; i++)
+            for (int i = 100; i < Size; i++)
                 Buffer[i] = 0;
         }
 
