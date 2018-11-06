@@ -1,3 +1,2 @@
-﻿32bit
-STR i:25 "This is a KsIL BASIC Test" i:20
+﻿STR i:25 "Hello World" i:11
 INT i16:1 i16:1 i:20

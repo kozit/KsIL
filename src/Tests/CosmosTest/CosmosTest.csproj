@@ -1,37 +1,26 @@
-﻿<Project Sdk="Microsoft.Net.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ProjectGuid>{1aff92df-99a7-4615-9001-1f8262eafc0f}</ProjectGuid>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <BinFormat>elf</BinFormat>
-        <DebugEnabled>False</DebugEnabled>
-        <DebugMode>Source</DebugMode>
-        <TraceMode>User</TraceMode>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+        <RuntimeIdentifier>cosmos</RuntimeIdentifier>
+        <SelfContained>True</SelfContained>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <EnableGDB>False</EnableGDB>
         <StartCosmosGDB>False</StartCosmosGDB>
-        <Deployment>ISO</Deployment>
         <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
-        <StackCorruptionDetectionEnabled>True</StackCorruptionDetectionEnabled>
-        <StackCorruptionDetectionLevel>MethodFooters</StackCorruptionDetectionLevel>
-        <IgnoreDebugStubAttribute>False</IgnoreDebugStubAttribute>
         <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
         <Launch>VMware</Launch>
         <Profile>VMware</Profile>
         <Description>Use VMware Player or Workstation to deploy and debug.</Description>
         <PxeInterface>192.168.0.8</PxeInterface>
     </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Cosmos.Build" Version="2018.9.23" />
-    <PackageReference Include="Cosmos.Debug.Kernel" Version="2018.9.23" />
-    <PackageReference Include="Cosmos.System2" Version="2018.9.23" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\KsIL\KsIL.csproj" />
-  </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Cosmos.Build" Version="2018.9.23" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.Debug.Kernel" Version="2018.9.23" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.System2" Version="2018.9.23" NoWarn="NU1604" />
+    </ItemGroup>
 
 </Project>

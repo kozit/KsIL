@@ -63,12 +63,7 @@ namespace KsIL.BASIC
             List<byte> output = new List<byte>();
 
             string[] Lines = Pre(System.IO.File.ReadAllLines(args[0]));
-            
-            Console.WriteLine("32bit mode");
-            output.Add(0x02);
-            
-
-
+  
             for (int i = 1; i < Lines.Length; i++)
             {
 
