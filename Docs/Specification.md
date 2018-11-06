@@ -31,8 +31,9 @@ The first 100 bytes of memory are positions that are used by the executor to sto
 | ------------- | ----------- | --------------- |
 | Unused | this is un used | 0x00 (1 Byte) |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
-| Conditional Result Pointer | Points to the next Conditional Result in memory. (64int) 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF (means diabled/skip) | 0x02-0x09 (8 Byte) |
-| Program Counter | The position in the program of the next command to be processed relative to the start of the program if. (64int) | 0x0A-0x12 (8 Bytes) |
+| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02-0x03 (1 Byte) |
+| Unused | this is un used | 0x04-0x09 |
+| Program Counter | The position in the program of the next command to be processed relative to the start of the program if not used if Thread Pointer is set. (64int) | 0x0A-0x12 (8 Bytes) |
 | Return Pointer | Points to the next return position in memory in the program of the next return. (64int) | 0x13-0x1A (8 Bytes) |
 | Graphics Pointer | Points to the Graphics interrupt memory (64int) | 0x1B-0x23 (8 Bytes) |
 | Thread Pointer | Like Program Counter but in a array format only use if there is more then one Thread (64Bit) | 0x24-2C (8Bytes) |

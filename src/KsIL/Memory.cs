@@ -6,10 +6,10 @@ namespace KsIL
     public class Memory
     {
         
-        public static readonly int PROGRAM_RUNNING = 1;
-        public static readonly int CONDITIONAL_RESULT = 2;
-        public static readonly int PROGRAM_COUNT = 4;
-        public static readonly int RETURN_POINTER = 9;
+        public static readonly Int64 PROGRAM_RUNNING = 1;
+        public static readonly Int64 CONDITIONAL_RESULT = 2;
+        public static readonly Int64 PROGRAM_COUNT = 4;
+        public static readonly Int64 RETURN_POINTER = 9;
 
         byte[] Buffer;
         int Size;
@@ -31,13 +31,13 @@ namespace KsIL
                 Buffer[i] = 0;
         }
 
-        public byte Get(int Addr)
+        public byte Get(Int64 Addr)
         {
             return Buffer[Addr];
             //return Get(Addr, 1)[0];            
         }
 
-        public byte[] Get(int Addr, int Length)
+        public byte[] Get(Int64 Addr, Int64 Length)
         {
 
             byte[] temp = new byte[Length];
@@ -52,7 +52,7 @@ namespace KsIL
             return temp;
         }
 
-        public byte[] GetDataPionter(int Addr)
+        public byte[] GetDataPionter(Int64 Addr)
         {
 
              Int32 point = BitConverter.ToInt32(Get(Addr, 4), 0);
@@ -60,7 +60,7 @@ namespace KsIL
             
         }
 
-        public byte[] GetData(int Addr)
+        public byte[] GetData(Int64 Addr)
         {
 
             return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
@@ -68,7 +68,7 @@ namespace KsIL
         }
         
 
-        public void Set(int Addr, byte[] Value)
+        public void Set(Int64 Addr, byte[] Value)
         {
             for (int i = 0; i < Value.Length; i++)
             {
@@ -78,12 +78,12 @@ namespace KsIL
             }
         }
 
-        public void Set(int Addr, byte Value)
+        public void Set(Int64 Addr, byte Value)
         {
             Buffer[Addr] = Value;
         }
 
-        public void SetData(int Addr, byte[] Value)
+        public void SetData(Int64 Addr, byte[] Value)
         {
 
                 Set(Addr, BitConverter.GetBytes(Value.Length));
