@@ -13,8 +13,8 @@ namespace KsIL.Instructions
         {
 
             mContent = new byte[Parameters.Length - 4];
-            
-            Array.Copy(Parameters, mContent, Parameters.Length - 4);
+            for (int i = 3; i != Parameters.Length; i++)
+                mContent[i - 3] = Parameters[i]; 
             Location = BitConverter.ToInt32(Parameters, Parameters.Length - 4);
 
         }

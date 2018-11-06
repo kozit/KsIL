@@ -20,10 +20,9 @@ namespace KsIL.Instructions
 
             int ReturnPointer = BitConverter.ToInt32(mMemory.Get(Memory.RETURN_POINTER, 4), 0);         
 
-            mMemory.Set(4, mMemory.Get(ReturnPointer, 4));
-            mMemory.Set(9, mMemory.Get(ReturnPointer + 4, 4));
-
-            
+            mMemory.Set(Memory.PROGRAM_COUNT, mMemory.Get(ReturnPointer, 4));
+            mMemory.Set(Memory.RETURN_POINTER, mMemory.Get(ReturnPointer + 4, 4));
+                        
         }
 
     }

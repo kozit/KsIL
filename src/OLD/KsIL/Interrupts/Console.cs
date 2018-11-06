@@ -15,7 +15,9 @@ namespace KsIL.Interrupts
 
         public override void Run(byte[] Parameters, Memory mMemory)
         {
-
+            System.Console.WriteLine();
+            foreach (byte item in Parameters)
+                System.Console.Write(item);
 
             if (Parameters[0] == 0x00)
             {

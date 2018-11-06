@@ -18,4 +18,10 @@
     <ProjectReference Include="..\KsIL\KsIL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestFile.KsIL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

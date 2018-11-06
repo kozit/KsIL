@@ -13,7 +13,8 @@ namespace KsIL.Instructions
 
         public InterruptInstruction(Memory memory, byte[] Parameters) : base(memory)
         {
-
+            foreach (byte item in Parameters)
+                Console.Write(item);
             mParameters = Parameters;
          
         }
@@ -30,9 +31,13 @@ namespace KsIL.Instructions
                 if (INT == Int.Code)
                 {
 
-                    byte[] Parameters = Utill.ArrayRemoveAt(mParameters, 1, mParameters.Length - 2);
-                                        
-                    Int.Run(Parameters, mMemory);
+                    List<byte> Parameters = new List<byte>();
+                    //Utill.ArrayRemoveAt(mParameters, 2, mParameters.Length - 2);
+
+                    for (int i = 2; i < mParameters.Length; i++)
+                        Parameters.Add(mParameters[i]);
+
+                    Int.Run(Parameters.ToArray(), mMemory);
 
                 }
 

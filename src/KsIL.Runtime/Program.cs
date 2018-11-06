@@ -41,7 +41,7 @@
                     {
 
                         MemBump = true;
-                        
+
 
                     }
                     else if (args[i] == "-memload")
@@ -62,6 +62,13 @@
                 File = args[0];
 
             }
+            else
+            {
+
+                File = "TestFile.KsIL";
+
+            }
+
 
 
             KsIL = new KsILVM(Memory);

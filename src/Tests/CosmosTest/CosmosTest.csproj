@@ -25,9 +25,9 @@
     </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Cosmos.Build" Version="2018.1.16" />
-    <PackageReference Include="Cosmos.Debug.Kernel" Version="2018.1.16" />
-    <PackageReference Include="Cosmos.System2" Version="2018.1.16" />
+    <PackageReference Include="Cosmos.Build" Version="2018.9.23" />
+    <PackageReference Include="Cosmos.Debug.Kernel" Version="2018.9.23" />
+    <PackageReference Include="Cosmos.System2" Version="2018.9.23" />
   </ItemGroup>
   
   <ItemGroup>

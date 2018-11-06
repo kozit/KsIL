@@ -24,19 +24,17 @@ Variables stored in memory are each preceded with 4 Bytes telling us the length 
 In order to access the stored content in memory the command Read (0xFF) is used which has the parameters: location (4 bytes) so to move the string we created at location 0x06 in memory to location 0x10 the bytecode would be [0x01 0xFE 0x06 0x00 0xFF 0x06 0x0A]
 
 ## Reserved Memory
-The first 12 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
+The first 24 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
 
 
 | Register Name | Description | Memory Position |
 | ------------- | ----------- | --------------- |
-| Memory Mode | Sets the program Memory Mode wich will change the size of headers lower it is set smaller the headers.  0x00 (8bit) 0x01 (16bit) 0x02 (32 bit) 0x03 (64 bit) | 0x00 (1 Byte) |
+| Unused | this is un used | 0x00 (1 Byte) |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
 | Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02 (1 Byte) |
 | Unused | this is un used | 0x03 (1 Byte) |
 | Program Counter | The position in the program of the next command to be processed relative to the start of the program. (32int) | 0x04-0x08 (4 Bytes)
 | Return Pointer | Points to the next return position in memory in the program of the next return. (32int) | 0x09-0x0C (4 Bytes)
-
-
 
 
 # Commands

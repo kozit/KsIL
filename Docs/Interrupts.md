@@ -1,20 +1,28 @@
 # Interrupts
 
-## Invoke
+## OS
 
 Code: 0x00 0x00 0x00 0x00
 
-Parameters: return type (1 Byte), length0 32int (4 Bytes), Class Path (MUST BE AS LONG AS SPECIFIED IN length0), ConstructorArgs String Array, length1 32int (4 Bytes), Method Name (MUST BE AS LONG AS SPECIFIED IN length1), MethodArgs String Array, location (4 Bytes, in memory position, only set if needed by return type)
+Use: This is reserved for the OS
+
+## Graphics
+
+Code: 0x01 0x00 0x00 0x00
+
+# Command: 0x00 (Enter Graphics Mode)
+
+# Command: 0x01 (Update Screen)
 
 ## Console
 
-Code: 0x01 0x00 0x00 0x00
+Code: 0x04 0x00 0x00 0x00
 
 Parameters: Command (1 Byte), location (4 Bytes, in memory position)
 
 ## IO
 
-Code: 0x02 0x00 0x00 0x00
+Code: 0x05 0x00 0x00 0x00
 
 # Command: 0x00 (Delete File)
 

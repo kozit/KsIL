@@ -85,7 +85,7 @@ namespace KsIL.BASIC
 
                 string[] Tokens = getTokens(Lines[i]);
 
-                if      (Tokens[0] == "INT")
+                if (Tokens[0] == "INT")
                 {
 
                     output.Add(0x00);
@@ -161,7 +161,7 @@ namespace KsIL.BASIC
                 {
 
                     output.Add(0x21);
-                    
+
                 }
                 else if (Tokens[0] == "ADD")
                 {
@@ -185,6 +185,10 @@ namespace KsIL.BASIC
                 {
 
                     output.Add(0x33);
+
+                }
+                else if (Tokens[0] == "RAW")
+                {
 
                 }
 
@@ -284,25 +288,25 @@ namespace KsIL.BASIC
         {
             List<string> output = new List<string>();
             return input;
-            //for (int i = 1; i < input.Length; i++)
-            //{
+            for (int i = 1; i < input.Length; i++)
+            {
 
-            //    if (input[i].StartsWith(":"))
-            //    {
+                if (input[i].StartsWith(":"))
+                {
 
-            //        Labels.Add(input[i].Remove(0,1) , output.Count - 1);
+                    Labels.Add(input[i].Remove(0, 1), output.Count - 1);
 
-            //    }
-            //    else
-            //    {
+                }
+                else
+                {
 
-            //        output.Add(input[i]);
+                    output.Add(input[i]);
 
-            //    }
+                }
 
-            //}
+            }
 
-            //    return output.ToArray();
+            return output.ToArray();
 
         }
 
@@ -395,18 +399,18 @@ namespace KsIL.BASIC
 
             List<byte> output = new List<byte>();
 
-                if (input[0] == 0xFF)
-                {
+            if (input[0] == 0xFF)
+            {
 
-                    output.Add(0xF1);
+                output.Add(0xF1);
 
-                }
-                else if (input[0] == 0xFE)
-                {
+            }
+            else if (input[0] == 0xFE)
+            {
 
-                    output.Add(0xF1);
+                output.Add(0xF1);
 
-                }
+            }
 
             output.AddRange(input);
 

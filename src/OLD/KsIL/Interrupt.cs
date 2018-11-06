@@ -15,7 +15,25 @@ namespace KsIL
 
                 List<Interrupt> r = new List<Interrupt>
                 {
+                    
+                };
 
+                r.AddRange(DefaultCosmos);
+
+                return r;
+
+            }
+        }
+
+        public static List<Interrupt> DefaultCosmos
+        {
+            get
+            {
+
+                List<Interrupt> r = new List<Interrupt>
+                {
+                    new Interrupts.Console(),
+                    new Interrupts.File()
                 };
 
                 return r;
@@ -24,7 +42,7 @@ namespace KsIL
         }
 
         public Int16 Code;
-
+                
         public Interrupt()
         {
         }
