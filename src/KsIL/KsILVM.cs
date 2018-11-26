@@ -9,15 +9,30 @@ namespace KsIL
 
         Memory memory;
         ThreadManagerBase ThreadManager;
+        
 
-        List<InstructionBase> code;
+        List<Interrupt> Interrupts;
 
-
-        public KsILVM(int size, ThreadManagerBase ThreadManager)
+        public KsILVM(int size, ref ThreadManagerBase ThreadManager, List<Interrupt> Interrupts = null)
         {
 
+
+            
             memory = new Memory(size);
             this.ThreadManager = ThreadManager;
+            this.ThreadManager.LoadMemory(memory);
+            
+
+            if (Interrupts == null)
+            {
+                Interrupts = Interrupt.Default;
+            }
+
+            this.Interrupts = Interrupts;
+            this.Interrupts.Add(new Interrupts.Threading(this.ThreadManager));
+
+
+            this.ThreadManager.StartThread(this.ThreadManager.AddThread(0));
 
         }
 
@@ -44,6 +59,8 @@ namespace KsIL
         public void Load(byte[] ByteCode)
         {
 
+
+            //ThreadManager.LoadCode(code);
         }
 
 

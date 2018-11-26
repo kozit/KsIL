@@ -7,11 +7,10 @@ namespace KsIL
     {
         
         public static readonly Int64 PROGRAM_RUNNING = 1;
-        public static readonly Int64 CONDITIONAL_RESULT = 2;
-        public static readonly Int64 PROGRAM_COUNT = 10;
-        public static readonly Int64 RETURN_POINTER = 19;
-        public static readonly Int64 GRAPHICS_POINTER = 28;
-        public static readonly Int64 THREAD_POINTER = 37;
+        public static readonly Int64 CONDITIONAL_RESULT_POINTER = 2;
+        public static readonly Int64 THREAD_POINTER = 12;
+        public static readonly Int64 GRAPHICS_POINTER = 22;
+        
 
 
         byte[] Buffer;
@@ -30,14 +29,12 @@ namespace KsIL
 
         public void Clear()
         {
-            for (int i = 100; i < Size; i++)
-                Buffer[i] = 0;
+            Buffer = new byte[Size];
         }
 
         public byte Get(Int64 Addr)
         {
-            return Buffer[Addr];
-            //return Get(Addr, 1)[0];            
+            return Buffer[Addr];          
         }
 
         public byte[] Get(Int64 Addr, Int64 Length)
@@ -90,6 +87,11 @@ namespace KsIL
         }
 
 
+        public void Set(Int64 Addr, byte Value)
+        {
+            Buffer[Addr] = Value;
+        }
+
         public void Set(Int64 Addr, byte[] Value)
         {
             for (int i = 0; i < Value.Length; i++)
@@ -98,11 +100,6 @@ namespace KsIL
                 Set(Addr + i, Value[i]);
 
             }
-        }
-
-        public void Set(Int64 Addr, byte Value)
-        {
-            Buffer[Addr] = Value;
         }
 
         public Int64 SetDataPionter(Int64 Addr, byte[] Value)
@@ -147,7 +144,7 @@ namespace KsIL
             Int64 nextpos;
             byte[] data = GetDataPionter(Addr);
             pos = BitConverter.ToInt64(data, data.Length - 9);
-            prepos = -1;
+            prepos = 0;
 
             for (int i = 1; i < index - 1; i++)
             {

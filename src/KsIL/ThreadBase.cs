@@ -9,6 +9,8 @@ namespace KsIL
 
         public Int64 ID;
 
+        public Int64 ProgramCountPoint;
+
         protected Memory Memory;
 
         protected List<InstructionBase> mCode;
@@ -31,6 +33,8 @@ namespace KsIL
         {
             return BitConverter.ToInt64(Memory.GetArray(Memory.THREAD_POINTER,ID),0);
         }
+
+
 
         public virtual void Tick() { }
 

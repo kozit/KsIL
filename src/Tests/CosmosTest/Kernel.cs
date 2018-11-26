@@ -7,16 +7,22 @@ namespace CosmosTest
 {
     public class Kernel : Sys.Kernel
     {
-       Int64 t;
+
+        KsIL.KsILVM KsILVM;
+
         protected override void BeforeRun()
         {
-            t = 99993499249249999;
-                
+            KsILVM = new KsIL.KsILVM(1024 * 1024, new KsIL.Builtin.ThreadManager(), null);
+
+
+            KsILVM.Load(new byte[] { });
+            
+
         }
 
         protected override void Run()
         {
-            Console.WriteLine(t);
+            KsILVM.Tick();
         }
     }
 }
