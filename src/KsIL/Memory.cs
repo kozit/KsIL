@@ -5,14 +5,10 @@ namespace KsIL
 {
     public class Memory
     {
+               
+        public static readonly int PROGRAM_RUNNING = 1;
+        public static readonly int GRAPHICS_POINTER = 2;
         
-        public static readonly Int64 PROGRAM_RUNNING = 1;
-        public static readonly Int64 CONDITIONAL_RESULT_POINTER = 2;
-        public static readonly Int64 THREAD_POINTER = 12;
-        public static readonly Int64 GRAPHICS_POINTER = 22;
-        
-
-
         byte[] Buffer;
         int Size;
 
@@ -32,12 +28,12 @@ namespace KsIL
             Buffer = new byte[Size];
         }
 
-        public byte Get(Int64 Addr)
+        public byte Get(int Addr)
         {
             return Buffer[Addr];          
         }
 
-        public byte[] Get(Int64 Addr, Int64 Length)
+        public byte[] Get(int Addr, int Length)
         {
 
             byte[] temp = new byte[Length];
@@ -52,47 +48,52 @@ namespace KsIL
             return temp;
         }
 
-        public byte[] GetDataPionter(Int64 Addr)
+        public byte[] GetDataPionter(int Addr)
         {
 
-             Int64 point = BitConverter.ToInt64(Get(Addr, 8), 0);
-             return GetData(point);
+            int point = BitConverter.ToInt32(Get(Addr, 8), 0);
+            return GetData(point);
             
         }
 
-        public byte[] GetData(Int64 Addr)
+        public byte[] GetData(int Addr)
         {
 
-            return Get(Addr + 8, BitConverter.ToInt64(Get(Addr, 8), 0));
+            return Get(Addr + 8, BitConverter.ToInt32(Get(Addr, 8), 0));
 
         }
 
-        public byte[] GetArray(Int64 Addr, Int64 index)
+        public byte[] GetArray(int Addr, int index)
         {
-            Int64 pos;
+            int pos;
 
             byte[] data = GetDataPionter(Addr);
-            pos = BitConverter.ToInt64(data, data.Length - 9);
+            pos = BitConverter.ToInt32(data, data.Length - 9);
 
             for (int i = 1; i < index - 1; i++)
             {
 
                 data = GetDataPionter(pos);
-                pos = BitConverter.ToInt64(data, data.Length - 9);
+                pos = BitConverter.ToInt32(data, data.Length - 9);
 
             }
 
-            return GetDataPionter(pos);
+            data = GetDataPionter(pos);
+            byte[] output = new byte[data.Length - 9];
+            for (int i = 0; i < data.Length - 9; i++)
+                output[i] = data[i];
 
+            return output;
+            
         }
 
 
-        public void Set(Int64 Addr, byte Value)
+        public void Set(int Addr, byte Value)
         {
             Buffer[Addr] = Value;
         }
 
-        public void Set(Int64 Addr, byte[] Value)
+        public void Set(int Addr, byte[] Value)
         {
             for (int i = 0; i < Value.Length; i++)
             {
@@ -102,10 +103,10 @@ namespace KsIL
             }
         }
 
-        public Int64 SetDataPionter(Int64 Addr, byte[] Value)
+        public int SetDataPionter(int Addr, byte[] Value)
         {
 
-            Int64 i;
+            int i;
             for (i = 100; i < GetSize(); i++)
             {
 
@@ -129,7 +130,7 @@ namespace KsIL
             return i;
         }
 
-        public void SetData(Int64 Addr, byte[] Value)
+        public void SetData(int Addr, byte[] Value)
         {
 
                 Set(Addr, BitConverter.GetBytes(Value.Length));
@@ -137,13 +138,13 @@ namespace KsIL
 
         }
                 
-        public void SetArray(Int64 Addr, byte[] Value, Int64 index)
+        public void SetArray(int Addr, byte[] Value, int index)
         {
-            Int64 prepos;
-            Int64 pos;
-            Int64 nextpos;
+            int prepos;
+            int pos;
+            int nextpos;
             byte[] data = GetDataPionter(Addr);
-            pos = BitConverter.ToInt64(data, data.Length - 9);
+            pos = BitConverter.ToInt32(data, data.Length - 9);
             prepos = 0;
 
             for (int i = 1; i < index - 1; i++)
@@ -151,12 +152,12 @@ namespace KsIL
 
                 data = GetDataPionter(pos);
                 prepos = pos;
-                pos = BitConverter.ToInt64(data, data.Length - 9);
+                pos = BitConverter.ToInt32(data, data.Length - 9);
 
             }
 
             data = GetDataPionter(pos);
-            nextpos = BitConverter.ToInt64(data, data.Length - 9);
+            nextpos = BitConverter.ToInt32(data, data.Length - 9);
 
             List<byte> mValue = new List<byte>();
             mValue.AddRange(Value);

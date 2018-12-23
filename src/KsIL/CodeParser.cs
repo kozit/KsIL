@@ -7,16 +7,9 @@ namespace KsIL
     public class CodeParser
     {
 
-        public static InstructionBase SingleOpCode(byte OpCode, byte[] data)
+        public static List<Instruction> Make(byte[] code)
         {
-            InstructionBase output = null;
-
-            return output;
-        }
-
-        public static List<InstructionBase> Make(byte[] code)
-        {
-            List<InstructionBase> output = new List<InstructionBase>();
+            List<Instruction> output = new List<Instruction>();
 
             for (int i = 0; i < code.Length; i++)
             {
@@ -33,18 +26,13 @@ namespace KsIL
                     }
 
                     data.Add(code[offset]);
-                                       
+
+                    i = offset;
+                                                           
                 }
 
-
-                if (OpCode == 0xFD)
-                {
-
-                }
-                else
-                {
-                    output.Add(SingleOpCode(OpCode, data.ToArray()));
-                }
+                output.Add(new Instruction() { OPCode = (OpCode)OpCode, data = data.ToArray()});
+                
 
             }
 

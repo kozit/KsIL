@@ -28,14 +28,9 @@ The first 100 bytes of memory are positions that are used by the executor to sto
 
 | Register Name | Description | Memory Position |
 | ------------- | ----------- | --------------- |
-| Unused | this is un used | 0x00 (1 Byte) |
-| Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x01 (1 Byte) |
-| Conditional Result | The result of the conditional test if it has just been completed. 0x00 (False) 0x01 (True) 0x02 (Not Set) | 0x02-0x03 (1 Byte) |
-| Unused | this is un used | 0x04-0x12 |
-| Return Pointer | Points to the next return position in memory in the program of the next return. (64int) | 0x13-0x1A (8 Bytes) |
-| Graphics Pointer | Points to the Graphics interrupt memory (64int) | 0x1B-0x22 (8 Bytes) |
-| Thread Pointer | Program Counter List (64Bit) | 0x23-2A (8Bytes) |
-| Unused | this is un used | 0x2B-0x64 |
+| Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x00 (1 Byte) |
+| Code Pointer | Points to where to code is in memory (32int) | 0x04-0x08 (4 Bytes) |
+| Graphics Pointer | Points to the Graphics interrupt memory (64int) | 0x14-0x1B (8 Bytes) |
 
 
 # Commands
@@ -70,32 +65,6 @@ Description: Stores content in memory at the next free destination of that lengt
 
 Parameters: length 64int (8 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (8 Bytes, in memory position)
 
-## Read
-Bytecode: 0xFF
-
-Mnemonic: [p1,p2,p3,p4] converts into a read command
-
-Description: Reads content in memory (can only be used in place of an absolute value)
-
-Parameters: location (8 Bytes, in memory position)
-
-## Read Length
-Bytecode: 0xFE
-
-Mnemonic: (p1,p2,p3,p4) converts into a read length
-
-Description: Reads the length of the memory content as a two byte value using the protocol above
-
-Parameters: location (8 Bytes, in memory position)
-
-## Bytecode 2 Bit
-Bytecode: 0xFD
-
-Mnemonic: (p1,p2) converts into a 2 Bit long Bytecode
-
-Description: Perfix for 2 bit Byte codes
-
-Parameters: Bytecode (2 Bytes)
 
 ## Read Into
 Bytecode: 0x03
@@ -154,23 +123,6 @@ Description: Tests if byte1 is greater than byte 2.
 
 Parameters: location 1 (8 Bytes, in memory position), location 2 (8 Bytes, in memory position)
 
-## Jump If True
-Bytecode: 0x12
-
-Mnemonic: JIT
-
-Description: If the previous conditional test result was true jump to the position specified.
-
-Parameters: position (8 Bytes, in position of execution)
-
-## Jump If False
-Bytecode: 0x13
-
-Mnemonic: JIF
-
-Description: If the previous conditional test result was false jump to the position specified.
-
-Parameters: position (8 Bytes, in position of execution)
 
 ## Jump
 Bytecode: 0x20

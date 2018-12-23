@@ -8,93 +8,93 @@
         static void Main(string[] args)
         {
 
-            //int Memory = 1024 * 4;
+            int Memory = 1024 * 4;
 
-            //string File = "";
+            string File = "";
 
-            //bool MemBump = false;
+            bool MemBump = false;
 
-            //bool MemLoad = false;
-            //string MemFile = "";
+            bool MemLoad = false;
+            string MemFile = "";
 
-            //if (args.Length > 1)
-            //{
+            if (args.Length > 1)
+            {
 
-            //    for (int i = 0; i < args.Length; i++)
-            //    {
+                for (int i = 0; i < args.Length; i++)
+                {
 
-            //        if (args[i] == "-mem")
-            //        {
+                    if (args[i] == "-mem")
+                    {
 
-            //            Memory = int.Parse(args[i + 1]);
-            //            i++;
+                        Memory = int.Parse(args[i + 1]);
+                        i++;
 
-            //        }
-            //        else if (args[i] == "-file")
-            //        {
+                    }
+                    else if (args[i] == "-file")
+                    {
 
-            //            File = args[i + 1];
-            //            i++;
+                        File = args[i + 1];
+                        i++;
 
-            //        }
-            //        else if (args[i] == "-memdump")
-            //        {
+                    }
+                    else if (args[i] == "-memdump")
+                    {
 
-            //            MemBump = true;
-
-
-            //        }
-            //        else if (args[i] == "-memload")
-            //        {
-
-            //            MemLoad = true;
-            //            MemFile = args[i + 1];
-            //            i++;
-
-            //        }
-
-            //    }
-
-            //}
-            //else if (args.Length == 1)
-            //{
-
-            //    File = args[0];
-
-            //}
-            //else
-            //{
-
-            //    File = "TestFile.KsIL";
-
-            //}
+                        MemBump = true;
 
 
+                    }
+                    else if (args[i] == "-memload")
+                    {
 
-            //KsIL = new KsILVM(Memory);
+                        MemLoad = true;
+                        MemFile = args[i + 1];
+                        i++;
 
-            
-            //KsIL.LoadFile(File);
+                    }
 
-            //if (MemLoad)
-            //{
+                }
 
-            //    KsIL.memory.Set(0, System.IO.File.ReadAllBytes(MemFile));
+            }
+            else if (args.Length == 1)
+            {
 
-            //}
+                File = args[0];
 
-            //KsIL.AutoTick();
+            }
+            else
+            {
 
-            //if (MemBump)
-            //{
-                
-            //    System.IO.File.WriteAllBytes("mem.bin", KsIL.memory.Get(0, KsIL.memory.GetSize() - 1));
+                File = "TestFile.KsIL";
 
-            //}
+            }
 
-            //while (true)
-            //{
-            //}
+
+
+            KsIL = new KsILVM(Memory, new KsIL.Builtin.ThreadManager());
+
+
+            KsIL.LoadFile(File);
+
+            if (MemLoad)
+            {
+
+                KsIL.memory.Set(0, System.IO.File.ReadAllBytes(MemFile));
+
+            }
+
+            KsIL.AutoTick();
+
+            if (MemBump)
+            {
+
+                System.IO.File.WriteAllBytes("mem.bin", KsIL.memory.Get(0, KsIL.memory.GetSize() - 1));
+
+            }
+
+            while (true)
+            {
+            }
 
         }
     }

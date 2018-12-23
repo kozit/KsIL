@@ -7,20 +7,18 @@ namespace KsIL
     public class KsILVM
     {
 
-        Memory memory;
-        ThreadManagerBase ThreadManager;
-        
+        private Memory memory;
 
-        List<Interrupt> Interrupts;
+        private List<Interrupt> Interrupts;
 
-        public KsILVM(int size, ref ThreadManagerBase ThreadManager, List<Interrupt> Interrupts = null)
+        private List<CPU> cpu;
+
+        public KsILVM(int size, List<Interrupt> Interrupts = null)
         {
 
-
+            cpu = new List<CPU>();
             
             memory = new Memory(size);
-            this.ThreadManager = ThreadManager;
-            this.ThreadManager.LoadMemory(memory);
             
 
             if (Interrupts == null)
@@ -29,16 +27,15 @@ namespace KsIL
             }
 
             this.Interrupts = Interrupts;
-            this.Interrupts.Add(new Interrupts.Threading(this.ThreadManager));
-
-
-            this.ThreadManager.StartThread(this.ThreadManager.AddThread(0));
 
         }
 
         public void Tick()
         {
-            ThreadManager.Tick();
+
+            foreach (CPU cpu in this.cpu)
+                cpu.Tick();
+
         }
 
         public void AutoTick()
@@ -53,14 +50,18 @@ namespace KsIL
 
         public void Load(string Path)
         {
+
             Load(System.IO.File.ReadAllBytes(Path));
+
         }
 
         public void Load(byte[] ByteCode)
         {
-
-
-            //ThreadManager.LoadCode(code);
+                       
+            memory.SetDataPionter(4, ByteCode);
+                       
+            cpu.Add(new CPU(this, memory));
+                       
         }
 
 

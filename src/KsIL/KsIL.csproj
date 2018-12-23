@@ -20,4 +20,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  
+  
+  <ItemGroup>
+    <Folder Include="Interrupts\" />
+  </ItemGroup>
+
 </Project>
