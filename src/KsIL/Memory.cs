@@ -38,12 +38,14 @@ namespace KsIL
 
             byte[] temp = new byte[Length];
 
-            for (int i = 0; i < Length; i++)
-            {
+            Array.Copy(Buffer, Addr, temp, 0, Length);
 
-                temp[i] = Get(Addr + i);
+            //for (int i = 0; i < Length; i++)
+            //{
 
-            }
+            //    temp[i] = Get(Addr + i);
+
+            //}
 
             return temp;
         }
@@ -51,7 +53,7 @@ namespace KsIL
         public byte[] GetDataPionter(int Addr)
         {
 
-            int point = BitConverter.ToInt32(Get(Addr, 8), 0);
+            int point = BitConverter.ToInt32(Get(Addr, 4), 0);
             return GetData(point);
             
         }
@@ -59,7 +61,7 @@ namespace KsIL
         public byte[] GetData(int Addr)
         {
 
-            return Get(Addr + 8, BitConverter.ToInt32(Get(Addr, 8), 0));
+            return Get(Addr + 4, BitConverter.ToInt32(Get(Addr, 4), 0));
 
         }
 
@@ -95,25 +97,36 @@ namespace KsIL
 
         public void Set(int Addr, byte[] Value)
         {
-            for (int i = 0; i < Value.Length; i++)
-            {
 
-                Set(Addr + i, Value[i]);
+            Array.Copy(Value, 0, Buffer, Addr, Value.Length);
 
-            }
+            //for (int i = 0; i < Value.Length; i++)
+            //{
+
+            //    Set(Addr + i, Value[i]);
+
+            //}
         }
 
-        public int SetDataPionter(int Addr, byte[] Value)
+        public void SetDataPionter(int Pointer, int Addr, byte[] Value)
+        {
+
+            Set(Pointer, BitConverter.GetBytes(Addr));
+            SetData(Addr, Value);
+            
+        }
+
+        public void SetDataPionter(int Pointer, byte[] Value)
         {
 
             int i;
             for (i = 100; i < GetSize(); i++)
             {
 
-                if (i + Value.Length >= Addr)
+                if (i + Value.Length >= Pointer)
                 {
 
-                    i = Addr + 8;
+                    i = Pointer + 4;
                     continue;
 
                 }
@@ -125,16 +138,16 @@ namespace KsIL
 
             }
 
-            Set(Addr, BitConverter.GetBytes(i));
+            Set(Pointer, BitConverter.GetBytes(i));
             SetData(i, Value);
-            return i;
+
         }
 
         public void SetData(int Addr, byte[] Value)
         {
 
                 Set(Addr, BitConverter.GetBytes(Value.Length));
-                Set(Addr + 8, Value);
+                Set(Addr + 4, Value);
 
         }
                 
@@ -163,7 +176,7 @@ namespace KsIL
             mValue.AddRange(Value);
             mValue.AddRange(BitConverter.GetBytes(nextpos));
 
-            pos = SetDataPionter(prepos + GetData(prepos).Length - 9, mValue.ToArray());
+            //pos = SetDataPionter(prepos + GetData(prepos).Length - 9, mValue.ToArray());
                                  
 
         }

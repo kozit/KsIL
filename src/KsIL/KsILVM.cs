@@ -7,11 +7,11 @@ namespace KsIL
     public class KsILVM
     {
 
-        private Memory memory;
+        internal Memory memory;
 
-        private List<Interrupt> Interrupts;
+        internal List<Interrupt> Interrupts;
 
-        private List<CPU> cpu;
+        internal List<CPU> cpu;
 
         public KsILVM(int size, List<Interrupt> Interrupts = null)
         {
@@ -48,20 +48,34 @@ namespace KsIL
 
         }
 
-        public void Load(string Path)
+        public byte[] memDump()
         {
 
-            Load(System.IO.File.ReadAllBytes(Path));
+            return memory.Get(0, memory.GetSize());
 
         }
 
-        public void Load(byte[] ByteCode)
+        public void Load(string Path, int point = 0, int pointer = 4)
+        {
+
+            Load(System.IO.File.ReadAllBytes(Path), point, pointer);
+
+        }
+
+        public void Load(byte[] ByteCode, int point = 0, int pointer = 4)
         {
                        
-            memory.SetDataPionter(4, ByteCode);
-                       
-            cpu.Add(new CPU(this, memory));
-                       
+            memory.SetDataPionter(pointer, ByteCode);
+
+            StartCPU(pointer);
+            
+        }
+
+        public void StartCPU(int pointer = 4, int point = 0)
+        {
+
+            cpu.Add(new CPU(this, memory, pointer) { InstructionPoint = point});
+
         }
 
 

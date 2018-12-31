@@ -24,14 +24,14 @@
         Compare = 0x31,
         Move = 0x32,
         Clear = 0x33,
-        Clear_Dynamic = 0x34,
+        Clear_Pointer = 0x34,
 
         Store = 0x35,
-        Store_Dynamic = 0x36,
+        Store_Pointer = 0x36,
                
 
         Goto = 0x51,
-        Label = 0x52,
+        //Label = 0x52,
         Call = 0x53,
         Return = 0x54,
 

@@ -71,18 +71,11 @@
 
 
 
-            KsIL = new KsILVM(Memory, new KsIL.Builtin.ThreadManager());
+            KsIL = new KsILVM(Memory);
 
 
-            KsIL.LoadFile(File);
-
-            if (MemLoad)
-            {
-
-                KsIL.memory.Set(0, System.IO.File.ReadAllBytes(MemFile));
-
-            }
-
+            KsIL.Load(File);
+            
             KsIL.AutoTick();
 
             if (MemBump)

@@ -38,7 +38,9 @@ This will set memory point "location" to location + (Width * Height * Color Dept
 
 will update from the Graphics Pointer
 
-# Threading
+# CPU
+
+{!} update
 
 Code: 0x02 0x00 0x00 0x00
 

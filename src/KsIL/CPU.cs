@@ -7,17 +7,17 @@ namespace KsIL
     public class CPU
     {
 
-        KsILVM VM;
+        public int InstructionPoint;
+        public bool isRunning = true;
+        public byte ConditionalResult;
 
-        Memory Memory;
+        internal KsILVM VM;
 
-        List<Instruction> Instructions;
+        private Memory Memory;
+        private List<Instruction> Instructions;
+        private List<int> ReturnPointer;
 
-        int InstructionPoint;
-
-        List<int> ReturnPointer;
-
-        byte ConditionalResult;
+        private int CodePointer;
 
         public CPU(KsILVM VM, Memory Memory, int CodePointer = 4)
         {
@@ -27,10 +27,10 @@ namespace KsIL
 
             byte[] code = this.Memory.GetDataPionter(CodePointer);
 
-            Instructions = new List<Instruction>();
-
             ReturnPointer = new List<int>();
 
+            Instructions = new List<Instruction>();
+                 
             for (int i = 0; i < code.Length; i++)
             {
 
@@ -57,7 +57,7 @@ namespace KsIL
 
         }
 
-        byte[] Read(byte[] read)
+        public byte[] Read(byte[] read)
         {
             if (read[0] == 0xF1)
             {
@@ -78,7 +78,8 @@ namespace KsIL
 
         }
 
-        byte[] getPart(byte[] data, int startindex, int endindex = -1)
+
+        public byte[] getPart(byte[] data, int startindex, int endindex = -1)
         {
 
             if (endindex == -1)
@@ -86,55 +87,109 @@ namespace KsIL
                 endindex = data.Length;
             }
 
-            List<byte> output = new List<byte>();
+            byte[] output = new byte[endindex - startindex];
 
-            for (int i = 0; i < endindex; i++)
-            {
+            Array.Copy(data, startindex, output, 0, endindex - startindex);
 
-                output.Add(data[i]);
+            return output;
 
-            }
+            //List<byte> output = new List<byte>();
 
-            return output.ToArray();
+            //for (int i = 0; i < endindex; i++)
+            //{
+
+            //    output.Add(data[i]);
+
+            //}
+
+            //return output.ToArray();
+
+        }
+
+        public void ReloadCode()
+        {
+
+
 
         }
 
         public void Tick()
         {
 
+            if (!isRunning)
+                return;
+
+            if (InstructionPoint == Instructions.Count)
+            {
+
+                if (VM.cpu[0] == this)
+                {
+
+                    Memory.Set(Memory.PROGRAM_RUNNING, 0x00);
+
+                }
+
+
+                return;
+            }
+
             Instruction instruction = Instructions[InstructionPoint];
             
-            int a, b, point;
+            int a, b, point, pointer;
             byte[] data;
 
             switch (instruction.OPCode)
             {
 
-                case OpCode.Add:
-                          
-                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 7), 0);
+                case OpCode.Interrupt:
 
-                    b = BitConverter.ToInt32(getPart(instruction.data, 8, 15), 0);
+                    a = BitConverter.ToInt16(getPart(instruction.data, 0, 1), 0);
+
+                    data = getPart(instruction.data, 2);
+
+                    foreach (Interrupt item in VM.Interrupts)
+                    {
+
+                        if (item.Code == a)
+                        {
+
+                            item.Run(data, this);
+                            break;
+
+                        }
+
+                    }
+
+                break;
+
+
+                // Math
+
+                case OpCode.Add:
+
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    b = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
 
                     Memory.SetData(b, BitConverter.GetBytes(a + b));
 
                 break;
 
                 case OpCode.Subtract:
-                    
-                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 7), 0);
 
-                    b = BitConverter.ToInt32(getPart(instruction.data, 8, 15), 0);
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    b = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
 
                     Memory.SetData(b, BitConverter.GetBytes(a - b));
 
                 break;
 
                 case OpCode.Mutiply:
-                    
-                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 7), 0);
 
-                    b = BitConverter.ToInt32(getPart(instruction.data, 8, 15), 0);
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    b = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
 
                     Memory.SetData(b, BitConverter.GetBytes(a * b));
 
@@ -142,9 +197,9 @@ namespace KsIL
 
                 case OpCode.Divide:
                     
-                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 7), 0);
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
 
-                    b = BitConverter.ToInt32(getPart(instruction.data, 8, 15), 0);
+                    b = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
 
                     Memory.SetData(b, BitConverter.GetBytes(a / b));
 
@@ -156,34 +211,76 @@ namespace KsIL
 
                 break;
 
+                //Memory
+
+                case OpCode.Move:
+
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    b = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
+
+                    Memory.SetData(b, Memory.GetData(a));
+
+                break;
+
+                case OpCode.Clear:
+
+                    a = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    Memory.Set(a, new byte[BitConverter.ToInt32(Memory.Get(a, 4), 0) + 4]);
+
+                break;
+
                 case OpCode.Store:
 
-                    point = BitConverter.ToInt32(getPart(instruction.data, 0, 7), 0);
+                    point = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
 
-                    data = getPart(instruction.data, 8);
+                    data = getPart(instruction.data, 4);
 
                     Memory.SetData(point, data);
 
-                    break;
+                break;
+
+                case OpCode.Store_Pointer:
+
+                    pointer = BitConverter.ToInt32(getPart(instruction.data, 0, 3), 0);
+
+                    point = BitConverter.ToInt32(getPart(instruction.data, 4, 7), 0);
+
+                    data = getPart(instruction.data, 8);
+
+                    Memory.SetDataPionter(point, data);
+
+               break;
+                                                         
+
+                case OpCode.Goto:
+
+                    a = BitConverter.ToInt32(instruction.data, 0);
+
+                    InstructionPoint = a;
+                    
+                break;
+                    
+                case OpCode.Call:
+
+                    point = BitConverter.ToInt32(Read(instruction.data), 0);
+
+                    ReturnPointer.Insert(0, point);
+
+                    InstructionPoint = point;
+
+                break;
 
                 case OpCode.Return:
 
                     point = ReturnPointer[0];
                     ReturnPointer.RemoveAt(0);
+                    
 
                     InstructionPoint = (int)point;
 
-                    break;
-
-                case OpCode.Call:
-
-                    point = BitConverter.ToInt32(Read(instruction.data), 0);
-
-                    ReturnPointer.Insert(0, (int)point);
-
-                    InstructionPoint = (int)point;
-
-                    break;
+                break;
 
             }
 

@@ -15,7 +15,7 @@ namespace KsIL
 
                 List<Interrupt> r = new List<Interrupt>
                 {
-                    
+                    new Interrupts.CPU_Interrupt()
                 };
 
                 return r;
@@ -29,7 +29,7 @@ namespace KsIL
         {
         }
 
-        public virtual void Run(byte[] Parameters, Memory mMemory)
+        public virtual void Run(byte[] Parameters, CPU CPU)
         {
         }
 

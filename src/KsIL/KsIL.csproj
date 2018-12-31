@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net47;net35</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.2.1</Version>
     <PackageProjectUrl>https://github.com/kozit/KsIL</PackageProjectUrl>
@@ -19,11 +19,5 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-
-  
-  
-  <ItemGroup>
-    <Folder Include="Interrupts\" />
-  </ItemGroup>
 
 </Project>
