@@ -31,7 +31,7 @@ namespace KsIL.Interrupts
             codes code = (codes)Parameters[0];
 
             int ID = BitConverter.ToInt32(CPU.getPart(Parameters, 1, 5), 0);
-            int Point;
+            uint Point;
 
             switch(code)
             {
@@ -51,16 +51,16 @@ namespace KsIL.Interrupts
                 case codes.make:
 
                     // what point it code to start at
-                    Point = BitConverter.ToInt32(CPU.getPart(Parameters, 5, 9), 0);
+                    Point = BitConverter.ToUInt32(CPU.getPart(Parameters, 5, 9), 0);
 
                     // ID here is a pointer in memory
-                    CPU.VM.StartCPU(ID, Point);
+                    CPU.VM.StartCPU(BitConverter.ToUInt32(CPU.getPart(Parameters, 1, 5), 0), Point);
 
                 break;
 
                 case codes.kill:
 
-                    CPU.VM.cpu.RemoveAt(ID);
+                    CPU.VM.cpu[ID] = null;
 
                 break;
 

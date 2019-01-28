@@ -3,19 +3,17 @@
     class Program
     {
 
-        static KsILVM KsIL;
+        static KsILVM _KsIL;
         
         static void Main(string[] args)
         {
 
-            int Memory = 1024 * 4;
+            int Memory = 1024 * 1024 * 4; //4MB
 
             string File = "";
 
             bool MemBump = false;
-
-            bool MemLoad = false;
-            string MemFile = "";
+            
 
             if (args.Length > 1)
             {
@@ -44,14 +42,6 @@
 
 
                     }
-                    else if (args[i] == "-memload")
-                    {
-
-                        MemLoad = true;
-                        MemFile = args[i + 1];
-                        i++;
-
-                    }
 
                 }
 
@@ -66,25 +56,30 @@
             {
 
                 File = "TestFile.KsIL";
+                MemBump = true;
 
             }
-
-
-
-            KsIL = new KsILVM(Memory);
-
-
-            KsIL.Load(File);
+                     
             
-            KsIL.AutoTick();
+
+            KsIL.Debugger._type = 2;
+
+            KsIL.Debugger.Log("DebugMode:" + ((Debugger.types)KsIL.Debugger._type).ToString(), "Runtime", 2);
+
+            KsIL.Debugger.Log("loading VM", "Runtime");
+            
+
+            _KsIL = new KsILVM(Memory);
+            _KsIL.Load_File(File);
+            _KsIL.AutoTick();
 
             if (MemBump)
             {
 
-                System.IO.File.WriteAllBytes("mem.bin", KsIL.memory.Get(0, KsIL.memory.GetSize() - 1));
+                System.IO.File.WriteAllBytes("mem.bin", _KsIL.memDump());
 
             }
-
+            
             while (true)
             {
             }

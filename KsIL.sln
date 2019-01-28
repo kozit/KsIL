@@ -21,6 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DCF42382
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosTest", "src\Tests\CosmosTest\CosmosTest.csproj", "{49994873-B97E-4F63-AC76-0A78DC5DF826}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interrupts", "Interrupts", "{705AC3CF-A928-489E-B793-0BD1EED8CDB9}"
+	ProjectSection(SolutionItems) = preProject
+		CPU.md = CPU.md
+		Graphics.md = Graphics.md
+		Invoke.md = Invoke.md
+		OS.md = OS.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +57,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49994873-B97E-4F63-AC76-0A78DC5DF826} = {DCF42382-C7E5-4945-BE5B-BB5C6932BE6E}
+		{705AC3CF-A928-489E-B793-0BD1EED8CDB9} = {FF6576AA-4D4E-44AB-B18E-DE42EC100977}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70D3807C-76DA-416B-8C63-72B574829623}

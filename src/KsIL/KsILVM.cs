@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace KsIL
@@ -9,16 +10,16 @@ namespace KsIL
 
         internal Memory memory;
 
-        internal List<Interrupt> Interrupts;
+        internal Dictionary<UInt16, Interrupt> Interrupts;
 
         internal List<CPU> cpu;
 
-        public KsILVM(int size, List<Interrupt> Interrupts = null)
+        public KsILVM(int size, Dictionary<UInt16, Interrupt> Interrupts = null)
         {
 
             cpu = new List<CPU>();
             
-            memory = new Memory(size);
+            memory = new Memory((uint)size, this);
             
 
             if (Interrupts == null)
@@ -28,18 +29,26 @@ namespace KsIL
 
             this.Interrupts = Interrupts;
 
+            memory.Set(Memory.PROGRAM_RUNNING, 0x01);
+
+
         }
 
         public void Tick()
         {
 
+            Debugger.Log("Start", "Tick");
+
             foreach (CPU cpu in this.cpu)
                 cpu.Tick();
 
+            Debugger.Log("End", "Tick");
         }
 
         public void AutoTick()
         {
+
+            Debugger.Log(memory.Get(Memory.PROGRAM_RUNNING), "AutoTick");
 
             while (memory.Get(Memory.PROGRAM_RUNNING) == 0x01)
             {
@@ -55,26 +64,34 @@ namespace KsIL
 
         }
 
-        public void Load(string Path, int point = 0, int pointer = 4)
+        public void Load_File(string Path, int point = 0, uint pointer = 4)
         {
 
-            Load(System.IO.File.ReadAllBytes(Path), point, pointer);
+            Debugger.Log(Path, "File Path");
+
+            Load_Code(File.ReadAllBytes(Path), point, pointer);
 
         }
 
-        public void Load(byte[] ByteCode, int point = 0, int pointer = 4)
+        public void Load_Code(byte[] ByteCode, int point = 0, uint pointer = 4)
         {
-                       
-            memory.SetDataPionter(pointer, ByteCode);
+
+            Debugger.Log("loading code");
+            Debugger.Log(ByteCode);
+            memory.SetData(pointer, ByteCode);
+
+            Debugger.Log("loaded code");
 
             StartCPU(pointer);
             
         }
 
-        public void StartCPU(int pointer = 4, int point = 0)
+        public void StartCPU(uint pointer = 4, uint point = 0)
         {
 
-            cpu.Add(new CPU(this, memory, pointer) { InstructionPoint = point});
+            CPU temp = new CPU(this, memory, pointer) { InstructionPoint = point };
+
+            cpu.Add(temp);
 
         }
 

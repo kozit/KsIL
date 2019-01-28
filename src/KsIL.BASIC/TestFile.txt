@@ -1,2 +1,2 @@
-﻿STR i:11 "Hello World" i:105
+﻿STR i:105 "Hello World" 
 INT i16:1 i16:1 i:105

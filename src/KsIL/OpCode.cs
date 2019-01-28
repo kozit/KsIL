@@ -8,6 +8,7 @@
         Null = 0x01,
 
         Interrupt = 0x02,
+        Interrupt_CallBack = 0x04,
 
         //Tests
         Test_Equal = 0x11,
@@ -28,8 +29,10 @@
 
         Store = 0x35,
         Store_Pointer = 0x36,
-               
 
+        //CPU info, runtime info
+        MemorySpecial = 0x37,
+        
         Goto = 0x51,
         //Label = 0x52,
         Call = 0x53,

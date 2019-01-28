@@ -7,15 +7,17 @@ namespace KsIL
     public class Interrupt
     {
 
-        public static List<Interrupt> Default
+        public static Dictionary<UInt16, Interrupt> Default
         {
 
             get
             {
 
-                List<Interrupt> r = new List<Interrupt>
+                Dictionary<UInt16, Interrupt> r = new Dictionary<UInt16, Interrupt>
                 {
-                    new Interrupts.CPU_Interrupt()
+                    { 2, new Interrupts.CPU_Interrupt() },
+                    { 3, new Interrupts.Console() },
+                    { 4, new Interrupts.Invoke() }
                 };
 
                 return r;
@@ -23,7 +25,7 @@ namespace KsIL
             }
         }
 
-        public Int16 Code;
+        public UInt16 Code;
 
         public Interrupt()
         {

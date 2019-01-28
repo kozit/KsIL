@@ -62,7 +62,7 @@ namespace KsIL.BASIC
 
             List<byte> output = new List<byte>();
 
-            string[] Lines = Pre(System.IO.File.ReadAllLines(args[0]));
+            string[] Lines = System.IO.File.ReadAllLines(args[0]);
   
             for (int i = 1; i < Lines.Length; i++)
             {
@@ -100,207 +100,27 @@ namespace KsIL.BASIC
         {
 
             List<byte> output = new List<byte>();
-
-            if (Token[0] == '^')
+                        
+            if (Token.StartsWith("i:"))
             {
 
-                output.Add(0xFF);
-
-                output.AddRange(BitConverter.GetBytes(Int32.Parse(Token.Remove(0, 1))));
-
-            }
-            else if (Token[0] == '%')
-            {
-
-                output.Add(0xFE);
-
-                output.AddRange(BitConverter.GetBytes(Int32.Parse(Token.Remove(0, 1))));
-
-            }
-            else if (Token[0] == '#')
-            {
-
-                if (Token[1] == '+')
-                {
-
-                    string temp = Token.Remove(1);
-                    int t = int.Parse(temp) - 2;
-
-                    t += LineCount;
-
-                    output.AddRange(MakeSafe(BitConverter.GetBytes(t)));
-
-                }
-                else if (Token[1] == '-')
-                {
-
-                    string temp = Token.Remove(1);
-                    int t = int.Parse(temp) - 2;
-
-                    t -= LineCount;
-
-                    output.AddRange(MakeSafe(BitConverter.GetBytes(t)));
-
-
-                }
-                else
-                {
-
-                    output.AddRange(MakeSafe(BitConverter.GetBytes(LineCount)));
-
-                }
-
-            }
-            else if (Token.StartsWith("i:"))
-            {
-
-                output.AddRange(MakeSafe(MakeInt(Token.Remove(0, 2))));
+                output.AddRange(BitConverter.GetBytes(Int32.Parse(Token.Remove(0, 2))));
 
             }
             else if (Token.StartsWith("i16:"))
             {
 
-                output.AddRange(MakeSafe(MakeInt(Token.Remove(0, 4),1)));
+                output.AddRange(BitConverter.GetBytes(Int16.Parse(Token.Remove(0, 4))));
 
+            }
+            else if (Token.StartsWith("0x"))
+            {
+                output.Add(Convert.ToByte(Token.Remove(0, 2), 16));
             }
             else
             {
-                output.AddRange(MakeSafe(System.Text.Encoding.UTF8.GetBytes(Token)));
+                output.AddRange(System.Text.Encoding.UTF8.GetBytes(Token));
             }
-
-            return output.ToArray();
-
-        }
-
-        static string[] Pre(string[] input)
-        {
-            List<string> output = new List<string>();
-            return input;
-            for (int i = 1; i < input.Length; i++)
-            {
-
-                if (input[i].StartsWith(":"))
-                {
-
-                    Labels.Add(input[i].Remove(0, 1), output.Count - 1);
-
-                }
-                else
-                {
-
-                    output.Add(input[i]);
-
-                }
-
-            }
-
-            return output.ToArray();
-
-        }
-
-        static byte[] MakeByteArray(string input)
-        {
-
-            List<byte> output = new List<byte>();
-
-            for (int offset = 0; offset < input.Length; offset++)
-            {
-                
-                output.Add(Convert.ToByte(input.Substring(offset, 2), 16));
-
-                offset++;
-
-            }
-
-            return output.ToArray();
-            
-        }
-
-        static byte[] MakeInt(string t, int BitMode = 2)
-        {
-
-            List<byte> output = new List<byte>();
-            if (BitMode == 0)
-            {
-
-                output.Add(byte.Parse(t));
-
-            }
-            else if (BitMode == 1)
-            {
-
-                output.AddRange(BitConverter.GetBytes(Int16.Parse(t)));
-
-            }
-            else if (BitMode == 2)
-            {
-
-                output.AddRange(BitConverter.GetBytes(Int32.Parse(t)));
-
-            }
-            else if (BitMode == 3)
-            {
-
-                output.AddRange(BitConverter.GetBytes(Int64.Parse(t)));
-
-            }
-
-            return output.ToArray();
-
-        }
-
-        static byte[] MakeUInt(string t, int BitMode = 2)
-        {
-
-            List<byte> output = new List<byte>();
-            if (BitMode == 0)
-            {
-
-                output.Add(byte.Parse(t));
-
-            }
-            else if (BitMode == 1)
-            {
-
-                output.AddRange(BitConverter.GetBytes(UInt16.Parse(t)));
-
-            }
-            else if (BitMode == 2)
-            {
-
-                output.AddRange(BitConverter.GetBytes(UInt32.Parse(t)));
-
-            }
-            else if (BitMode == 3)
-            {
-
-                output.AddRange(BitConverter.GetBytes(UInt64.Parse(t)));
-
-            }
-
-            return output.ToArray();
-
-        }
-
-        static byte[] MakeSafe(byte[] input)
-        {
-
-            List<byte> output = new List<byte>();
-
-            if (input[0] == 0xFF)
-            {
-
-                output.Add(0xF1);
-
-            }
-            else if (input[0] == 0xFE)
-            {
-
-                output.Add(0xF1);
-
-            }
-
-            output.AddRange(input);
 
             return output.ToArray();
 
