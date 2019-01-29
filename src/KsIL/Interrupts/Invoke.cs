@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -10,9 +15,10 @@ namespace KsIL.Interrupts
 
         enum codes {
 
-            Load = 0x00,
-            Call = 0x01,
-            New  = 0x02,
+            Load    = 0x00,
+            Call    = 0x01,
+            New     = 0x02,
+            Compile = 0x03
             
         }
 
@@ -33,9 +39,13 @@ namespace KsIL.Interrupts
 
                 case codes.Load:
 
-                    Assembly.LoadFile(Encoding.UTF8.GetString(Parameters, 1, Parameters.Length - 2));
-                                       
-                break;
+
+                    if (Parameters.Length == 5)
+                        Assembly.Load(CPU.Memory.GetData(BitConverter.ToUInt32(Parameters, 1)));
+                    else
+                        Assembly.LoadFile(Encoding.UTF8.GetString(Parameters, 1, Parameters.Length - 2));
+                    
+                    break;
 
                 case codes.Call:
 
@@ -43,13 +53,11 @@ namespace KsIL.Interrupts
 
                     Type calledType = TheObject.GetType();
                     MethodInfo method = calledType.GetMethod(Encoding.UTF8.GetString(Parameters, 13, BitConverter.ToInt32(Parameters, 9)));
-                    object result = method.Invoke(TheObject, null);
+                    object Aresult = method.Invoke(TheObject, null);
 
                     if (BitConverter.ToUInt32(Parameters, 1) != 0)
                     {
-
-                        CPU.Memory.SetObject(BitConverter.ToUInt32(Parameters, 1), result);
-
+                        CPU.Memory.SetObject(BitConverter.ToUInt32(Parameters, 1), Aresult);
                     }
 
                 break;
@@ -59,6 +67,47 @@ namespace KsIL.Interrupts
                     CPU.Memory.SetObject(BitConverter.ToUInt32(Parameters, 1), Activator.CreateInstance(Type.GetType(Encoding.UTF8.GetString(Parameters, 1, Parameters.Length - 6)) ));
 
                 break;
+
+                case codes.Compile:
+
+                    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText((Encoding.UTF8.GetString(CPU.Memory.GetData(BitConverter.ToUInt32(Parameters, 1)))));
+
+                    string assemblyName = Path.GetRandomFileName();
+                    MetadataReference[] references = new MetadataReference[]
+                    {
+                        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
+                    };
+
+                    CSharpCompilation compilation = CSharpCompilation.Create(
+                        assemblyName,
+                        syntaxTrees: new[] { syntaxTree },
+                        references: references,
+                        options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+                    using (var ms = new MemoryStream())
+                    {
+                        EmitResult Mresult = compilation.Emit(ms);
+
+                        if (!Mresult.Success)
+                        {
+                            IEnumerable<Diagnostic> failures = Mresult.Diagnostics.Where(diagnostic =>
+                                diagnostic.IsWarningAsError ||
+                                diagnostic.Severity == DiagnosticSeverity.Error);
+
+                            foreach (Diagnostic diagnostic in failures)
+                            {
+                                Debugger.Log(diagnostic.Id + ": " + diagnostic.GetMessage(), "Invoke");
+                            }
+                        }
+                        else
+                        {
+                            ms.Seek(0, SeekOrigin.Begin);
+                            Assembly.Load(ms.ToArray());
+                        }
+                    }
+
+                    break;
 
             }
 

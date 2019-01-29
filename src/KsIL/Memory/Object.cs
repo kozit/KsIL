@@ -19,7 +19,7 @@ namespace KsIL
             MemoryStream ms = new MemoryStream();
             bf.Serialize(ms, obj);
 
-            SetData(1, ms.ToArray());
+            SetData(Addr, ms.ToArray());
 
         }
 
