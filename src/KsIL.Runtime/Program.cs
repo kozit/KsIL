@@ -1,4 +1,6 @@
-﻿namespace KsIL.Runtime
+﻿using System;
+
+namespace KsIL.Runtime
 {
     class Program
     {
@@ -8,7 +10,7 @@
         static void Main(string[] args)
         {
 
-            int Memory = 1024 * 1024 * 4; //4MB
+            int Memory = Int32.MaxValue - (1024 * 8); //
 
             string File = "";
 
@@ -46,7 +48,7 @@
                 }
 
             }
-            else if (args.Length == 1)
+            else if (args.Length == 1 && !(args[0] == "-memdump"))
             {
 
                 File = args[0];
@@ -64,14 +66,14 @@
 
             KsIL.Debugger._type = 2;
 
-            KsIL.Debugger.Log("DebugMode:" + ((Debugger.types)KsIL.Debugger._type).ToString(), "Runtime", 2);
+            KsIL.Debugger.Log("DebugMode:" + ((Debugger.types)KsIL.Debugger._type).ToString(), "Runtime", 1);
 
             KsIL.Debugger.Log("loading VM", "Runtime");
             
 
             _KsIL = new KsILVM(Memory);
             _KsIL.Load_File(File);
-            _KsIL.AutoTick();
+            _KsIL.Start();
 
             if (MemBump)
             {

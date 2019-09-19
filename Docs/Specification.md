@@ -1,7 +1,10 @@
 # Execution Information
+
+Spec:1
+
 ## Basic Execution Information
 Instructions are separated by 0x00 0xFF 0x00 0xFF,
-Parameters MUST BE AS LONG AS SPECIFIED Below, If a parameter ends in 0x00 0xFF add any byte from 0x01 to 0xFE to the end
+Parameters MUST BE AS LONG AS SPECIFIED Below, If a Instruction ends in 0x00 0xFF add 0xEE to the end
 
 ##  Multiple Byte Parameters; how do they work?
 Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255.
@@ -43,46 +46,17 @@ Mnemonic: INT
 
 Description: Calls an Interrupt.
 
-Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Interrupts for Info) 
+Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Interrupts for Info)
 
+## Interrupt Callback
 
-# Memory Management
-## Store
-Bytecode: 0x35
+Bytecode: 0x04
 
-Mnemonic: STR
+Mnemonic: INC
 
-Description: Stores content in memory at the location specified no matter if it is already occupied.
+Description: Interrupt call Back.
 
-Parameters: length int32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
-
-## Dynamic Store
-Bytecode:0x36
-
-Mnemonic: DST
-
-Description: Stores content in memory at the next free destination of that length and places 4 bytes with the position it was stored in at the location specified. If no free memory is available an exception will be thrown.
-
-Parameters: length int32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
-
-## Clear
-Bytecode: 0x33
-
-Mnemonic: CLR
-
-Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
-
-Parameters: location (4 Bytes, in memory position)
-
-## Dynamic Clear
-Bytecode: 0x34
-
-Mnemonic: DCL
-
-Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
-
-Parameters: location int32 (4 Bytes, in memory position)
-
+Parameters: Code 16int (2 Bytes), Line to call uint32(4 Bytes) 
 
 # Conditional Tests
 For all conditional commands the Conditional Result byte in Reserved Memory is set according to the result of the conditional test.
@@ -101,36 +75,18 @@ Bytecode: 0x12
 
 Mnemonic: TGT
 
-Description: Tests if byte1 is greater than byte 2.
+Description: Tests if location 1 is greater than location 2.
 
 Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
 
-## Jump
-Bytecode: 0x51
+## Test Jump
+Bytecode: 0x13
 
-Mnemonic: JMP
+Mnemonic: TJM
 
-Description: Jump to the position specified.
+Description: jump to location if ConditionalResult is 0x01.
 
-Parameters: position (4 Bytes, in position of execution)
-
-## Call
-Bytecode: 0x53
-
-Mnemonic: CAL
-
-Description: Jump to the position specified and stores in return pointer.
-
-Parameters: position (4 Bytes, in position of execution)
-
-## Return
-Bytecode: 0x54
-
-Mnemonic: RTN
-
-Description: Jump to the position specified in the next return position and set the return pointer to the next return or 0x00 0x00 0x00 0x00 if none.
-
-Parameters: none
+Parameters: location (4 Bytes, in memory position)
 
 
 # Arithmetic Operations
@@ -141,7 +97,7 @@ Mnemonic: ADD
 
 Description: Adds SOURCE to DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION + SOURCE)
 
-Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
+Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
 
 ## Subtract
 Bytecode: 0x22
@@ -150,7 +106,7 @@ Mnemonic: SUB
 
 Description: Subtracts SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION - SOURCE)
 
-Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
+Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
 
 
 ## Multiply
@@ -160,7 +116,7 @@ Mnemonic: MUL
 
 Description: Multiplys SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION * SOURCE)
 
-Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
+Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
 
 ## Divide
 Bytecode: 0x23
@@ -169,4 +125,108 @@ Mnemonic: DIV
 
 Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION / SOURCE)
 
-Parameters: source is memory position (1 Bytes, 0x01 for true, 0x00 for false), source (4 Bytes, in memory location), destination is memory position, (1 Bytes, 0x01 for true, 0x00 for false), destination (4 Bytes, memloc or absolute value)
+Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
+
+
+# Memory Management
+
+## Move
+Bytecode: 0x32
+
+Mnemonic: MOV
+
+Description: moves content at the position specified to the other.
+
+Parameters: location0 (4 Bytes, in memory position) location1 (4 Bytes, in memory position)
+
+## Clear
+Bytecode: 0x33
+
+Mnemonic: CLR
+
+Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
+
+Parameters: location (4 Bytes, in memory position)
+
+## Clear Pointer
+Bytecode: 0x34
+
+Mnemonic: DCL
+
+Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
+
+Parameters: location int32 (4 Bytes, in memory position)
+
+## Store
+Bytecode: 0x35
+
+Mnemonic: STR
+
+Description: Stores content in memory at the location specified no matter if it is already occupied.
+
+Parameters: length uint32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
+
+## Store Pointer
+Bytecode:0x36
+
+Mnemonic: DST
+
+Description: Stores content in memory at the next free destination of that length and places uint32 (4 bytes) with the position it was stored in at the location specified. If no free memory is available an exception will be thrown.
+
+Parameters: length uint32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
+
+# Movement
+
+## GoTo
+Bytecode: 0x51
+
+Mnemonic: JMP
+
+Description: Jump to the position specified or Label.
+
+Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
+
+## Label
+Bytecode: 0x52
+
+Mnemonic: LAB
+
+Description: 
+
+Parameters:
+
+## Call
+Bytecode: 0x53
+
+Mnemonic: CAL
+
+Description: Jump to the position specified and stores current in return pointer.
+
+Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
+
+## Return
+Bytecode: 0x54
+
+Mnemonic: RTN
+
+Description: Jump to the position specified in the next return position and set the return pointer to the next return or 0x00 0x00 0x00 0x00 if none.
+
+Parameters: none
+
+## Call
+Bytecode: 0x53
+
+Mnemonic: CAL
+
+Description: Jump to the position specified and stores current in return pointer.
+
+Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
+
+## DubbleOP
+Bytecode: 0xFF
+
+Mnemonic: DOP
+
+Description: unused for now for if and when we need more space.
+
+Parameters: none

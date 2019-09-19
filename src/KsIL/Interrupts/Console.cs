@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace KsIL.Interrupts
@@ -25,9 +24,9 @@ namespace KsIL.Interrupts
 
         public override void Run(byte[] Parameters, CPU CPU)
         {
-                                   
+
             codes code = (codes)Parameters[0];
-            
+
             uint point = BitConverter.ToUInt32(CPU.getPart(Parameters, 1, 4), 0);
 
             Debugger.Log(code.ToString(), "Console:code");
@@ -39,10 +38,9 @@ namespace KsIL.Interrupts
 
                 case codes.print:
 
-
                     System.Console.Write(Encoding.UTF8.GetString(CPU.Memory.GetData(point)).Replace("/n", Environment.NewLine));
 
-                break;
+                    break;
 
                 case codes.readline:
 
@@ -50,7 +48,7 @@ namespace KsIL.Interrupts
 
                     CPU.Memory.SetData(point, Encoding.UTF8.GetBytes(input));
 
-                break;
+                    break;
 
                 case codes.read:
 
@@ -58,7 +56,7 @@ namespace KsIL.Interrupts
 
                     CPU.Memory.Set(point, Encoding.UTF8.GetBytes(key.ToString()));
 
-                break;
+                    break;
 
             }
 

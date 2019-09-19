@@ -10,13 +10,13 @@ Use: This is reserved for the OS
 
 Description: Stores the OS Name in memory at the location specified no matter if it is already occupied.
 
-Parameters: location (8 Bytes, in memory position to save name)
+Parameters: location (4 Bytes, in memory position to save name)
 
 ## Command: 0x01 (KsIL Spec version) 
 
 Description: Stores the KsIL Spec min/max version in memory at the location specified no matter if it is already occupied.
 
-Parameters: location (8 Bytes, in memory position to save name) min or max (1 Byte, 0x00 for min 0x01 for max)
+Parameters: location (4 Bytes, in memory position to save name) min or max (1 Byte, 0x00 for min 0x01 for max)
 
 ## Command: 0x02 (Has Graphics)
 

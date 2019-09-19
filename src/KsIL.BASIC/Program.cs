@@ -113,6 +113,18 @@ namespace KsIL.BASIC
                 output.AddRange(BitConverter.GetBytes(Int16.Parse(Token.Remove(0, 4))));
 
             }
+            else if (Token.StartsWith("ui:"))
+            {
+
+                output.AddRange(BitConverter.GetBytes(UInt32.Parse(Token.Remove(0, 3))));
+
+            }
+            else if (Token.StartsWith("ui16:"))
+            {
+
+                output.AddRange(BitConverter.GetBytes(UInt16.Parse(Token.Remove(0, 5))));
+
+            }
             else if (Token.StartsWith("0x"))
             {
                 output.Add(Convert.ToByte(Token.Remove(0, 2), 16));

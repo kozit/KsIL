@@ -13,6 +13,7 @@
         //Tests
         Test_Equal = 0x11,
         Test_Greater_Than = 0x12,
+        Test_Jump = 0x13,
 
         //Math
         Add = 0x21, 
@@ -22,7 +23,6 @@
         MathSpecial = 0x25,
 
         //Memory
-        Compare = 0x31,
         Move = 0x32,
         Clear = 0x33,
         Clear_Pointer = 0x34,
@@ -34,11 +34,11 @@
         MemorySpecial = 0x37,
         
         Goto = 0x51,
-        //Label = 0x52,
+        Label = 0x52,
         Call = 0x53,
         Return = 0x54,
 
         DubbleOP = 0xFF
-
+                       
     }
 }

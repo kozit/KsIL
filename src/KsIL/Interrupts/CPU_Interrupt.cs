@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace KsIL.Interrupts
 {
@@ -9,13 +7,13 @@ namespace KsIL.Interrupts
 
         enum codes
         {
-            
+
             stop = 0x01,
             start = 0x02,
 
             make = 0x03,
-            kill = 0x04
-                               
+            kill = 0x04,
+
         }
 
         public CPU_Interrupt()
@@ -30,39 +28,43 @@ namespace KsIL.Interrupts
 
             codes code = (codes)Parameters[0];
 
-            int ID = BitConverter.ToInt32(CPU.getPart(Parameters, 1, 5), 0);
+            int ID = BitConverter.ToInt32(Parameters, 1);
+            if (ID == Int32.MaxValue)
+            {
+                ID = CPU.ID;
+            }
             uint Point;
 
-            switch(code)
+            switch (code)
             {
 
                 case codes.stop:
 
                     CPU.VM.cpu[ID].isRunning = false;
 
-                break;
+                    break;
 
                 case codes.start:
 
                     CPU.VM.cpu[ID].isRunning = true;
 
-                break;
+                    break;
 
                 case codes.make:
 
                     // what point it code to start at
-                    Point = BitConverter.ToUInt32(CPU.getPart(Parameters, 5, 9), 0);
+                    Point = BitConverter.ToUInt32(Parameters, 5);
 
                     // ID here is a pointer in memory
-                    CPU.VM.StartCPU(BitConverter.ToUInt32(CPU.getPart(Parameters, 1, 5), 0), Point);
+                    CPU.VM.StartCPU(BitConverter.ToUInt32(Parameters, 1), Point);
 
-                break;
+                    break;
 
                 case codes.kill:
 
                     CPU.VM.cpu[ID] = null;
 
-                break;
+                    break;
 
             }
 

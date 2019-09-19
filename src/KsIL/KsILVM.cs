@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using System.Threading;
+
 namespace KsIL
 {
     public class KsILVM
@@ -13,6 +15,10 @@ namespace KsIL
         internal Dictionary<UInt16, Interrupt> Interrupts;
 
         internal List<CPU> cpu;
+
+        public Dictionary<UInt16, List<(CPU CPU, uint CodePoint)>> Interrupt_CallBack = new Dictionary<UInt16, List<(CPU CPU, uint CodePoint)>>();
+
+        public volatile bool isRunning = false;
 
         public KsILVM(int size, Dictionary<UInt16, Interrupt> Interrupts = null)
         {
@@ -29,31 +35,22 @@ namespace KsIL
 
             this.Interrupts = Interrupts;
 
-            memory.Set(Memory.PROGRAM_RUNNING, 0x01);
+            memory.Set(Memory.Pointer.PROGRAM_RUNNING, 0x01);
 
 
         }
 
-        public void Tick()
+        public void Start()
         {
 
-            Debugger.Log("Start", "Tick");
+            isRunning = true;
 
-            foreach (CPU cpu in this.cpu)
-                cpu.Tick();
-
-            Debugger.Log("End", "Tick");
         }
 
-        public void AutoTick()
+        public void Stop()
         {
 
-            Debugger.Log(memory.Get(Memory.PROGRAM_RUNNING), "AutoTick");
-
-            while (memory.Get(Memory.PROGRAM_RUNNING) == 0x01)
-            {
-                Tick();
-            }
+            isRunning = false;
 
         }
 
@@ -76,11 +73,11 @@ namespace KsIL
         public void Load_Code(byte[] ByteCode, int point = 0, uint pointer = 4)
         {
 
-            Debugger.Log("loading code");
-            Debugger.Log(ByteCode);
-            memory.SetData(pointer, ByteCode);
+            Debugger.Log("loading code", "MainCPU");
+            Debugger.Log(ByteCode, "MainCPU");
+            memory.SetDataPionter(pointer, ByteCode);
 
-            Debugger.Log("loaded code");
+            Debugger.Log("loaded code", "MainCPU");
 
             StartCPU(pointer);
             
@@ -90,7 +87,7 @@ namespace KsIL
         {
 
             CPU temp = new CPU(this, memory, pointer) { InstructionPoint = point };
-
+            
             cpu.Add(temp);
 
         }

@@ -9,14 +9,22 @@ namespace KsIL
 
         public enum types
         {
-
-            code = 0,
-            info = 1,
-            vm = 2
+            none = -1,
+            code =  0,
+            info =  1,
+            cpu  =  2,
+            vm   =  3 
 
         }
 
-        public static int _type = 0;
+        public static int _type = (int)types.none;
+
+        public static void Log(bool data, string name = "", int type = 1)
+        {
+
+            Log(data.ToString(), name, type);
+
+        }
 
         public static void Log(int data, string name = "", int type = 1)
         {
@@ -48,6 +56,8 @@ namespace KsIL
 
             }
 
+            output += "(" + Encoding.UTF8.GetString(data) + ")";
+
             Log(output, name, type);
 
 
@@ -59,18 +69,19 @@ namespace KsIL
             if (!(_type >= type))
                 return;
 
-            string msg;
-
-            if (name == "")
+            ConsoleColor consoleColor = Console.ForegroundColor;
+            
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("[{0}]", ((types)type).ToString());
+            Console.ForegroundColor = ConsoleColor.Red;
+            if (name != "")
             {
-                msg = data;
+                Console.Write("{0}:", name);
             }
-            else
-            {
-                msg = name + " : " + data;
-            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("{0}", data);
+            Console.ForegroundColor = consoleColor;
 
-            Console.WriteLine("[{1}] {0}", msg, ((types)type).ToString());
 
         }
 

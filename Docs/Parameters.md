@@ -1,5 +1,10 @@
 # Parameters
 
-## String Array
+## Array Item
 
-FullLength 32int (4 Bytes), ItemCount 32int (4 Bytes), ItemLength 32int (4 Bytes), ItemContent (MUST BE AS LONG AS SPECIFIED IN ItemLength)
+ItemLength (4 Bytes) ItemType (1 Byte) ItemContent (Lenght as said in ItemLength)
+
+
+## Array
+
+ItemCount (4 Bytes) ArrayItems (all Array Item pointers in arow)
