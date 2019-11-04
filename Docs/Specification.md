@@ -213,15 +213,6 @@ Description: Jump to the position specified in the next return position and set 
 
 Parameters: none
 
-## Call
-Bytecode: 0x53
-
-Mnemonic: CAL
-
-Description: Jump to the position specified and stores current in return pointer.
-
-Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
-
 ## DubbleOP
 Bytecode: 0xFF
 

@@ -10,7 +10,7 @@ namespace KsIL.Runtime
         static void Main(string[] args)
         {
 
-            int Memory = Int32.MaxValue - (1024 * 8); //
+            int Memory = Int32.MaxValue - (1024 * 4); //
 
             string File = "";
 

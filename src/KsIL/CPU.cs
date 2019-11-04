@@ -88,8 +88,10 @@ namespace KsIL
 
                 }
 
-
+                
                 Instructions.Add(new Instruction() { OPCode = (OpCode)OpCode, data = data.ToArray() });
+                Debugger.Log((OpCode)OpCode + "", "instruction:" + Instructions.Count, 2);
+                Debugger.Log(data.ToArray(), "instruction:" + Instructions.Count, 2);
 
                 if ((OpCode)OpCode == KsIL.OpCode.Label)
                 {

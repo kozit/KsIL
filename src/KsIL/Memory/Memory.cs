@@ -23,6 +23,7 @@ namespace KsIL
         List<byte[]> memory;
         uint Size;
         uint ChunkSize;
+        uint TotalChunks;
         byte[] BlankChunk;
 
         private byte[] Make0x00Arrary(uint Size)
@@ -38,22 +39,22 @@ namespace KsIL
 
         public Memory(uint Size, KsILVM VM, uint ChunkSize = 1024)
         {
-            this.VM = VM;
-            this.Size = Size;
-            this.ChunkSize = ChunkSize;
-            Debugger.Log(Size, "Memory");
-            Debugger.Log(ChunkSize, "Memory");
-            BlankChunk = Make0x00Arrary(ChunkSize);
+            this.VM          = VM;
+            this.Size        = Size;
+            this.ChunkSize   = ChunkSize;
+            this.TotalChunks = (uint)Math.Ceiling((float)(Size / ChunkSize));
+            this.BlankChunk  = Make0x00Arrary(ChunkSize);
+            Debugger.Log(Size, "Memory", 2);
+            Debugger.Log(ChunkSize, "Memory", 2);
+            
 
-            memory = new List<byte[]>((int)Math.Ceiling((float)(Size / ChunkSize)));
+            memory = new List<byte[]>((int)this.TotalChunks);
             
             for (int i = 0; i <= Size / ChunkSize; i++)
             {
-                memory[i] = null;
+                memory.Add(null);
             }
             
-            Set(0, Make0x00Arrary(ChunkSize * 5));
-
         }
 
         public uint GetSize()
@@ -66,7 +67,22 @@ namespace KsIL
             Set(Pointer.PROGRAM_RUNNING, 0x01);
         }
 
-        // if a Chunk i null then return a BlankChunk ie all 0x00
+        public void Add(int c)
+        {
+
+            List<byte[]> temp = new List<byte[]>(this.memory);
+
+
+        }
+
+        private byte[] GetMemoryChunkAddr(uint Addr)
+        {
+
+            return GetMemoryChunk((int)Math.Floor((decimal)(Addr / ChunkSize)));
+
+        }
+
+        // if a Chunk is null then return a BlankChunk ie all 0x00
         private byte[] GetMemoryChunk(uint Chunk)
         {
             return GetMemoryChunk((int)Chunk);
@@ -76,11 +92,23 @@ namespace KsIL
         {
 
             if (memory[Chunk] == null)
-                return BlankChunk;
+                if(this.TotalChunks - 1 == Chunk)
+                    return Make0x00Arrary(this.ChunkSize * (this.Size / this.TotalChunks) - this.TotalChunks);
+                else
+                    return BlankChunk;
             else
                 return memory[Chunk];
+            
+        }
 
+        private bool MemoryChunkNullAddr(int Addr, bool set = false)
+        {
+            return MemoryChunkNull((int)Math.Floor((decimal)(Addr / ChunkSize)), set);
+        }
 
+        private bool MemoryChunkNullAddr(uint Addr, bool set = false)
+        {
+            return MemoryChunkNull((int)Math.Floor((decimal)(Addr / ChunkSize)), set);
         }
 
         private bool MemoryChunkNull(uint Chunk, bool set = false)
@@ -91,20 +119,29 @@ namespace KsIL
         private bool MemoryChunkNull(int Chunk, bool set = false)
         {
 
-            if (memory[Chunk] == null)
+            if (memory[Chunk] != null)
+                return false;
+            
+            if (set == true)
             {
 
-                if (set == true)
-                {
-                    memory[Chunk] = new byte[ChunkSize];
-                    return true;
-                }
-                return false;
-
+                memory[Chunk] = new byte[ChunkSize];
+                
             }
-            else
-                return true;
 
+            return true;
+
+
+        }
+
+        private int MemoryAddrToChunk(uint Addr)
+        {
+            return MemoryAddrToChunk((int)Addr);
+        }
+
+        private int MemoryAddrToChunk(int Addr)
+        {
+            return (int)Math.Floor((decimal)Addr / this.ChunkSize );
         }
 
         public byte Get(uint Addr)
@@ -116,10 +153,10 @@ namespace KsIL
         {
 
             byte[] temp = new byte[Length];
-            uint Startchunk = Addr / ChunkSize;
-            uint EndChunk   = (Addr + Length) / ChunkSize;
+            uint Startchunk    = Addr / ChunkSize;
+            uint TotalChunks   = (uint)Math.Ceiling((decimal)(Length / ChunkSize));
 
-            if (Startchunk == EndChunk)
+            if (Startchunk == (Startchunk + TotalChunks) - 1)
             {
 
                 Array.Copy(GetMemoryChunk(Startchunk), (int)(Addr - (ChunkSize * Startchunk)), temp, 0, Length);
@@ -130,19 +167,18 @@ namespace KsIL
 
             Array.Copy(GetMemoryChunk(Startchunk), (int)(Addr - (ChunkSize * Startchunk)), temp, 0, (int)ChunkSize - (Addr - (ChunkSize * Startchunk)));
 
-            Offset += (int)(ChunkSize - (Addr - ChunkSize * Startchunk));
+            Offset += (int)(Addr - ChunkSize * Startchunk);
 
-            for (int i = (int)Startchunk + 1; i <= (int)EndChunk - 1; i++)
+            for (int i = (int)Startchunk; i <= (int)(Startchunk + TotalChunks) - 2; i++)
             {
-                                             
+                Debugger.Log(i + ":" + (Addr - (ChunkSize * i)) + ":" + (ChunkSize - (Addr - (ChunkSize * i))), "Memory:getPart", 2);              
                 Array.Copy(GetMemoryChunk((uint)i), (int)(Addr - (ChunkSize * i)), temp, Offset, (int)ChunkSize - (Addr - (ChunkSize * i)));
 
                 Offset += (int)ChunkSize;
 
             }
-
-
-            Array.Copy(GetMemoryChunk(EndChunk), (int)(Addr - (ChunkSize * EndChunk)), temp, 0, (int)ChunkSize - (Addr - (ChunkSize * EndChunk)));
+            
+            Array.Copy(GetMemoryChunk((Startchunk + TotalChunks) - 1), (int)(Addr - (ChunkSize * (Startchunk + TotalChunks) - 1)), temp, 0, (int)ChunkSize - (Addr - (ChunkSize * (Startchunk + TotalChunks) - 1)));
 
             return temp;
             
@@ -174,10 +210,15 @@ namespace KsIL
         {
             int chunk = (int)(Addr / ChunkSize);
 
-            MemoryChunkNull(Addr, true);
+            MemoryChunkNullAddr(Addr, true);
 
             memory[chunk][Addr - (ChunkSize * chunk)] = Value;
-            
+
+            if (GetMemoryChunkAddr(Addr) == BlankChunk)
+            {
+                memory[(int)Math.Floor((decimal)(Addr / ChunkSize))] = null;
+            }
+
         }
 
         
@@ -207,10 +248,10 @@ namespace KsIL
         {
 
             uint i;
-            for (i = 100; i < GetSize(); i++)
+            for (i = 100; i < ( GetSize() - Value.Length ); i++)//GetSize(); i++)
             {
 
-                if (i + Value.Length >= Pointer)
+                if (i + Value.Length == Pointer)
                 {
 
                     i = Pointer + 4;
@@ -234,6 +275,20 @@ namespace KsIL
 
                 Set(Addr, BitConverter.GetBytes(Value.Length));
                 Set(Addr + 4, Value);
+
+        }
+
+        uint FindClean(uint size)
+        {
+
+            for (uint i = this.ChunkSize * 3; i < this.GetSize() - size; i++)
+            {
+
+                //if(Memo)
+
+            }
+
+            return this.GetSize();
 
         }
 

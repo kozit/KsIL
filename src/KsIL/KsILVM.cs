@@ -57,25 +57,25 @@ namespace KsIL
         public byte[] memDump()
         {
 
-            return memory.Get(0, memory.GetSize());
+            return memory.Get(1, memory.GetSize());
 
         }
 
-        public void Load_File(string Path, int point = 0, uint pointer = 4)
+        public void Load_File(string Path, int point = 0)
         {
 
             Debugger.Log(Path, "File Path");
 
-            Load_Code(File.ReadAllBytes(Path), point, pointer);
+            Load_Code(File.ReadAllBytes(Path), point);
 
         }
 
-        public void Load_Code(byte[] ByteCode, int point = 0, uint pointer = 4)
+        public void Load_Code(byte[] ByteCode, int point = 0)
         {
-
+            uint pointer = memory.GetSize() - 16;
             Debugger.Log("loading code", "MainCPU");
             Debugger.Log(ByteCode, "MainCPU");
-            memory.SetDataPionter(pointer, ByteCode);
+            memory.SetDataPionter(pointer, (uint)(memory.GetSize() - ByteCode.Length - 64), ByteCode);
 
             Debugger.Log("loaded code", "MainCPU");
 

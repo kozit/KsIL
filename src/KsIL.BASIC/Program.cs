@@ -1,8 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace KsIL.BASIC
 {
+
+
+    public class Debugger
+    {
+
+        public static void Log(bool data, string name = "")
+        {
+
+            Log(data.ToString(), name);
+
+        }
+
+        public static void Log(int data, string name = "")
+        {
+
+            Log(data.ToString(), name);
+
+        }
+
+        public static void Log(uint data, string name = "")
+        {
+
+            Log(data.ToString(), name);
+
+        }
+
+        public static void Log(byte[] data, string name = "")
+        {
+
+            string output = "";
+
+
+            foreach (byte itema in data)
+            {
+
+                output += itema.ToString("X") + " ";
+
+            }
+
+            output += "(" + Encoding.UTF8.GetString(data) + ")";
+
+            Log(output, name);
+
+
+        }
+
+        public static void Log(string[] data, string name = "")
+        {
+
+            string output = "";
+
+
+            foreach (string itema in data)
+            {
+
+                output += itema + " _-_ ";
+
+            }
+            Log(output, name);
+        }
+
+        public static void Log(string data, string name = "")
+        {
+
+
+            ConsoleColor consoleColor = Console.ForegroundColor;
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            if (name != "")
+            {
+                Console.Write("{0}:", name);
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("{0}", data);
+            Console.ForegroundColor = consoleColor;
+
+
+        }
+
+    }
+
+
     class Program
     {
 
@@ -63,8 +146,8 @@ namespace KsIL.BASIC
             List<byte> output = new List<byte>();
 
             string[] Lines = System.IO.File.ReadAllLines(args[0]);
-  
-            for (int i = 1; i < Lines.Length; i++)
+            Debugger.Log(Lines, "File");
+            for (int i = 0; i < Lines.Length; i++)
             {
 
                 if (Lines[i].Trim() == "")
@@ -79,9 +162,17 @@ namespace KsIL.BASIC
 
 
                 string[] Tokens = getTokens(Lines[i]);
+                Debugger.Log(Lines[i]);
+                Debugger.Log(Tokens);
+
+                List<byte> log = new List<byte>();
 
                 for (int t = 1; t < Tokens.Length; t++)
+                {
                     output.AddRange(TokenDecode(Tokens[t]));
+                    log.AddRange(TokenDecode(Tokens[t]));
+                }
+                Debugger.Log(log.ToArray());
 
                 LineCount++;
                 output.AddRange(new byte[] { 0x00, 0xFF, 0x00, 0xFF});

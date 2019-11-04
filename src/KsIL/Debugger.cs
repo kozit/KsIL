@@ -52,7 +52,7 @@ namespace KsIL
             foreach (byte itema in data)
             {
 
-                output += itema + " ";
+                output += itema.ToString("X") + " ";
 
             }
 

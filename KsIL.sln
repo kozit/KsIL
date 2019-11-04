@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL.Runtime", "src\KsIL.Runtime\KsIL.Runtime.csproj", "{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}"
 EndProject
@@ -21,12 +21,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DCF42382
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosTest", "src\Tests\CosmosTest\CosmosTest.csproj", "{49994873-B97E-4F63-AC76-0A78DC5DF826}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interrupts", "Interrupts", "{705AC3CF-A928-489E-B793-0BD1EED8CDB9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interrupts", "Interrupts", "{0DC12798-685D-4A4A-BCB1-297CC259CA97}"
 	ProjectSection(SolutionItems) = preProject
-		CPU.md = CPU.md
-		Graphics.md = Graphics.md
-		Invoke.md = Invoke.md
-		OS.md = OS.md
+		Docs\Interrupts\CPU.md = Docs\Interrupts\CPU.md
+		Docs\Interrupts\Graphics.md = Docs\Interrupts\Graphics.md
+		Docs\Interrupts\Invoke.md = Docs\Interrupts\Invoke.md
+		Docs\Interrupts\OS.md = Docs\Interrupts\OS.md
 	EndProjectSection
 EndProject
 Global
@@ -57,7 +57,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49994873-B97E-4F63-AC76-0A78DC5DF826} = {DCF42382-C7E5-4945-BE5B-BB5C6932BE6E}
-		{705AC3CF-A928-489E-B793-0BD1EED8CDB9} = {FF6576AA-4D4E-44AB-B18E-DE42EC100977}
+		{0DC12798-685D-4A4A-BCB1-297CC259CA97} = {FF6576AA-4D4E-44AB-B18E-DE42EC100977}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70D3807C-76DA-416B-8C63-72B574829623}
