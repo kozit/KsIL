@@ -26,8 +26,7 @@ namespace KsIL
             cpu = new List<CPU>();
             
             memory = new Memory((uint)size, this);
-            
-
+ 
             if (Interrupts == null)
             {
                 Interrupts = Interrupt.Default;
@@ -43,14 +42,14 @@ namespace KsIL
         public void Start()
         {
 
-            isRunning = true;
+            memory.Set(Memory.Pointer.PROGRAM_RUNNING, 0x01);
 
         }
 
         public void Stop()
         {
 
-            isRunning = false;
+            memory.Set(Memory.Pointer.PROGRAM_RUNNING, 0x00);
 
         }
 

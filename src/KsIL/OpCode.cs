@@ -16,7 +16,7 @@
         Test_Jump = 0x13,
 
         //Math
-        Add = 0x21, 
+        Add = 0x21,
         Subtract = 0x22,
         Divide = 0x23,
         Mutiply = 0x24,
@@ -32,13 +32,15 @@
 
         //CPU info, runtime info
         MemorySpecial = 0x37,
-        
+
         Goto = 0x51,
         Label = 0x52,
         Call = 0x53,
         Return = 0x54,
 
-        DubbleOP = 0xFF
-                       
+        DubbleOP = 0xFF,
+
+
+
     }
 }

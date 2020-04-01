@@ -5,7 +5,6 @@ using System.Text;
 namespace KsIL.BASIC
 {
 
-
     public class Debugger
     {
 
@@ -67,8 +66,7 @@ namespace KsIL.BASIC
 
         public static void Log(string data, string name = "")
         {
-
-
+            
             ConsoleColor consoleColor = Console.ForegroundColor;
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -79,12 +77,10 @@ namespace KsIL.BASIC
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("{0}", data);
             Console.ForegroundColor = consoleColor;
-
-
+            
         }
 
     }
-
 
     class Program
     {
@@ -185,8 +181,6 @@ namespace KsIL.BASIC
 
         }
         
-        
-
         static byte[] TokenDecode(string Token)
         {
 

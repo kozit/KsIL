@@ -21,6 +21,7 @@ namespace KsIL
         internal KsILVM VM;
 
         List<byte[]> memory;
+        List<object> memoryLocks;
         uint Size;
         uint ChunkSize;
         uint TotalChunks;
@@ -37,21 +38,22 @@ namespace KsIL
 
         }
 
-        public Memory(uint Size, KsILVM VM, uint ChunkSize = 1024)
+        public Memory(uint Size, KsILVM VM, uint mChunkSize = 1024)
         {
             this.VM          = VM;
             this.Size        = Size;
-            this.ChunkSize   = ChunkSize;
+            this.ChunkSize   = mChunkSize;
             this.TotalChunks = (uint)Math.Ceiling((float)(Size / ChunkSize));
             this.BlankChunk  = Make0x00Arrary(ChunkSize);
-            Debugger.Log(Size, "Memory", 2);
-            Debugger.Log(ChunkSize, "Memory", 2);
-            
+            Debugger.Log(Size, "Memory", Debugger.DebugTypes.cpu);
+            Debugger.Log(ChunkSize, "Memory", Debugger.DebugTypes.cpu);
 
+            memoryLocks = new List<object>((int)this.TotalChunks);
             memory = new List<byte[]>((int)this.TotalChunks);
             
             for (int i = 0; i <= Size / ChunkSize; i++)
             {
+                memoryLocks.Add(null);
                 memory.Add(null);
             }
             
@@ -65,14 +67,6 @@ namespace KsIL
         public void Clear()
         {
             Set(Pointer.PROGRAM_RUNNING, 0x01);
-        }
-
-        public void Add(int c)
-        {
-
-            List<byte[]> temp = new List<byte[]>(this.memory);
-
-
         }
 
         private byte[] GetMemoryChunkAddr(uint Addr)
@@ -131,7 +125,6 @@ namespace KsIL
 
             return true;
 
-
         }
 
         private int MemoryAddrToChunk(uint Addr)
@@ -171,8 +164,11 @@ namespace KsIL
 
             for (int i = (int)Startchunk; i <= (int)(Startchunk + TotalChunks) - 2; i++)
             {
-                Debugger.Log(i + ":" + (Addr - (ChunkSize * i)) + ":" + (ChunkSize - (Addr - (ChunkSize * i))), "Memory:getPart", 2);              
-                Array.Copy(GetMemoryChunk((uint)i), (int)(Addr - (ChunkSize * i)), temp, Offset, (int)ChunkSize - (Addr - (ChunkSize * i)));
+                Debugger.Log(i + ":" + (Addr - (ChunkSize * i)) + ":" + (ChunkSize - (Addr - (ChunkSize * i))), "Memory:getPart", Debugger.DebugTypes.cpu);
+                int t = (int)(Addr - (ChunkSize * i));
+                if (t < 0)
+                    t = 0;
+                Array.Copy(GetMemoryChunk((uint)i), t, temp, Offset, (int)ChunkSize - (Addr - (ChunkSize * i)));
 
                 Offset += (int)ChunkSize;
 
@@ -206,7 +202,7 @@ namespace KsIL
 
         }
 
-        public void Set(uint Addr, byte Value)
+        private void rawSet(uint Addr, byte Value)
         {
             int chunk = (int)(Addr / ChunkSize);
 
@@ -221,14 +217,30 @@ namespace KsIL
 
         }
 
+        public void Set(uint Addr, byte Value, bool safe = false)
+        {
+            if (safe)
+            {
+                lock (memoryLocks[(int)(Addr / ChunkSize)])
+                {
+                    rawSet(Addr, Value);
+                }
+            }
+            else
+            {
+                rawSet(Addr, Value);
+            }
+
+        }
+
         
-        public void Set(uint Addr, byte[] Value)
+        public void Set(uint Addr, byte[] Value, bool safe = false)
         {
 
             // use this for now
             for (uint i = 0; i < Value.Length; i++)
             {
-                Set(Addr + i, Value[i]);
+                Set(Addr + i, Value[i], safe);
             }
 
             //Array.Copy(Value, 0, memory, Addr, Value.Length);
@@ -236,19 +248,19 @@ namespace KsIL
 
         }
 
-        public void SetDataPionter(uint Pouinter, uint Addr, byte[] Value)
+        public void SetDataPionter(uint Pouinter, uint Addr, byte[] Value, bool safe = false)
         {
 
-            Set(Pouinter, BitConverter.GetBytes(Addr));
-            SetData(Addr, Value);
+            Set(Pouinter, BitConverter.GetBytes(Addr), safe);
+            SetData(Addr, Value, safe);
             
         }
 
-        public void SetDataPionter(uint Pointer, byte[] Value)
+        public void SetDataPionter(uint Pointer, byte[] Value, bool safe = false)
         {
 
             uint i;
-            for (i = 100; i < ( GetSize() - Value.Length ); i++)//GetSize(); i++)
+            for (i = 100; i < ( GetSize() - Value.Length ); i++)
             {
 
                 if (i + Value.Length == Pointer)
@@ -266,15 +278,15 @@ namespace KsIL
 
             }
             
-            SetDataPionter(Pointer, i, Value);
+            SetDataPionter(Pointer, i, Value, safe);
 
         }
 
-        public void SetData(uint Addr, byte[] Value)
+        public void SetData(uint Addr, byte[] Value, bool safe = false)
         {
 
-                Set(Addr, BitConverter.GetBytes(Value.Length));
-                Set(Addr + 4, Value);
+                Set(Addr, BitConverter.GetBytes(Value.Length), safe);
+                Set(Addr + 4, Value, safe);
 
         }
 

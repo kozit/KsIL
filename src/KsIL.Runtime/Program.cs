@@ -64,9 +64,9 @@ namespace KsIL.Runtime
                      
             
 
-            KsIL.Debugger._type = 2;
+            KsIL.Debugger._type = Debugger.DebugTypes.cpu;
 
-            KsIL.Debugger.Log("DebugMode:" + ((Debugger.types)KsIL.Debugger._type).ToString(), "Runtime", 1);
+            KsIL.Debugger.Log("DebugMode:" + (Debugger._type).ToString(), "Runtime", Debugger.DebugTypes.code);
 
             KsIL.Debugger.Log("loading VM", "Runtime");
             

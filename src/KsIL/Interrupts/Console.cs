@@ -27,7 +27,7 @@ namespace KsIL.Interrupts
 
             codes code = (codes)Parameters[0];
 
-            uint point = BitConverter.ToUInt32(CPU.getPart(Parameters, 1, 4), 0);
+            uint point = BitConverter.ToUInt32(Parameters, 1);
 
             Debugger.Log(code.ToString(), "Console:code");
 

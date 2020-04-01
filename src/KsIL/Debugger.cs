@@ -7,7 +7,7 @@ namespace KsIL
     public class Debugger
     {
 
-        public enum types
+        public enum DebugTypes
         {
             none = -1,
             code =  0,
@@ -17,30 +17,30 @@ namespace KsIL
 
         }
 
-        public static int _type = (int)types.none;
+        public static DebugTypes _type = DebugTypes.none;
 
-        public static void Log(bool data, string name = "", int type = 1)
+        public static void Log(bool data, string name = "", DebugTypes type = DebugTypes.info)
         {
 
             Log(data.ToString(), name, type);
 
         }
 
-        public static void Log(int data, string name = "", int type = 1)
+        public static void Log(int data, string name = "", DebugTypes type = DebugTypes.info)
         {
 
             Log(data.ToString(), name, type);
 
         }
 
-        public static void Log(uint data, string name = "", int type = 1)
+        public static void Log(uint data, string name = "", DebugTypes type = DebugTypes.info)
         {
 
             Log(data.ToString(), name, type);
 
         }
 
-        public static void Log(byte[] data, string name = "", int type = 1)
+        public static void Log(byte[] data, string name = "", DebugTypes type = DebugTypes.info)
         {
 
             if (!(_type >= type))
@@ -63,7 +63,7 @@ namespace KsIL
 
         }
 
-        public static void Log(string data, string name = "", int type = 1)
+        public static void Log(string data, string name = "", DebugTypes type = DebugTypes.info)
         {
 
             if (!(_type >= type))
@@ -72,7 +72,7 @@ namespace KsIL
             ConsoleColor consoleColor = Console.ForegroundColor;
             
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("[{0}]", ((types)type).ToString());
+            Console.Write("[{0}]", (type).ToString());
             Console.ForegroundColor = ConsoleColor.Red;
             if (name != "")
             {

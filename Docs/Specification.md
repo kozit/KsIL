@@ -1,6 +1,6 @@
 # Execution Information
 
-Spec:1
+Spec:2
 
 ## Basic Execution Information
 Instructions are separated by 0x00 0xFF 0x00 0xFF,
@@ -12,8 +12,8 @@ Each non null (0x00) byte is added together. So if I said a parameter with lengt
 ## Handling commands (Read (0xFF) & Read Length (0xFE)) that are used instead of absolute values
 When reading parameters, if 0xFF or 0xFE is read as the first byte in any parameter, that command is executed from the current point with the value that is returned being used instead of the command bytecode value.
 
-## 0xFF, 0xFE, 0xF1 the forbidden values and the escape byte
-In code 0xFF, 0xFE and 0xF1 cannot be used as absolute values if they are the first byte, instead the escape byte 0xF1 must be placed in front of them if they are absolute values.
+## 0xFF, 0xFE the forbidden values and the escape byte
+In code 0xFF 0xFE 0FD cannot be used as absolute values if they are the first byte, instead the escape byte 0xF1 must be placed in front of them if they are absolute values.
 
 When reading a parameter and the first byte is 0xF1 the next byte is an absolute value. This byte should be ignored and not count as a byte in the parameter.
 
@@ -26,14 +26,14 @@ Variables stored in memory are each preceded with 4 Bytes telling us the length 
 In order to access the stored content in memory the command Read (0xFF) is used which has the parameters: location (4 bytes) so to move the string we created at location 0x06 in memory to location 0x10 the bytecode would be {todo}
 
 ## Reserved Memory
-The first 100 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
+The first 200 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
 
 
 | Register Name | Description | Memory Position |
 | ------------- | ----------- | --------------- |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x00 (1 Byte) |
 | Code Pointer | Points to where to code for the main CPU is in memory (32int) | 0x04-0x08 (4 Bytes) |
-| Graphics Pointer | Points to the Graphics interrupt memory if 0x00, 0x00, 0x00, 0x00 the not in Graphics mode (32int) | 0x14-0x17 (4 Bytes) |
+| Registers | dummy address to wright to registers | 0x09-0x1F (22 Bytes) |
 
 
 # Commands
@@ -184,7 +184,7 @@ Mnemonic: JMP
 
 Description: Jump to the position specified or Label.
 
-Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
+Parameters: Type (1 Byte 0xF0 offset up, 0xF1 offset down, 0xF2 absolute, 0xF3 Label) Address or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
 
 ## Label
 Bytecode: 0x52
@@ -193,7 +193,7 @@ Mnemonic: LAB
 
 Description: 
 
-Parameters:
+Parameters: Type (1 Byte 0xF0 offset up, 0xF1 offset down, 0xF2 absolute) Address (4 Bytes) 
 
 ## Call
 Bytecode: 0x53
