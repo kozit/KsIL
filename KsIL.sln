@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL.Runtime", "src\KsIL.Runtime\KsIL.Runtime.csproj", "{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL", "src\KsIL\KsIL.csproj", "{F6C0F344-A5FD-4698-A906-508CCEC3F043}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KsIL.BASIC", "src\KsIL.BASIC\KsIL.BASIC.csproj", "{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{FF6576AA-4D4E-44AB-B18E-DE42EC100977}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\Interrupts.md = Docs\Interrupts.md
@@ -16,10 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{FF6576AA-4
 		README.md = README.md
 		Docs\Specification.md = Docs\Specification.md
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DCF42382-C7E5-4945-BE5B-BB5C6932BE6E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosTest", "src\Tests\CosmosTest\CosmosTest.csproj", "{49994873-B97E-4F63-AC76-0A78DC5DF826}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interrupts", "Interrupts", "{0DC12798-685D-4A4A-BCB1-297CC259CA97}"
 	ProjectSection(SolutionItems) = preProject
@@ -29,34 +19,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interrupts", "Interrupts", 
 		Docs\Interrupts\OS.md = Docs\Interrupts\OS.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KsIL", "src\KsIL\KsIL.csproj", "{44C404AD-EEA4-4BE8-BD74-87FC5FC858A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0429E5CF-D3E8-4265-BDE4-116AF6CE6CA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6C0F344-A5FD-4698-A906-508CCEC3F043}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8982A5E-78EE-4FC8-A640-38CB8DA4A230}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49994873-B97E-4F63-AC76-0A78DC5DF826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49994873-B97E-4F63-AC76-0A78DC5DF826}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49994873-B97E-4F63-AC76-0A78DC5DF826}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49994873-B97E-4F63-AC76-0A78DC5DF826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C404AD-EEA4-4BE8-BD74-87FC5FC858A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C404AD-EEA4-4BE8-BD74-87FC5FC858A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C404AD-EEA4-4BE8-BD74-87FC5FC858A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C404AD-EEA4-4BE8-BD74-87FC5FC858A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{49994873-B97E-4F63-AC76-0A78DC5DF826} = {DCF42382-C7E5-4945-BE5B-BB5C6932BE6E}
 		{0DC12798-685D-4A4A-BCB1-297CC259CA97} = {FF6576AA-4D4E-44AB-B18E-DE42EC100977}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

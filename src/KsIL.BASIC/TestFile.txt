@@ -1,3 +1,0 @@
-﻿0x35 ui:105 "Hello World" 
-0x02 ui16:3 ui16:1 ui:105
-0x51 ui16:0

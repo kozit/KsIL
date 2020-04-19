@@ -1,223 +1,24 @@
 # Execution Information
 
-Spec:2
+Spec:3
 
 ## Basic Execution Information
+
 Instructions are separated by 0x00 0xFF 0x00 0xFF,
-Parameters MUST BE AS LONG AS SPECIFIED Below, If a Instruction ends in 0x00 0xFF add 0xEE to the end
 
-##  Multiple Byte Parameters; how do they work?
-Each non null (0x00) byte is added together. So if I said a parameter with length of 4 bytes was [0xFF 0x00 0x00 0x00] the resulting length would be 0xFF or 255.
+## Memory Use
 
-## Handling commands (Read (0xFF) & Read Length (0xFE)) that are used instead of absolute values
-When reading parameters, if 0xFF or 0xFE is read as the first byte in any parameter, that command is executed from the current point with the value that is returned being used instead of the command bytecode value.
+Each program should be given virtual memory of at least 10,240 bytes or more, this should be available to this program only and no others
 
-## 0xFF, 0xFE the forbidden values and the escape byte
-In code 0xFF 0xFE 0FD cannot be used as absolute values if they are the first byte, instead the escape byte 0xF1 must be placed in front of them if they are absolute values.
-
-When reading a parameter and the first byte is 0xF1 the next byte is an absolute value. This byte should be ignored and not count as a byte in the parameter.
-
-
-# Memory Use
-Each program should be given virtual memory of at least 10,240 bytes or more, this should be available to this program only and no others. Each variable is declared using the command store (0x01), which stores the bytes into memory. The command uses the following parameters: length (4 Bytes), content (in Bytes), location (4 Bytes) so to store the ASCII string hello world at memory position 113 (0x0D 0x00 0x00 0x00) the compiler could spit out: {todo}
-
-Variables stored in memory are each preceded with 4 Bytes telling us the length of the data at the position. So storing 0x02 at position 0x0F would result in the memory at position 0x0F onwards being {todo}
-
-In order to access the stored content in memory the command Read (0xFF) is used which has the parameters: location (4 bytes) so to move the string we created at location 0x06 in memory to location 0x10 the bytecode would be {todo}
+Data stored in memory follows [Data](Data.md)
 
 ## Reserved Memory
-The first 200 bytes of memory are positions that are used by the executor to store vital executing state information. These can be read but should NEVER be modified. Any modification of these bytes can result in an operation exception which will cause the program to crash.
 
+The first 200 bytes of memory are positions that are used by the executor to store vital executing state information.
 
 | Register Name | Description | Memory Position |
 | ------------- | ----------- | --------------- |
 | Program Running | If false the program will end. 0x00 (False) 0x01 (True) | 0x00 (1 Byte) |
-| Code Pointer | Points to where to code for the main CPU is in memory (32int) | 0x04-0x08 (4 Bytes) |
-| Registers | dummy address to wright to registers | 0x09-0x1F (22 Bytes) |
-
-
-# Commands
-
-## Interrupts
-
-Bytecode: 0x02
-
-Mnemonic: INT
-
-Description: Calls an Interrupt.
-
-Parameters: Code 16int (2 Bytes), Interrupt Parameters (See Interrupts for Info)
-
-## Interrupt Callback
-
-Bytecode: 0x04
-
-Mnemonic: INC
-
-Description: Interrupt call Back.
-
-Parameters: Code 16int (2 Bytes), Line to call uint32(4 Bytes) 
-
-# Conditional Tests
-For all conditional commands the Conditional Result byte in Reserved Memory is set according to the result of the conditional test.
-
-## Test Equal
-Bytecode: 0x11
-
-Mnemonic: TEQ
-
-Description: Tests if the two parameters are equal and if they are the result is true.
-
-Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
-
-## Test Greater Than
-Bytecode: 0x12
-
-Mnemonic: TGT
-
-Description: Tests if location 1 is greater than location 2.
-
-Parameters: location 1 (4 Bytes, in memory position), location 2 (4 Bytes, in memory position)
-
-## Test Jump
-Bytecode: 0x13
-
-Mnemonic: TJM
-
-Description: jump to location if ConditionalResult is 0x01.
-
-Parameters: location (4 Bytes, in memory position)
-
-
-# Arithmetic Operations
-## Add
-Bytecode: 0x21
-
-Mnemonic: ADD
-
-Description: Adds SOURCE to DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION + SOURCE)
-
-Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
-
-## Subtract
-Bytecode: 0x22
-
-Mnemonic: SUB
-
-Description: Subtracts SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION - SOURCE)
-
-Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
-
-
-## Multiply
-Bytecode: 0x24
-
-Mnemonic: MUL
-
-Description: Multiplys SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION * SOURCE)
-
-Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
-
-## Divide
-Bytecode: 0x23
-
-Mnemonic: DIV
-
-Description: Divides SOURCE from DESTINATION and puts the result in DESTINATION (DESTINATION = DESTINATION / SOURCE)
-
-Parameters: A (4 Bytes, memloc or absolute value), B (4 Bytes, memloc or absolute value), save (memloc or nothing)
-
-
-# Memory Management
-
-## Move
-Bytecode: 0x32
-
-Mnemonic: MOV
-
-Description: moves content at the position specified to the other.
-
-Parameters: location0 (4 Bytes, in memory position) location1 (4 Bytes, in memory position)
-
-## Clear
-Bytecode: 0x33
-
-Mnemonic: CLR
-
-Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
-
-Parameters: location (4 Bytes, in memory position)
-
-## Clear Pointer
-Bytecode: 0x34
-
-Mnemonic: DCL
-
-Description: Clears (nulls to 0x00) the memory content at the position specified and marks it for future use by the dynamic memory functions.
-
-Parameters: location int32 (4 Bytes, in memory position)
-
-## Store
-Bytecode: 0x35
-
-Mnemonic: STR
-
-Description: Stores content in memory at the location specified no matter if it is already occupied.
-
-Parameters: length uint32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
-
-## Store Pointer
-Bytecode:0x36
-
-Mnemonic: DST
-
-Description: Stores content in memory at the next free destination of that length and places uint32 (4 bytes) with the position it was stored in at the location specified. If no free memory is available an exception will be thrown.
-
-Parameters: length uint32 (4 Bytes), content (MUST BE AS LONG AS SPECIFIED IN length), location (4 Bytes, in memory position)
-
-# Movement
-
-## GoTo
-Bytecode: 0x51
-
-Mnemonic: JMP
-
-Description: Jump to the position specified or Label.
-
-Parameters: Type (1 Byte 0xF0 offset up, 0xF1 offset down, 0xF2 absolute, 0xF3 Label) Address or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
-
-## Label
-Bytecode: 0x52
-
-Mnemonic: LAB
-
-Description: 
-
-Parameters: Type (1 Byte 0xF0 offset up, 0xF1 offset down, 0xF2 absolute) Address (4 Bytes) 
-
-## Call
-Bytecode: 0x53
-
-Mnemonic: CAL
-
-Description: Jump to the position specified and stores current in return pointer.
-
-Parameters: position or Label (4 Bytes, position of execution or if 6+ bytes then name of Label)
-
-## Return
-Bytecode: 0x54
-
-Mnemonic: RTN
-
-Description: Jump to the position specified in the next return position and set the return pointer to the next return or 0x00 0x00 0x00 0x00 if none.
-
-Parameters: none
-
-## DubbleOP
-Bytecode: 0xFF
-
-Mnemonic: DOP
-
-Description: unused for now for if and when we need more space.
-
-Parameters: none
+| Reserved | Reserved | 0x01 - 0x07 (7 Bytes) |
+| Video Memory Pointer | a pointer to the Data point of the Vidoe memory | 0x08 - 0x12 (8 Bytes) |
+| Reserved | Reserved | 0x13 - 0x64 (84 Bytes) |
