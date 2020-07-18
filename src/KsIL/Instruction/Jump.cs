@@ -12,7 +12,7 @@ namespace KsIL.Instruction
             if(CommandBuffer[0] == 0xFF)
                 CPU.PC += BitConverter.ToUInt64(CommandBuffer, 1);
             else
-                CPU.PC =  BitConverter.ToUInt64(CommandBuffer, 1);
+                CPU.PC  = BitConverter.ToUInt64(CommandBuffer, 1);
         }
     }
 }

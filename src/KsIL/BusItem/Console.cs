@@ -6,12 +6,13 @@ namespace KsIL.BusItem
 {
     public class Console : IBusItem
     {
-        public byte Read(ulong Addr, ulong Offset)
+
+        public byte[] Read(ulong Addr, ulong Size, ulong Offset)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] Read(ulong Addr, ulong Size, ulong Offset)
+        public byte Read(ulong Addr, ulong Offset)
         {
             throw new NotImplementedException();
         }

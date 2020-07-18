@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace KsIL
 {
@@ -11,24 +12,11 @@ namespace KsIL
         #region Registers
 
         public UInt64 PC;
-        public struct Register
-        {
-            public Int64 A;
-            public Int64 B;
-            public Int64 X;
-            public Int64 Y;
+        public List<UInt64> CallStack = new List<UInt64>();
 
-            public Int64 AX;
-
-            public Int64 SP;
-            public Int64 BP;
-        }
 
         public Register Registers;
-
         public List<Register> RegisterStack = new List<Register>();
-
-        public List<UInt64> CallStack = new List<UInt64>();
 
         #endregion
 
@@ -42,12 +30,14 @@ namespace KsIL
         {
             return buffer[^1] == 0xFF && buffer[^2] == 0x00 && buffer[^3] == 0xFF && buffer[^4] == 0x00;
         }
+
         public void Tick()
         {
+
             buffer.Clear();
             while (!IsCommandEnd())
             {
-                buffer.Add(GetBus.ReadData(PC, 1)[0]);
+                buffer.Add(GetBus.Read(PC));
                 PC++;
             }
 

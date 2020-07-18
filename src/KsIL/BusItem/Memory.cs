@@ -12,14 +12,14 @@ namespace KsIL.BusItem
             Backend = backend;
         }
 
-        public byte Read(ulong Addr, ulong Offset)
-        {
-            throw new NotImplementedException();
-        }
-
         public byte[] Read(ulong Addr, ulong Size, ulong Offset)
         {
-            throw new NotImplementedException();
+            return Backend.GetBlock(Addr, Size, Offset);
+        }
+
+        public byte Read(ulong Addr, UInt64 Offset)
+        {
+            return Backend.Get(Addr, Offset);
         }
 
         public byte[] ReadData(UInt64 Addr, UInt64 Offset)

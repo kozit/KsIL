@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KsIL
 {
@@ -11,6 +13,7 @@ namespace KsIL
         public Bus SystemBus  { private set; get; }
         public byte[] Bootloader { private set; get; }
         public UInt64 StartAddress { private set; get; }
+        public Dictionary<byte[], IInstruction> Instructions { private set; get; }
 
         public KsILSystem()
         {
@@ -31,8 +34,28 @@ namespace KsIL
             SystemBus.RegisterBusItem(new BusItem.SystemBusItem(this), 0, 49);
             SystemBus.RegisterBusItem(new BusItem.Memory(new Memory.BasicFixed(50)), 50, 99);
             SystemBus.RegisterBusItem(new BusItem.SystemClock(), 100, 129);
-            if(mBus != null)
+            SystemBus.RegisterBusItem(new BusItem.Memory(new Memory.BasicFixed(4)), 130, 133);
+            if (mBus != null)
                 SystemBus.AppendBus(mBus);
+        }
+
+        public void SetInstruction(Dictionary<byte[], IInstruction> Instructions) { this.Instructions = Instructions; }
+
+        public void UseDefaultInstruction(Dictionary<byte[], IInstruction> mInstructions)
+        {
+        
+            Instructions = new Dictionary<byte[], IInstruction>
+            {
+                { new byte[] { 0x01 }, new Instruction.Jump()   },
+                { new byte[] { 0x02 }, new Instruction.Return() },
+                { new byte[] { 0x05 }, new Instruction.Stack()  },
+                { new byte[] { 0x06 }, new Instruction.MoveData() }
+            };
+
+            if (mInstructions != null)
+                Instructions = Instructions.Concat(mInstructions).GroupBy(d => d.Key)
+                                           .ToDictionary(d => d.Key, d => d.First().Value);
+        
         }
 
         public void SetBootloader(byte[] Bootloader) { 
@@ -48,9 +71,18 @@ namespace KsIL
             CPUs.Add(new CPU()
             {
                 PC = PC,
-                GetBus = SystemBus
+                GetBus = SystemBus,
+                Instructions = Instructions
+                
             });
 
+        }
+
+        public void Tick() {
+
+            Parallel.ForEach(CPUs, cpu => cpu.Tick());
+
+            Tick();
         }
 
         public void StartCPU(UInt64 ID)

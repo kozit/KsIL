@@ -33,6 +33,19 @@ namespace KsIL
             BussItem.Add((Lower, Upper), Item);
         }
 
+
+        public byte Read(UInt64 Addr)
+        {
+            KeyValuePair<(UInt64, UInt64), IBusItem> Item = GetBussItem(Addr);
+            return Item.Value.Read(Addr, Item.Key.Item1);
+        }
+
+        public byte[] Read(UInt64 Addr, UInt64 Size)
+        {
+            KeyValuePair<(UInt64, UInt64), IBusItem> Item = GetBussItem(Addr);
+            return Item.Value.Read(Addr, Size, Item.Key.Item1);
+        }
+
         public void WriteData(UInt64 Addr, byte[] Data) {
             KeyValuePair<(UInt64, UInt64), IBusItem> Item = GetBussItem(Addr);
             Item.Value.WriteData(Addr, Data, Item.Key.Item1);

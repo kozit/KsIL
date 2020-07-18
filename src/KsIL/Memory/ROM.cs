@@ -21,7 +21,7 @@ namespace KsIL.Memory
         public byte[] GetBlock(UInt64 address, UInt64 size, UInt64 Offset)
         {
             byte[] output = new byte[size];
-            Array.Copy(Data, (int)(address - Offset), output, 0, size);
+            Array.Copy(Data, (int)(address - Offset), output, 0, (int)size);
             return output;
         }
 
