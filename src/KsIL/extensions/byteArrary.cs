@@ -8,13 +8,13 @@ namespace KsIL.extensions
 #pragma warning restore IDE1006 // Naming Styles
     {
 
-        public static byte[] GetData(this byte[] data, int Offset = 0) {
+        public static byte[] GetData(this byte[] data) {
 
-            return data.GetDataPrefix(Offset).Data;
+            return data.GetDataPrefix().Data;
 
         }
 
-        public static (byte[] Data, int PrefixSize) GetDataPrefix(this byte[] data, int Offset = 0, CPU CPU = null) {
+        public static (byte[] Data, int PrefixSize) GetDataPrefix(this byte[] data) {
 
             if      (data[0] == (byte)DataTypes.bit16)
             {
@@ -30,7 +30,7 @@ namespace KsIL.extensions
             }
             else if (data[0] == (byte)DataTypes.pointer)
             {
-                return (CPU.GetBus.ReadData(BitConverter.ToUInt64(data, 1)), 9);
+                return (CPU.Current.GetBus.ReadData(BitConverter.ToUInt64(data, 1)), 9);
             }
 
             return (data.Skip(1).ToArray(), 1);

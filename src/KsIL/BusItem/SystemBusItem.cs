@@ -7,7 +7,7 @@ namespace KsIL.BusItem
 {
     public class SystemBusItem : IBusItem
     {
-
+        public uint MinAddressSpace()  { return 0; }
         private KsIL.KsILSystem GetSystem;
 
         private static Dictionary<UInt64, (byte[] data, bool ReadOnly)> SystemData;

@@ -6,7 +6,7 @@ namespace KsIL
 {
     public interface IBusItem
     {
-
+        uint MinAddressSpace();
         byte[] ReadData(UInt64 Addr, UInt64 Offset);
         byte[] ReadData(UInt64 Addr, UInt64 Size, UInt64 Offset);
         byte Read(UInt64 Addr, UInt64 Offset);

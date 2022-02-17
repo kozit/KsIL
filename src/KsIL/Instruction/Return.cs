@@ -6,10 +6,10 @@ namespace KsIL.Instruction
 {
     public class Return : IInstruction
     {
-        public void Run(CPU CPU, byte[] CommandBuffer)
+        public void Run(byte[] CommandBuffer)
         {
-            CPU.PC = CPU.CallStack[^1];
-            CPU.CallStack.RemoveAt(CPU.CallStack.Count - 1);
+            CPU.Current.PC = CPU.Current.CallStack[^1];
+            CPU.Current.CallStack.RemoveAt(CPU.Current.CallStack.Count - 1);
         }
     }
 }

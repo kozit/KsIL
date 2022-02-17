@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KsIL.Instruction
 {
-    class Invoke
+    public class Invoke
     {
     }
 }

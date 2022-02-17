@@ -6,6 +6,6 @@ namespace KsIL
 {
     public interface IInstruction
     {
-        void Run(CPU CPU, byte[] CommandBuffer);
+        void Run(byte[] CommandBuffer);
     }
 }

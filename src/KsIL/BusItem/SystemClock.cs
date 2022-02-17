@@ -6,6 +6,7 @@ namespace KsIL.BusItem
 {
     class SystemClock : IBusItem
     {
+        public uint MinAddressSpace()  { return 0; }
         public byte Read(ulong Addr, ulong Offset)
         {
             throw new NotImplementedException();

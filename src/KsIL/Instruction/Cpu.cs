@@ -1,4 +1,4 @@
-﻿using KsIL.extensions;
+using KsIL.extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace KsIL.Instruction
 {
-    public class MoveData : IInstruction
+    public class Cpu : IInstruction
     {
         public void Run(byte[] CommandBuffer)
         {

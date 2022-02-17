@@ -9,6 +9,7 @@ namespace KsIL
     public class KsILSystem
     {
 
+        
         public List<CPU> CPUs { private set; get; }
         public Bus SystemBus  { private set; get; }
         public byte[] Bootloader { private set; get; }
@@ -35,13 +36,14 @@ namespace KsIL
             SystemBus.RegisterBusItem(new BusItem.Memory(new Memory.BasicFixed(50)), 50, 99);
             SystemBus.RegisterBusItem(new BusItem.SystemClock(), 100, 129);
             SystemBus.RegisterBusItem(new BusItem.Memory(new Memory.BasicFixed(4)), 130, 133);
+            SystemBus.RegisterBusItem(new BusItem.Console(), 134, 139);
             if (mBus != null)
                 SystemBus.AppendBus(mBus);
         }
 
         public void SetInstruction(Dictionary<byte[], IInstruction> Instructions) { this.Instructions = Instructions; }
 
-        public void UseDefaultInstruction(Dictionary<byte[], IInstruction> mInstructions)
+        public void UseDefaultInstruction(Dictionary<byte[], IInstruction> mInstructions = null)
         {
         
             Instructions = new Dictionary<byte[], IInstruction>
@@ -53,8 +55,10 @@ namespace KsIL
             };
 
             if (mInstructions != null)
-                Instructions = Instructions.Concat(mInstructions).GroupBy(d => d.Key)
-                                           .ToDictionary(d => d.Key, d => d.First().Value);
+                Instructions = 
+                    Instructions
+                    .Concat(mInstructions).GroupBy(d => d.Key)
+                    .ToDictionary(d => d.Key, d => d.First().Value);
         
         }
 
@@ -78,17 +82,14 @@ namespace KsIL
 
         }
 
-        public void Tick() {
-
-            Parallel.ForEach(CPUs, cpu => cpu.Tick());
-
-            Tick();
+        public void StartCPU(UInt64 ID)
+        {            
+            CPUs[(int)ID].Start();
         }
 
-        public void StartCPU(UInt64 ID)
+        public void Interrupt(UInt64 ID, UInt64 PC)
         {
             
-            CPUs[(int)ID].Tick();
         }
 
     }

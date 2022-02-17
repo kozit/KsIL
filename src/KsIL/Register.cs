@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KsIL
 {
-    enum RegisterCode : byte
+    public enum RegisterCode : byte
     {
 
         A = 0x00,

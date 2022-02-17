@@ -6,13 +6,14 @@ namespace KsIL.Instruction
 {
     public class Jump : IInstruction
     {
-        public void Run(CPU CPU, byte[] CommandBuffer)
+        public void Run(byte[] CommandBuffer)
         {
-            CPU.CallStack.Add((UInt64)(CPU.PC + 1));
+            
+            CPU.Current.CallStack.Add((UInt64)(CPU.Current.PC + 1));
             if(CommandBuffer[0] == 0xFF)
-                CPU.PC += BitConverter.ToUInt64(CommandBuffer, 1);
+                CPU.Current.PC += BitConverter.ToUInt64(CommandBuffer, 1);
             else
-                CPU.PC  = BitConverter.ToUInt64(CommandBuffer, 1);
+                CPU.Current.PC  = BitConverter.ToUInt64(CommandBuffer, 1);
         }
     }
 }

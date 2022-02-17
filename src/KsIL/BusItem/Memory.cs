@@ -6,6 +6,7 @@ namespace KsIL.BusItem
 {
     public class Memory: IBusItem
     {
+        public uint MinAddressSpace()  { return 0; }
         readonly IMemory Backend;
         public Memory(IMemory backend)
         {
